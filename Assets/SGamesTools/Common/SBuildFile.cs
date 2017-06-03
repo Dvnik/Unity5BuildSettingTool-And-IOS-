@@ -20,9 +20,10 @@ public class SBuildFile
 	/// <param name="iTarget">I target.</param>
 	/// <param name="iExportName">I export name.</param>
 	/// <param name="iOptions">I options.</param>
-	public static void BuildAction(BuildTarget iTarget, string iExportName, BuildOptions iOptions = BuildOptions.None)
+	public static void BuildAction(BuildTargetGroup iTGroup, BuildTarget iTarget, string iExportName, BuildOptions iOptions = BuildOptions.None)
 	{
-		EditorUserBuildSettings.SwitchActiveBuildTarget(iTarget); // 切換Platform
+//		EditorUserBuildSettings.SwitchActiveBuildTarget(iTarget); // 切換Platform (4.6Ver)
+		EditorUserBuildSettings.SwitchActiveBuildTarget(iTGroup, iTarget);// Unity5 new
 		// Get Scenes
 		string[] aLevels = GetBuildScenes();
 		// Start Build
@@ -38,7 +39,7 @@ public class SBuildFile
 	/// <param name="iApkFileName">自定義檔名</param>
 	public static void BuildActionIOS(string iXcodeFolderName)
 	{
-		BuildAction(BuildTarget.iOS, iXcodeFolderName);
+		BuildAction(BuildTargetGroup.iOS, BuildTarget.iOS, iXcodeFolderName);
 	}
 	/// <summary>
 	/// Android包檔方法
@@ -47,7 +48,7 @@ public class SBuildFile
 	public static void BuildActionAndroid(string iVerName)
 	{
 		string aApkFileName = GetApkFileName(iVerName);
-		BuildAction(BuildTarget.Android, aApkFileName);
+		BuildAction(BuildTargetGroup.Android, BuildTarget.Android, aApkFileName);
 	}
 	/// <summary>
 	/// 換算Android檔案名稱

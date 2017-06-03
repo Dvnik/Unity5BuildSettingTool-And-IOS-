@@ -162,7 +162,7 @@ public class SDCreate : SDBaseUI
 //		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;// 4.6Ver
 
 		aTmpSet.SDKVersion = PlayerSettings.iOS.sdkVersion;
-		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;
+//		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;// 4.6Ver
 		aTmpSet.ScriptCallOptimizationLevel = PlayerSettings.iOS.scriptCallOptimization;
 
 //		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
@@ -177,6 +177,7 @@ public class SDCreate : SDBaseUI
 		// Unity5 New
 		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
+		aTmpSet.TargetOSVersionString = PlayerSettings.iOS.targetOSVersionString;
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);

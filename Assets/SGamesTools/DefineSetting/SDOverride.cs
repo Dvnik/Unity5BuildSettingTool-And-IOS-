@@ -102,7 +102,6 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
 		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
 //		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice;// 4.6Ver
-		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
 		
 		PlayerSettings.Android.forceInternetPermission = aTmpSet.ForceInternet;
 		PlayerSettings.Android.forceSDCardPermission = aTmpSet.ForceSDCard;
@@ -112,6 +111,7 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.Android.keyaliasName = aTmpSet.KeyAlialsName;
 		PlayerSettings.Android.keyaliasPass = aTmpSet.KeyAlialsPassword;
 		// Unity5 New
+		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
 		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, aTmpSet.ApiCompatibilityLevel);
 		// Icon
 		if(aTmpSet.IconSetStatus)
@@ -133,8 +133,8 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
 		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
 		PlayerSettings.iOS.targetDevice = aTmpSet.TargetDevice;
-//		PlayerSettings.iOS.targetResolution = aTmpSet.TargetResolution;
-		PlayerSettings.targetIOSGraphics = aTmpSet.TargetGraphics;
+//		PlayerSettings.iOS.targetResolution = aTmpSet.TargetResolution;// 4.6Ver
+//		PlayerSettings.targetIOSGraphics = aTmpSet.TargetGraphics;// 4.6Ver
 		
 		PlayerSettings.iOS.sdkVersion = aTmpSet.SDKVersion;
 		PlayerSettings.iOS.targetOSVersion = aTmpSet.TargetOSVersion;
@@ -149,6 +149,7 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.SetPropertyInt("ScriptingBackend", (int)aTmpSet.ScriptingBackend, BuildTargetGroup.iOS);
 		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
 		// Unity5 New
+		PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS, aTmpSet.GraphicsType);
 		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.iOS, aTmpSet.ApiCompatibilityLevel);
 		// Icon
 		if(aTmpSet.IconSetStatus)

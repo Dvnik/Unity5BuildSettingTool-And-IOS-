@@ -135,15 +135,7 @@ public abstract class SDBaseUI : EditorWindow
 		GUILayout.Label("Android Configuration(其他設置)", TitleFrontStyle());
 		mShowSetInfo.AndroidSet.TargetDevice = (AndroidTargetDevice)EditorGUILayout.EnumPopup("Android Target Device:", mShowSetInfo.AndroidSet.TargetDevice);
 		///
-//		mShowSetInfo.AndroidSet.TargetGraphice = (TargetGlesGraphics)EditorGUILayout.EnumPopup("Android Graphics Level:", mShowSetInfo.AndroidSet.TargetGraphice);4.6Ver
-		/*
-		 * 由於5.6的GraphicsAPI UI還沒想好要怎麼作修改畫面，先註解
-
-//		GUILayout.Label("Android Graphics APIs", TitleFrontStyle());
-//		for(int i = 0; i < mShowSetInfo.AndroidSet.GraphicesType.Length; i++) {
-//			mShowSetInfo.AndroidSet.GraphicsType[i] = (UnityEngine.Rendering.GraphicsDeviceType)EditorGUILayout.EnumPopup( i + " :", mShowSetInfo.AndroidSet.GraphicsType[i]);
-//		}
-		*/
+//		mShowSetInfo.AndroidSet.TargetGraphice = (TargetGlesGraphics)EditorGUILayout.EnumPopup("Android Graphics Level:", mShowSetInfo.AndroidSet.TargetGraphice);// 4.6Ver
 		///
 		mShowSetInfo.AndroidSet.ForceInternet = EditorGUILayout.Toggle("Force Internet Permission:", mShowSetInfo.AndroidSet.ForceInternet);
 		mShowSetInfo.AndroidSet.ForceSDCard = EditorGUILayout.Toggle("Force SDCard Permission:", mShowSetInfo.AndroidSet.ForceSDCard);
@@ -157,6 +149,14 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.AndroidSet.ManifestVersionName = EditorGUILayout.TextField("Version Name:", mShowSetInfo.AndroidSet.ManifestVersionName);
 		// Unity5 New
 		GUILayout.Label("");
+		/*
+		 * 由於5.6的GraphicsAPI UI還沒想好要怎麼作修改畫面，先註解
+
+		GUILayout.Label("Android Graphics APIs", TitleFrontStyle());
+		for(int i = 0; i < mShowSetInfo.AndroidSet.GraphicesType.Length; i++) {
+			mShowSetInfo.AndroidSet.GraphicsType[i] = (UnityEngine.Rendering.GraphicsDeviceType)EditorGUILayout.EnumPopup( i + " :", mShowSetInfo.AndroidSet.GraphicsType[i]);
+		}
+		*/
 		mShowSetInfo.AndroidSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.AndroidSet.ApiCompatibilityLevel);
 		GUILayout.Label("");
 		// Icon
@@ -187,8 +187,8 @@ public abstract class SDBaseUI : EditorWindow
 		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
 			mShowSetInfo.IOSSet.Architecture = (iPhoneArchitecture)EditorGUILayout.EnumPopup("Architecture:", mShowSetInfo.IOSSet.Architecture);
 		mShowSetInfo.IOSSet.TargetDevice = (iOSTargetDevice)EditorGUILayout.EnumPopup("Target Device:", mShowSetInfo.IOSSet.TargetDevice);
-//		mShowSetInfo.IOSSet.TargetResolution = (iOSTargetResolution)EditorGUILayout.EnumPopup("iOS Target Resolution:", mShowSetInfo.IOSSet.TargetResolution);
-		mShowSetInfo.IOSSet.TargetGraphics = (TargetIOSGraphics)EditorGUILayout.EnumPopup("iOS Graphics API:", mShowSetInfo.IOSSet.TargetGraphics);
+//		mShowSetInfo.IOSSet.TargetResolution = (iOSTargetResolution)EditorGUILayout.EnumPopup("iOS Target Resolution:", mShowSetInfo.IOSSet.TargetResolution);// 4.6Ver
+//		mShowSetInfo.IOSSet.TargetGraphics = (TargetIOSGraphics)EditorGUILayout.EnumPopup("iOS Graphics API:", mShowSetInfo.IOSSet.TargetGraphics);// 4.6Ver
 		GUILayout.Label("");
 //		mShowSetInfo.IOSSet.OverrideIPodMusic = EditorGUILayout.Toggle("Override IPod Music:", mShowSetInfo.IOSSet.OverrideIPodMusic);
 		mShowSetInfo.IOSSet.PrepareIOSForRecording = EditorGUILayout.Toggle("IOS For Recording:", mShowSetInfo.IOSSet.PrepareIOSForRecording);
@@ -196,6 +196,14 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);
 		// Unity5 New
 		GUILayout.Label("");
+		/*
+		 * 由於5.6的GraphicsAPI UI還沒想好要怎麼作修改畫面，先註解
+
+ 		GUILayout.Label("IOS Graphics APIs", TitleFrontStyle());
+		for(int i = 0; i < mShowSetInfo.IOSSet.GraphicsType.Length; i++) {
+			mShowSetInfo.IOSSet.GraphicsType[i] = (UnityEngine.Rendering.GraphicsDeviceType)EditorGUILayout.EnumPopup( i + " :", mShowSetInfo.IOSSet.GraphicsType[i]);
+		}
+		 */
 		mShowSetInfo.IOSSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.IOSSet.ApiCompatibilityLevel);
 		GUILayout.Label("");
 		// Icon

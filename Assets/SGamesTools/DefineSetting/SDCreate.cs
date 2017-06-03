@@ -121,7 +121,7 @@ public class SDCreate : SDBaseUI
 		aTmpSet.SdkVersions = PlayerSettings.Android.minSdkVersion;
 		aTmpSet.TargetDevice = PlayerSettings.Android.targetDevice;
 //		aTmpSet.TargetGraphice = PlayerSettings.targetGlesGraphics;// 4.6Ver
-		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
+
 
 		aTmpSet.ForceInternet = PlayerSettings.Android.forceInternetPermission;
 		aTmpSet.ForceSDCard = PlayerSettings.Android.forceSDCardPermission;
@@ -138,6 +138,7 @@ public class SDCreate : SDBaseUI
 		aTmpSet.KeyAlialsName = PlayerSettings.Android.keyaliasName;
 		aTmpSet.KeyAlialsPassword = PlayerSettings.Android.keyaliasPass;
 		// Unity5 New
+		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Android);
 		// Icon
 		aTmpSet.IconOverride = true;
@@ -157,8 +158,8 @@ public class SDCreate : SDBaseUI
 		aTmpSet.StatusBarStyle = PlayerSettings.iOS.statusBarStyle;
 		aTmpSet.ShowActivityIndicatorOnLoading = PlayerSettings.iOS.showActivityIndicatorOnLoading;
 		aTmpSet.TargetDevice = PlayerSettings.iOS.targetDevice;
-//		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;
-		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;
+//		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;// 4.6Ver
+//		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;// 4.6Ver
 
 		aTmpSet.SDKVersion = PlayerSettings.iOS.sdkVersion;
 		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;
@@ -174,6 +175,7 @@ public class SDCreate : SDBaseUI
 		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
 			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
 		// Unity5 New
+		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
 		// Icon
 		aTmpSet.IconOverride = true;

@@ -78,8 +78,8 @@ public class SDIOSSet
 	public iOSStatusBarStyle StatusBarStyle;
 	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	public iOSTargetDevice TargetDevice;
-//	public iOSTargetResolution TargetResolution;
-	public TargetIOSGraphics TargetGraphics;
+//	public iOSTargetResolution TargetResolution;// 4.6Ver
+//	public TargetIOSGraphics TargetGraphics;// 4.6Ver
 	public iOSSdkVersion SDKVersion;
 	public iOSTargetOSVersion TargetOSVersion;
 	public ScriptCallOptimizationLevel ScriptCallOptimizationLevel;
@@ -100,6 +100,7 @@ public class SDIOSSet
 	public string[] SplashImages;// 啟動之前的插入圖
 	// Unity5 New
 	public ApiCompatibilityLevel ApiCompatibilityLevel;
+	public GraphicsDeviceType[] GraphicsType;
 }
 // 顯示用的圖像
 public class ShowImageGroup

@@ -84,7 +84,7 @@ public class SDOverride : SDBaseUI
 		// Other
 		PlayerSettings.statusBarHidden = mShowSetInfo.StatusBarHidden;
 		PlayerSettings.use32BitDisplayBuffer = mShowSetInfo.Use32BitDisplayBuffer;
-		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;
+//		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;// 4.6Ver
 		PlayerSettings.strippingLevel = mShowSetInfo.StrippingLevel;
 		// Icon
 		if(mShowSetInfo.IconSetStatus)
@@ -101,7 +101,7 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.Android.bundleVersionCode = aTmpSet.BundleCode;
 		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
 		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
-//		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice; 4.6Ver
+//		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice;// 4.6Ver
 		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
 		
 		PlayerSettings.Android.forceInternetPermission = aTmpSet.ForceInternet;
@@ -111,6 +111,8 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.Android.keystorePass = aTmpSet.KeyStorePassword;
 		PlayerSettings.Android.keyaliasName = aTmpSet.KeyAlialsName;
 		PlayerSettings.Android.keyaliasPass = aTmpSet.KeyAlialsPassword;
+		// Unity5 New
+		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, aTmpSet.ApiCompatibilityLevel);
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{
@@ -146,6 +148,8 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.iOS.prerenderedIcon = aTmpSet.PrerenderedIcon;
 		PlayerSettings.SetPropertyInt("ScriptingBackend", (int)aTmpSet.ScriptingBackend, BuildTargetGroup.iOS);
 		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
+		// Unity5 New
+		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.iOS, aTmpSet.ApiCompatibilityLevel);
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{

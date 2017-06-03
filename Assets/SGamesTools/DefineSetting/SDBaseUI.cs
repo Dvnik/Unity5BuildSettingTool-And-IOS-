@@ -110,7 +110,7 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.BundleVer = EditorGUILayout.TextField("Bundle Ver:", mShowSetInfo.BundleVer);
 //		mShowSetInfo.ShortBundleVer = EditorGUILayout.TextField("Short Bundle Ver:", mShowSetInfo.ShortBundleVer);
 		GUILayout.Label("Base Optimization", TitleFrontStyle());
-		mShowSetInfo.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.ApiCompatibilityLevel);
+//		mShowSetInfo.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.ApiCompatibilityLevel); // 4.6Ver
 		mShowSetInfo.StrippingLevel = (StrippingLevel)EditorGUILayout.EnumPopup("Stripping Level:", mShowSetInfo.StrippingLevel);
 		GUILayout.Label("額外設置", TitleFrontStyle());
 		mShowSetInfo.StatusBarHidden = EditorGUILayout.Toggle("Status Bar Hidden:", mShowSetInfo.StatusBarHidden);
@@ -155,6 +155,9 @@ public abstract class SDBaseUI : EditorWindow
 		GUILayout.Label("Manifest Xml Set", TitleFrontStyle());
 		mShowSetInfo.AndroidSet.ManifestVersionCode = EditorGUILayout.TextField("Version Code:", mShowSetInfo.AndroidSet.ManifestVersionCode);
 		mShowSetInfo.AndroidSet.ManifestVersionName = EditorGUILayout.TextField("Version Name:", mShowSetInfo.AndroidSet.ManifestVersionName);
+		// Unity5 New
+		GUILayout.Label("");
+		mShowSetInfo.AndroidSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.AndroidSet.ApiCompatibilityLevel);
 		GUILayout.Label("");
 		// Icon
 		mShowSetInfo.AndroidSet.IconSetStatus = EditorGUILayout.Toggle("設定Android ICon圖:", mShowSetInfo.AndroidSet.IconSetStatus);
@@ -191,6 +194,9 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.IOSSet.PrepareIOSForRecording = EditorGUILayout.Toggle("IOS For Recording:", mShowSetInfo.IOSSet.PrepareIOSForRecording);
 		mShowSetInfo.IOSSet.RequiresPersistentWiFi = EditorGUILayout.Toggle("Requires Persistent WiFi:", mShowSetInfo.IOSSet.RequiresPersistentWiFi);
 		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);
+		// Unity5 New
+		GUILayout.Label("");
+		mShowSetInfo.IOSSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.IOSSet.ApiCompatibilityLevel);
 		GUILayout.Label("");
 		// Icon
 		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.Toggle("設定IOS ICon圖:", mShowSetInfo.IOSSet.IconSetStatus);

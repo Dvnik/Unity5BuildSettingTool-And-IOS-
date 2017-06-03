@@ -98,7 +98,13 @@ public class SDCreate : SDBaseUI
 		// Other
 		mShowSetInfo.StatusBarHidden = PlayerSettings.statusBarHidden;
 		mShowSetInfo.Use32BitDisplayBuffer = PlayerSettings.use32BitDisplayBuffer;
-		mShowSetInfo.ApiCompatibilityLevel = PlayerSettings.apiCompatibilityLevel;
+		/*
+		 * PlayerSettings.apiCompatibilityLevel
+		 * Deprecated. Use PlayerSettings.GetApiCompatibilityLevel and PlayerSettings.SetApiCompatibilityLevel instead.
+		*/
+//		mShowSetInfo.ApiCompatibilityLevel = PlayerSettings.apiCompatibilityLevel;// 4.6Ver
+
+
 		mShowSetInfo.StrippingLevel = PlayerSettings.strippingLevel;
 		// Icon
 		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
@@ -131,6 +137,8 @@ public class SDCreate : SDBaseUI
 		aTmpSet.KeyStorePassword = PlayerSettings.Android.keystorePass;
 		aTmpSet.KeyAlialsName = PlayerSettings.Android.keyaliasName;
 		aTmpSet.KeyAlialsPassword = PlayerSettings.Android.keyaliasPass;
+		// Unity5 New
+		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Android);
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.Android, ref mUIUseImages.AndroidIcons, ref aTmpSet.DefIcons);
@@ -165,6 +173,8 @@ public class SDCreate : SDBaseUI
 		aTmpSet.ScriptingBackend = (ScriptingImplementation)PlayerSettings.GetPropertyInt("ScriptingBackend", BuildTargetGroup.iOS);
 		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
 			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
+		// Unity5 New
+		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);

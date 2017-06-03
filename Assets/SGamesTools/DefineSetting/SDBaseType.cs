@@ -33,7 +33,7 @@ public class SDefineSet
 	public string BundleVer;
 //	public string ShortBundleVer;
 	//optimization
-	public ApiCompatibilityLevel ApiCompatibilityLevel;
+//	public ApiCompatibilityLevel ApiCompatibilityLevel;// 4.6Ver
 	public StrippingLevel StrippingLevel;
 	// Icon
 	public bool IconSetStatus; // 是否設定icon圖
@@ -52,7 +52,6 @@ public class SDAndroidSet
 	public AndroidSdkVersions SdkVersions;
 	public AndroidTargetDevice TargetDevice;
 //	public TargetGlesGraphics TargetGraphice; // 4.6Ver
-	public GraphicsDeviceType[] GraphicsType;
 	public bool ForceInternet;
 	public bool ForceSDCard;
 	
@@ -69,6 +68,9 @@ public class SDAndroidSet
 	public string[] DefIcons;// 預設圖名
 	public bool SplashSetStatus; // 是否設定Splash圖
 	public string SplashImage;// 啟動之前的插入圖(Android)
+	// Unity 5 New
+	public ApiCompatibilityLevel ApiCompatibilityLevel;
+	public GraphicsDeviceType[] GraphicsType;
 }
 // 參照PlayerSetting加入
 public class SDIOSSet
@@ -96,6 +98,8 @@ public class SDIOSSet
 	public string[] DefIcons;// 預設圖名
 	public bool SplashSetStatus; // 是否設定Splash圖
 	public string[] SplashImages;// 啟動之前的插入圖
+	// Unity5 New
+	public ApiCompatibilityLevel ApiCompatibilityLevel;
 }
 // 顯示用的圖像
 public class ShowImageGroup

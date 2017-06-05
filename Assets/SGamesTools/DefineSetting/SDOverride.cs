@@ -133,26 +133,27 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
 		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
 		PlayerSettings.iOS.targetDevice = aTmpSet.TargetDevice;
-//		PlayerSettings.iOS.targetResolution = aTmpSet.TargetResolution;// 4.6Ver
-//		PlayerSettings.targetIOSGraphics = aTmpSet.TargetGraphics;// 4.6Ver
-		
 		PlayerSettings.iOS.sdkVersion = aTmpSet.SDKVersion;
-//		PlayerSettings.iOS.targetOSVersion = aTmpSet.TargetOSVersion;// 4.6Ver
 		PlayerSettings.iOS.scriptCallOptimization = aTmpSet.ScriptCallOptimizationLevel;
-
 //		SDDataMove.SetBoolPalyerSetting("Override IPod Music", aTmpSet.OverrideIPodMusic);
 		SDDataMove.SetBoolPalyerSetting("Prepare IOS For Recording", aTmpSet.PrepareIOSForRecording);
 		PlayerSettings.iOS.requiresPersistentWiFi = aTmpSet.RequiresPersistentWiFi;
-//		PlayerSettings.iOS.exitOnSuspend = aTmpSet.ExitOnSuspend;// 4.6Ver
-
 		PlayerSettings.iOS.prerenderedIcon = aTmpSet.PrerenderedIcon;
-		PlayerSettings.SetPropertyInt("ScriptingBackend", (int)aTmpSet.ScriptingBackend, BuildTargetGroup.iOS);
-		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
+
+		// Unity 4.6(under) Old
+//		PlayerSettings.iOS.targetResolution = aTmpSet.TargetResolution;// 4.6Ver
+//		PlayerSettings.targetIOSGraphics = aTmpSet.TargetGraphics;// 4.6Ver
+//		PlayerSettings.iOS.targetOSVersion = aTmpSet.TargetOSVersion;// 4.6Ver
+//		PlayerSettings.iOS.exitOnSuspend = aTmpSet.ExitOnSuspend;// 4.6Ver
+//		PlayerSettings.SetPropertyInt("ScriptingBackend", (int)aTmpSet.ScriptingBackend, BuildTargetGroup.iOS);
+//		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
 		// Unity5 New
 		PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS, aTmpSet.GraphicsType);
 		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.iOS, aTmpSet.ApiCompatibilityLevel);
 		PlayerSettings.iOS.targetOSVersionString = aTmpSet.TargetOSVersionString;
 		PlayerSettings.iOS.appInBackgroundBehavior = aTmpSet.AppInBackgroundBehavior;
+		PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, aTmpSet.ScriptingBackend);
+		PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, aTmpSet.Architecture);
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{

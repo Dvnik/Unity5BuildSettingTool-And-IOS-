@@ -180,19 +180,17 @@ public abstract class SDBaseUI : EditorWindow
 			(iOSShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup("Show Loading Indicator:", mShowSetInfo.IOSSet.ShowActivityIndicatorOnLoading);
 		GUILayout.Label("IOS SDK Setting", TitleFrontStyle());
 		mShowSetInfo.IOSSet.SDKVersion = (iOSSdkVersion)EditorGUILayout.EnumPopup("SDK Version:", mShowSetInfo.IOSSet.SDKVersion);
-//		mShowSetInfo.IOSSet.TargetOSVersion = (iOSTargetOSVersion)EditorGUILayout.EnumPopup("Target OS Version:", mShowSetInfo.IOSSet.TargetOSVersion);// 4.6Ver
 		mShowSetInfo.IOSSet.ScriptCallOptimizationLevel = (ScriptCallOptimizationLevel)EditorGUILayout.EnumPopup("Optimization Level:", mShowSetInfo.IOSSet.ScriptCallOptimizationLevel);
 		GUILayout.Label("IOS Configuration", TitleFrontStyle());
-		mShowSetInfo.IOSSet.ScriptingBackend = (ScriptingImplementation)EditorGUILayout.EnumPopup("Scripting Backend:", mShowSetInfo.IOSSet.ScriptingBackend);
-		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
-			mShowSetInfo.IOSSet.Architecture = (iPhoneArchitecture)EditorGUILayout.EnumPopup("Architecture:", mShowSetInfo.IOSSet.Architecture);
 		mShowSetInfo.IOSSet.TargetDevice = (iOSTargetDevice)EditorGUILayout.EnumPopup("Target Device:", mShowSetInfo.IOSSet.TargetDevice);
-//		mShowSetInfo.IOSSet.TargetResolution = (iOSTargetResolution)EditorGUILayout.EnumPopup("iOS Target Resolution:", mShowSetInfo.IOSSet.TargetResolution);// 4.6Ver
-//		mShowSetInfo.IOSSet.TargetGraphics = (TargetIOSGraphics)EditorGUILayout.EnumPopup("iOS Graphics API:", mShowSetInfo.IOSSet.TargetGraphics);// 4.6Ver
 		GUILayout.Label("");
 //		mShowSetInfo.IOSSet.OverrideIPodMusic = EditorGUILayout.Toggle("Override IPod Music:", mShowSetInfo.IOSSet.OverrideIPodMusic);
 		mShowSetInfo.IOSSet.PrepareIOSForRecording = EditorGUILayout.Toggle("IOS For Recording:", mShowSetInfo.IOSSet.PrepareIOSForRecording);
 		mShowSetInfo.IOSSet.RequiresPersistentWiFi = EditorGUILayout.Toggle("Requires Persistent WiFi:", mShowSetInfo.IOSSet.RequiresPersistentWiFi);
+		// Unity 4.6(under) Old
+//		mShowSetInfo.IOSSet.TargetOSVersion = (iOSTargetOSVersion)EditorGUILayout.EnumPopup("Target OS Version:", mShowSetInfo.IOSSet.TargetOSVersion);// 4.6Ver
+//		mShowSetInfo.IOSSet.TargetResolution = (iOSTargetResolution)EditorGUILayout.EnumPopup("iOS Target Resolution:", mShowSetInfo.IOSSet.TargetResolution);// 4.6Ver
+//		mShowSetInfo.IOSSet.TargetGraphics = (TargetIOSGraphics)EditorGUILayout.EnumPopup("iOS Graphics API:", mShowSetInfo.IOSSet.TargetGraphics);// 4.6Ver
 //		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);// 4.6Ver
 		// Unity5 New
 		GUILayout.Label("");
@@ -207,6 +205,12 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.IOSSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.IOSSet.ApiCompatibilityLevel);
 		mShowSetInfo.IOSSet.TargetOSVersionString = EditorGUILayout.TextField("Target minimum iOS Version:", mShowSetInfo.IOSSet.TargetOSVersionString);
 		mShowSetInfo.IOSSet.AppInBackgroundBehavior = (iOSAppInBackgroundBehavior)EditorGUILayout.EnumPopup("Behavior in Background:", mShowSetInfo.IOSSet.AppInBackgroundBehavior);
+		mShowSetInfo.IOSSet.ScriptingBackend = (ScriptingImplementation)EditorGUILayout.EnumPopup("Scripting Backend:", mShowSetInfo.IOSSet.ScriptingBackend);
+		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
+			iPhoneArchitecture aShowEnum = (iPhoneArchitecture)mShowSetInfo.IOSSet.Architecture;
+			aShowEnum = (iPhoneArchitecture)EditorGUILayout.EnumPopup("Architecture:", aShowEnum);
+			mShowSetInfo.IOSSet.Architecture = (int)aShowEnum;
+		}
 		GUILayout.Label("");
 		// Icon
 		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.Toggle("設定IOS ICon圖:", mShowSetInfo.IOSSet.IconSetStatus);

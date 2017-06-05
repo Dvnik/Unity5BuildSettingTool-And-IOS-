@@ -158,28 +158,33 @@ public class SDCreate : SDBaseUI
 		aTmpSet.StatusBarStyle = PlayerSettings.iOS.statusBarStyle;
 		aTmpSet.ShowActivityIndicatorOnLoading = PlayerSettings.iOS.showActivityIndicatorOnLoading;
 		aTmpSet.TargetDevice = PlayerSettings.iOS.targetDevice;
-//		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;// 4.6Ver
-//		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;// 4.6Ver
-
 		aTmpSet.SDKVersion = PlayerSettings.iOS.sdkVersion;
-//		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;// 4.6Ver
 		aTmpSet.ScriptCallOptimizationLevel = PlayerSettings.iOS.scriptCallOptimization;
-
 //		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
 		aTmpSet.PrepareIOSForRecording = SDDataMove.GetBoolPlayerSetting("Prepare IOS For Recording");
 		aTmpSet.RequiresPersistentWiFi = PlayerSettings.iOS.requiresPersistentWiFi;
-//		aTmpSet.ExitOnSuspend = PlayerSettings.iOS.exitOnSuspend;// 4.6Ver
-
-
 		aTmpSet.PrerenderedIcon = PlayerSettings.iOS.prerenderedIcon;
-		aTmpSet.ScriptingBackend = (ScriptingImplementation)PlayerSettings.GetPropertyInt("ScriptingBackend", BuildTargetGroup.iOS);
-		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
-			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
+		// Unity 4.6(under) Old
+//		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;// 4.6Ver
+//		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;// 4.6Ver
+//		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;// 4.6Ver
+//		aTmpSet.ExitOnSuspend = PlayerSettings.iOS.exitOnSuspend;// 4.6Ver
+//		aTmpSet.ScriptingBackend = (ScriptingImplementation)PlayerSettings.GetPropertyInt("ScriptingBackend", BuildTargetGroup.iOS);
+//		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
+//			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
 		// Unity5 New
 		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
 		aTmpSet.TargetOSVersionString = PlayerSettings.iOS.targetOSVersionString;
 		aTmpSet.AppInBackgroundBehavior = PlayerSettings.iOS.appInBackgroundBehavior;
+		aTmpSet.ScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.iOS);
+		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
+			aTmpSet.StripEngineCode = PlayerSettings.stripEngineCode;
+			aTmpSet.Architecture = PlayerSettings.GetArchitecture(BuildTargetGroup.iOS);
+		}
+		else if(aTmpSet.ScriptingBackend == ScriptingImplementation.Mono2x) {			
+			aTmpSet.StripLevel = PlayerSettings.strippingLevel;
+		}
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);

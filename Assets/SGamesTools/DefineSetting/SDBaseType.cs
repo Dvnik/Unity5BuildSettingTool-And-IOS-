@@ -78,19 +78,14 @@ public class SDIOSSet
 	public iOSStatusBarStyle StatusBarStyle;
 	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	public iOSTargetDevice TargetDevice;
-//	public iOSTargetResolution TargetResolution;// 4.6Ver
-//	public TargetIOSGraphics TargetGraphics;// 4.6Ver
 	public iOSSdkVersion SDKVersion;
-//	public iOSTargetOSVersion TargetOSVersion;// 4.6Ver
 	public ScriptCallOptimizationLevel ScriptCallOptimizationLevel;
 	public ScriptingImplementation ScriptingBackend;
-	public iPhoneArchitecture Architecture;
 
 	public string BuildNumber;
 //	public bool OverrideIPodMusic;
 	public bool PrepareIOSForRecording;
 	public bool RequiresPersistentWiFi;
-//	public bool ExitOnSuspend;// 4.6Ver
 
 	public bool PrerenderedIcon;
 	public bool IconSetStatus; // 是否設定icon圖
@@ -98,11 +93,19 @@ public class SDIOSSet
 	public string[] DefIcons;// 預設圖名
 	public bool SplashSetStatus; // 是否設定Splash圖
 	public string[] SplashImages;// 啟動之前的插入圖
+	// Unity 4.6(under) Old
+//	public iOSTargetResolution TargetResolution;// 4.6Ver
+//	public TargetIOSGraphics TargetGraphics;// 4.6Ver
+//	public bool ExitOnSuspend;// 4.6Ver
+//	public iOSTargetOSVersion TargetOSVersion;// 4.6Ver
 	// Unity5 New
 	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public GraphicsDeviceType[] GraphicsType;
 	public string TargetOSVersionString;
 	public iOSAppInBackgroundBehavior AppInBackgroundBehavior;
+	public bool StripEngineCode;
+	public StrippingLevel StripLevel;
+	public int Architecture;
 }
 // 顯示用的圖像
 public class ShowImageGroup

@@ -116,7 +116,7 @@ public class SManifestSet
 			return;
 		}
 		// -----------------------------------------------------------------
-		XmlNode manNode = FindChildNode(doc, "manifest");
+//		XmlNode manNode = FindChildNode(doc, "manifest");// but its value is never used
 		
 		XmlElement aFirstElement = doc.DocumentElement;
 		string ns = aFirstElement.GetNamespaceOfPrefix ("android");

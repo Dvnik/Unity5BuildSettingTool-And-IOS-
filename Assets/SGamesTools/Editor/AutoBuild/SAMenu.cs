@@ -54,7 +54,6 @@ public class SAMenu
 	private static void BuildProcess(string iBuildFileName, string iDefineSetName,
 	                                 BuildTarget iTarget, SFChangeBase iFileChange)
 	{
-		EditorUserBuildSettings.SwitchActiveBuildTarget(iTarget); // 切換Platform
 		SDOverride.OverridePlayerSet(iDefineSetName);// 設定Define檔
 		iFileChange.DoFileMove();// 搬移檔案
 		// 執行產檔

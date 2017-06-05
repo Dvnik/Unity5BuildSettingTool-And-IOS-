@@ -193,7 +193,7 @@ public abstract class SDBaseUI : EditorWindow
 //		mShowSetInfo.IOSSet.OverrideIPodMusic = EditorGUILayout.Toggle("Override IPod Music:", mShowSetInfo.IOSSet.OverrideIPodMusic);
 		mShowSetInfo.IOSSet.PrepareIOSForRecording = EditorGUILayout.Toggle("IOS For Recording:", mShowSetInfo.IOSSet.PrepareIOSForRecording);
 		mShowSetInfo.IOSSet.RequiresPersistentWiFi = EditorGUILayout.Toggle("Requires Persistent WiFi:", mShowSetInfo.IOSSet.RequiresPersistentWiFi);
-		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);
+//		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);// 4.6Ver
 		// Unity5 New
 		GUILayout.Label("");
 		/*
@@ -206,6 +206,7 @@ public abstract class SDBaseUI : EditorWindow
 		 */
 		mShowSetInfo.IOSSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.IOSSet.ApiCompatibilityLevel);
 		mShowSetInfo.IOSSet.TargetOSVersionString = EditorGUILayout.TextField("Target minimum iOS Version:", mShowSetInfo.IOSSet.TargetOSVersionString);
+		mShowSetInfo.IOSSet.AppInBackgroundBehavior = (iOSAppInBackgroundBehavior)EditorGUILayout.EnumPopup("Behavior in Background:", mShowSetInfo.IOSSet.AppInBackgroundBehavior);
 		GUILayout.Label("");
 		// Icon
 		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.Toggle("設定IOS ICon圖:", mShowSetInfo.IOSSet.IconSetStatus);

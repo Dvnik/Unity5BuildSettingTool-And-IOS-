@@ -168,7 +168,8 @@ public class SDCreate : SDBaseUI
 //		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
 		aTmpSet.PrepareIOSForRecording = SDDataMove.GetBoolPlayerSetting("Prepare IOS For Recording");
 		aTmpSet.RequiresPersistentWiFi = PlayerSettings.iOS.requiresPersistentWiFi;
-		aTmpSet.ExitOnSuspend = PlayerSettings.iOS.exitOnSuspend;
+//		aTmpSet.ExitOnSuspend = PlayerSettings.iOS.exitOnSuspend;// 4.6Ver
+
 
 		aTmpSet.PrerenderedIcon = PlayerSettings.iOS.prerenderedIcon;
 		aTmpSet.ScriptingBackend = (ScriptingImplementation)PlayerSettings.GetPropertyInt("ScriptingBackend", BuildTargetGroup.iOS);
@@ -178,6 +179,7 @@ public class SDCreate : SDBaseUI
 		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
 		aTmpSet.TargetOSVersionString = PlayerSettings.iOS.targetOSVersionString;
+		aTmpSet.AppInBackgroundBehavior = PlayerSettings.iOS.appInBackgroundBehavior;
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);

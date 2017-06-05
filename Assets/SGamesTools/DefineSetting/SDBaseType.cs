@@ -90,7 +90,7 @@ public class SDIOSSet
 //	public bool OverrideIPodMusic;
 	public bool PrepareIOSForRecording;
 	public bool RequiresPersistentWiFi;
-	public bool ExitOnSuspend;
+//	public bool ExitOnSuspend;// 4.6Ver
 
 	public bool PrerenderedIcon;
 	public bool IconSetStatus; // 是否設定icon圖
@@ -102,6 +102,7 @@ public class SDIOSSet
 	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public GraphicsDeviceType[] GraphicsType;
 	public string TargetOSVersionString;
+	public iOSAppInBackgroundBehavior AppInBackgroundBehavior;
 }
 // 顯示用的圖像
 public class ShowImageGroup

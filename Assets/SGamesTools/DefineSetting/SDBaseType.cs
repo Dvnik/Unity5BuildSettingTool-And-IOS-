@@ -51,7 +51,7 @@ public class SDAndroidSet
 	public int BundleCode;
 	public AndroidSdkVersions SdkVersions;
 	public AndroidTargetDevice TargetDevice;
-//	public TargetGlesGraphics TargetGraphice; // 4.6Ver
+
 	public bool ForceInternet;
 	public bool ForceSDCard;
 	
@@ -68,6 +68,9 @@ public class SDAndroidSet
 	public string[] DefIcons;// 預設圖名
 	public bool SplashSetStatus; // 是否設定Splash圖
 	public string SplashImage;// 啟動之前的插入圖(Android)
+	// Unity 4.6(under) Old
+//	public TargetGlesGraphics TargetGraphice; // 4.6Ver
+
 	// Unity 5 New
 	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public GraphicsDeviceType[] GraphicsType;

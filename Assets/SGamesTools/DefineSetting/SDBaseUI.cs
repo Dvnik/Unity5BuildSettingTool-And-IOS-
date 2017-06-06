@@ -32,10 +32,14 @@ public abstract class SDBaseUI : EditorWindow
 	protected Vector2 mEditorScrollView;
 	protected bool mInitStatus;
 	#region Unity Base
-	protected virtual void OnGUI()
-	{
-		SettingInit();
+	protected virtual void OnGUI() {
 		ShowUI ();
+	}
+	protected virtual void OnEnable() {
+		SettingInit();
+	}
+	protected void OnDisable() {
+		mInitStatus = false;	
 	}
 	#endregion
 	// 抽象化功能，OnGUI中先初始化再顯示UI

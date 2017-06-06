@@ -54,15 +54,87 @@ public class TestFile : EditorWindow
 
 //	private void OnEnable()
 //	{
-//
 //	}
-
-
 
 	private void OnGUI()
 	{
-
+		FTUIShow();
 	}
+
+	Vector2 mScrollView;
+	bool mShowCommon = true;
+
+	private void FTUIShow() {
+		mScrollView = EditorGUILayout.BeginScrollView(mScrollView);
+		// Title
+		FTUITitle();
+		// 1
+		mShowCommon = EditorGUILayout.Foldout(mShowCommon, "基本設置");
+		if(mShowCommon) {
+			FTUICommonArea();
+		}
+
+		EditorGUILayout.EndScrollView();
+	}
+
+	string mFFileName;
+	eSDTarget mFTarget;
+
+
+	private void FTUITitle() {
+		mFFileName = EditorGUILayout.TextField("設置檔名:", mFFileName);
+		EditorGUILayout.Space();
+		mFTarget = (eSDTarget)EditorGUILayout.EnumPopup("設置平台:", mFTarget);
+		EditorGUILayout.Space();
+	}
+
+	string mCompanyName, mProductName;
+
+	private void FTUICommonArea() {
+		EditorGUI.indentLevel++;
+		mCompanyName = EditorGUILayout.TextField("Company Name:", mCompanyName);
+		mProductName = EditorGUILayout.TextField("Product Name:", mProductName);
+		EditorGUI.indentLevel--;
+		FTUIOrientation();
+	}
+
+	bool mFOrientation = true, mFAnimRotate;
+	UIOrientation mFDefOri;
+	bool[] mFAutoRotatSet = new bool[4];
+
+	string [] mFAutoRotName = new string[] {
+		"Portrait",
+		"Portrait Upside Down",
+		"Landscape Right",
+		"Landscape Left"
+	};
+
+
+	private void FTUIOrientation() {
+		mFOrientation = EditorGUILayout.Foldout(mFOrientation, "旋轉方向設定");
+		if (mFOrientation) {
+			EditorGUI.indentLevel++;
+			mFDefOri = (UIOrientation)EditorGUILayout.EnumPopup("預設方向:", mFDefOri);
+			if(mFDefOri == UIOrientation.AutoRotation) {
+				if(mFTarget == eSDTarget.IOS) {
+					mFAnimRotate = EditorGUILayout.Toggle("使用動畫旋轉:", mFAnimRotate);
+				}
+				EditorGUILayout.Space();
+				EditorGUILayout.LabelField("設定自動旋轉允許方向");
+				EditorGUI.indentLevel++;
+				for(int i = 0; i < mFAutoRotatSet.Length; i++) {
+					EditorGUILayout.BeginHorizontal();
+					EditorGUILayout.LabelField(mFAutoRotName[i]);
+					mFAutoRotatSet[i] = EditorGUILayout.Toggle(mFAutoRotatSet[i]);
+					EditorGUILayout.EndHorizontal();
+				}
+				EditorGUI.indentLevel--;
+			}
+			EditorGUI.indentLevel--;
+		}
+	}
+
+
 	#region UI Text
 //	bool showBtn = true;
 //	/// <summary>
@@ -105,7 +177,6 @@ public class TestFile : EditorWindow
 //	{
 //		EditorGUILayout.HelpBox("1111", MessageType.Info);
 //	}
-//	#endregion
 //	#region Foldout
 //	bool mShowPosition = true;
 //	string mStatus = "Select a GameObject";
@@ -117,6 +188,7 @@ public class TestFile : EditorWindow
 //			mField = EditorGUILayout.Vector3Field("Position", mField);
 //		}
 //	}
+//	#endregion
 	#endregion
 
 	#region BeginFadeGroup

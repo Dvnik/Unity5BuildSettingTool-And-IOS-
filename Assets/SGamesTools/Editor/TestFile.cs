@@ -63,7 +63,7 @@ public class TestFile : EditorWindow
 	}
 
 	Vector2 mScrollView;
-	bool mShowCommon = true;
+
 
 	string mUnKnowBID;
 
@@ -77,14 +77,10 @@ public class TestFile : EditorWindow
 		// Title
 		FTUITitle();
 		// 1
-		mShowCommon = EditorGUILayout.Foldout(mShowCommon, "基本設置");
-		if(mShowCommon) {
-			FTUICommonArea();
-		}
-
+		FTUICommonArea();
 		EditorGUILayout.EndScrollView();
 	}
-
+#region Test CommonUI Set
 	string mFFileName;
 	eSDTarget mFTarget;
 
@@ -97,18 +93,24 @@ public class TestFile : EditorWindow
 	}
 
 	string mCompanyName, mProductName, mVersion;
-
+	bool mShowCommon = true;
 
 	private void FTUICommonArea() {
-		EditorGUI.indentLevel = EditorGUI.indentLevel + 2;
+		mShowCommon = EditorGUILayout.Foldout(mShowCommon, "基本設置");
+		if(!mShowCommon)
+			return;
+		
+		EditorGUI.indentLevel++;
 		mCompanyName = EditorGUILayout.TextField("Company Name:", mCompanyName);
 		mProductName = EditorGUILayout.TextField("Product Name:", mProductName);
 		EditorGUI.indentLevel--;
 		FTUIOrientation();
+		EditorGUI.indentLevel++;
 		EditorGUILayout.PrefixLabel("Identification");
 		EditorGUI.indentLevel++;
 		mUnKnowBID = EditorGUILayout.TextField("Bundle Identifier :", mUnKnowBID);
 		mVersion = EditorGUILayout.TextField("Version :", mVersion);
+		EditorGUI.indentLevel--;
 		EditorGUI.indentLevel--;
 		FTUIIcon();
 	}
@@ -126,6 +128,7 @@ public class TestFile : EditorWindow
 
 
 	private void FTUIOrientation() {
+		EditorGUI.indentLevel++;
 		mFOrientation = EditorGUILayout.Foldout(mFOrientation, "旋轉方向設定");
 		if (mFOrientation) {
 			EditorGUI.indentLevel++;
@@ -147,11 +150,13 @@ public class TestFile : EditorWindow
 			}
 			EditorGUI.indentLevel--;
 		}
+		EditorGUI.indentLevel--;
 	}
 	bool mSetDefaultIcon;
 	Texture2D mTempIcon;
 
 	private void FTUIIcon() {
+		EditorGUI.indentLevel++;
 		mSetDefaultIcon = EditorGUILayout.ToggleLeft("設定ICon圖", mSetDefaultIcon);
 		if(mSetDefaultIcon) {
 			EditorGUI.indentLevel++;
@@ -164,9 +169,9 @@ public class TestFile : EditorWindow
 			EditorGUILayout.EndHorizontal();
 			EditorGUI.indentLevel--;
 		}
-			
+		EditorGUI.indentLevel--;
 	}
-
+	#endregion
 
 	#region UI Text
 //	bool showBtn = true;

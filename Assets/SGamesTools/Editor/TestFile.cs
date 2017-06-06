@@ -52,9 +52,10 @@ public class TestFile : EditorWindow
 //		Debug.Log(eMobileSplashScreen.iPhoneSplashScreen.ToString());
 	}
 
-//	private void OnEnable()
-//	{
-//	}
+	private void OnEnable()
+	{
+		FTUIInit();
+	}
 
 	private void OnGUI()
 	{
@@ -63,6 +64,13 @@ public class TestFile : EditorWindow
 
 	Vector2 mScrollView;
 	bool mShowCommon = true;
+
+	string mUnKnowBID;
+
+	private void FTUIInit() {
+		mUnKnowBID = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Unknown);
+	}
+
 
 	private void FTUIShow() {
 		mScrollView = EditorGUILayout.BeginScrollView(mScrollView);
@@ -88,14 +96,21 @@ public class TestFile : EditorWindow
 		EditorGUILayout.Space();
 	}
 
-	string mCompanyName, mProductName;
+	string mCompanyName, mProductName, mVersion;
+
 
 	private void FTUICommonArea() {
-		EditorGUI.indentLevel++;
+		EditorGUI.indentLevel = EditorGUI.indentLevel + 2;
 		mCompanyName = EditorGUILayout.TextField("Company Name:", mCompanyName);
 		mProductName = EditorGUILayout.TextField("Product Name:", mProductName);
 		EditorGUI.indentLevel--;
 		FTUIOrientation();
+		EditorGUILayout.PrefixLabel("Identification");
+		EditorGUI.indentLevel++;
+		mUnKnowBID = EditorGUILayout.TextField("Bundle Identifier :", mUnKnowBID);
+		mVersion = EditorGUILayout.TextField("Version :", mVersion);
+		EditorGUI.indentLevel--;
+		FTUIIcon();
 	}
 
 	bool mFOrientation = true, mFAnimRotate;
@@ -132,6 +147,24 @@ public class TestFile : EditorWindow
 			}
 			EditorGUI.indentLevel--;
 		}
+	}
+	bool mSetDefaultIcon;
+	Texture2D mTempIcon;
+
+	private void FTUIIcon() {
+		mSetDefaultIcon = EditorGUILayout.ToggleLeft("設定ICon圖", mSetDefaultIcon);
+		if(mSetDefaultIcon) {
+			EditorGUI.indentLevel++;
+			mTempIcon = EditorGUILayout.ObjectField("Default Icon(Temp)", mTempIcon, typeof(Texture2D), false) as Texture2D;
+
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.Space();
+			EditorGUILayout.Space();
+			EditorGUILayout.LabelField("Icon Name : Tmp Show");
+			EditorGUILayout.EndHorizontal();
+			EditorGUI.indentLevel--;
+		}
+			
 	}
 
 

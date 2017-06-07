@@ -52,13 +52,12 @@ public class TestFile : EditorWindow
 //		Debug.Log(eMobileSplashScreen.iPhoneSplashScreen.ToString());
 	}
 
-	private void OnEnable()
-	{
+	private void OnEnable() {
 		FTUIInit();
+		FTUIAndoridInit();
 	}
 
-	private void OnGUI()
-	{
+	private void OnGUI() {
 		FTUIShow();
 	}
 
@@ -78,6 +77,8 @@ public class TestFile : EditorWindow
 		FTUITitle();
 		// 1
 		FTUICommonArea();
+		// 2
+		FTUIAndroidArea();
 		EditorGUILayout.EndScrollView();
 	}
 #region Test CommonUI Set
@@ -111,8 +112,8 @@ public class TestFile : EditorWindow
 		mUnKnowBID = EditorGUILayout.TextField("Bundle Identifier :", mUnKnowBID);
 		mVersion = EditorGUILayout.TextField("Version :", mVersion);
 		EditorGUI.indentLevel--;
-		EditorGUI.indentLevel--;
 		FTUIIcon();
+		EditorGUI.indentLevel--;
 	}
 
 	bool mFOrientation = true, mFAnimRotate;
@@ -156,22 +157,164 @@ public class TestFile : EditorWindow
 	Texture2D mTempIcon;
 
 	private void FTUIIcon() {
-		EditorGUI.indentLevel++;
 		mSetDefaultIcon = EditorGUILayout.ToggleLeft("設定ICon圖", mSetDefaultIcon);
-		if(mSetDefaultIcon) {
+		if(!mSetDefaultIcon)
+			return;
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		mTempIcon = EditorGUILayout.ObjectField("Default Icon(Temp)", mTempIcon, typeof(Texture2D), false) as Texture2D;
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		EditorGUILayout.PrefixLabel("Path :");
+		EditorGUILayout.LabelField("Tmp/Path");
+		EditorGUILayout.EndHorizontal();
+		EditorGUI.indentLevel--;
+	}
+	#endregion
+#region Test Android Set
+	bool mShowAndroid;
+	AndroidShowActivityIndicatorOnLoading mShowLoadingIndicator;
+
+	private void FTUIAndoridInit() {
+		mAndroidIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.Android);
+		mAndroidIcon = new Texture2D[mAndroidIconTexts.Length];
+		mAndroidBID = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
+	}
+
+	private void FTUIAndroidArea() {
+		mShowAndroid = EditorGUILayout.Foldout(mShowAndroid, "Android 設置");
+		if(!mShowAndroid)
+			return;
+		EditorGUI.indentLevel++;
+		FTUIAndroidResolution();
+		FTUIAndroidOtherSetting();
+		FTUIAndroidIcon();
+		FTUIAndroidSplashImage();
+
+		EditorGUI.indentLevel--;
+	}
+
+	bool mDepthandStencil, mUse32BitDisplay;
+	private void FTUIAndroidResolution() {
+		EditorGUILayout.LabelField("Resolution and Presentation");
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Use 32Bit Display Buffer:");
+		mUse32BitDisplay = EditorGUILayout.Toggle(mUse32BitDisplay);
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Disable Depth and Stencil:");
+		mDepthandStencil = EditorGUILayout.Toggle(mDepthandStencil);
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Show Loading Indicator:");
+		mShowLoadingIndicator = 
+			(AndroidShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup(mShowLoadingIndicator);
+		EditorGUILayout.EndHorizontal();
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	string mAndroidBID, mAndroidVersion, mAndroidVersionCode;
+
+	private void FTUIAndroidOtherSetting() {
+		EditorGUILayout.LabelField("Other Settings");
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Bundle Identifier :");
+		mAndroidBID = EditorGUILayout.TextField(mAndroidBID);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Version :");
+		mAndroidVersion = EditorGUILayout.TextField(mAndroidVersion);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Bundle Version Code :");
+		mAndroidVersionCode = EditorGUILayout.TextField(mAndroidVersionCode);
+		EditorGUILayout.EndHorizontal();
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	bool mSetAndroidIcon, mOverrideAndroidIcon, mEnableAndroidBanner;
+	int[] mAndroidIconTexts;
+	Texture2D[] mAndroidIcon;
+	Texture2D mEAndroidBanner;
+
+	private void FTUIAndroidIcon() {
+		mSetAndroidIcon = EditorGUILayout.ToggleLeft("設定Icon圖", mSetAndroidIcon);
+		if(!mSetAndroidIcon)
+			return;
+		
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		mOverrideAndroidIcon = EditorGUILayout.ToggleLeft("是否覆寫Icon圖", mOverrideAndroidIcon);
+		if(mOverrideAndroidIcon) {
 			EditorGUI.indentLevel++;
-			mTempIcon = EditorGUILayout.ObjectField("Default Icon(Temp)", mTempIcon, typeof(Texture2D), false) as Texture2D;
+			for(int i = 0; i < mAndroidIconTexts.Length; i++) {
+				string aPicSize = mAndroidIconTexts[i] + "x" + mAndroidIconTexts[i];
+
+				mAndroidIcon[i] = EditorGUILayout.ObjectField(aPicSize, mAndroidIcon[i], typeof(Texture2D), false) as Texture2D;
+
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.Space();
+				EditorGUILayout.Space();
+				EditorGUILayout.PrefixLabel("Path :");
+				EditorGUILayout.LabelField("Tmp/Path");
+				EditorGUILayout.EndHorizontal();
+			}
+			EditorGUI.indentLevel--;
+		}
+		mEnableAndroidBanner = EditorGUILayout.ToggleLeft("Enable Android Banner", mEnableAndroidBanner);
+		if(mEnableAndroidBanner) {
+			EditorGUI.indentLevel++;
+			mEAndroidBanner = EditorGUILayout.ObjectField("320x180", mEAndroidBanner, typeof(Texture2D), false) as Texture2D;
 
 			EditorGUILayout.BeginHorizontal();
 			EditorGUILayout.Space();
 			EditorGUILayout.Space();
-			EditorGUILayout.LabelField("Icon Name : Tmp Show");
+			EditorGUILayout.PrefixLabel("Path :");
+			EditorGUILayout.LabelField("Tmp/Path");
 			EditorGUILayout.EndHorizontal();
 			EditorGUI.indentLevel--;
 		}
 		EditorGUI.indentLevel--;
 	}
+
+	bool mSetAndroidSplash;
+	AndroidSplashScreenScale mAndroidSplashScale;
+	Texture2D mAndroidSplashImage;
+
+	private void FTUIAndroidSplashImage() {
+		mSetAndroidSplash = EditorGUILayout.ToggleLeft("設定Splash圖", mSetAndroidSplash);
+
+		if(!mSetAndroidSplash)
+			return;
+		EditorGUILayout.HelpBox("目前只設定一般的Splash Image\n不設定VR Splash 和 Splash Sreen", MessageType.Info);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		mAndroidSplashImage = EditorGUILayout.ObjectField("Image", mAndroidSplashImage, typeof(Texture2D), false) as Texture2D;
+		if(mAndroidSplashImage != null) {
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("Splash Screen Scale:");
+			mAndroidSplashScale = (AndroidSplashScreenScale)EditorGUILayout.EnumPopup(mAndroidSplashScale);
+			EditorGUILayout.EndHorizontal();
+			EditorGUI.indentLevel--;
+		}
+	}
+
+
+
 	#endregion
+
 
 	#region UI Text
 //	bool showBtn = true;

@@ -52,6 +52,17 @@ public class TestFile : EditorWindow
 //		Debug.Log(eMobileSplashScreen.iPhoneSplashScreen.ToString());
 	}
 
+
+	[MenuItem("SuperGame/Test/TestSetting")]
+	private static void TestDoSetting()
+	{
+//		PlayerSettings.Android.forceInternetPermission = !PlayerSettings.Android.forceInternetPermission;
+		PlayerSettings.Android.forceSDCardPermission = !PlayerSettings.Android.forceSDCardPermission;
+		Debug.Log("PlayerSettings.Android.forceSDCardPermission = " + PlayerSettings.Android.forceSDCardPermission);
+		AssetDatabase.Refresh();
+	}
+
+
 	private void OnEnable() {
 		FTUIInit();
 		FTUIAndoridInit();
@@ -88,7 +99,7 @@ public class TestFile : EditorWindow
 
 	private void FTUITitle() {
 		mFFileName = EditorGUILayout.TextField("設置檔名:", mFFileName);
-		EditorGUILayout.Space();
+		EditorGUILayout.HelpBox("一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的", MessageType.Info);
 		mFTarget = (eSDTarget)EditorGUILayout.EnumPopup("設置平台:", mFTarget);
 		EditorGUILayout.Space();
 	}
@@ -190,6 +201,7 @@ public class TestFile : EditorWindow
 		EditorGUI.indentLevel++;
 		FTUIAndroidResolution();
 		FTUIAndroidOtherSetting();
+		FTUIAndroidPublishingSetting();
 		FTUIAndroidIcon();
 		FTUIAndroidSplashImage();
 
@@ -221,6 +233,12 @@ public class TestFile : EditorWindow
 	}
 
 	string mAndroidBID, mAndroidVersion, mAndroidVersionCode;
+	string[] mInternetAccess = new string[]{"Auto", "Require"};
+	string[] mWritePermission = new string[]{"Internal", "External(SDCard)"};
+	string[] mApiCompatibilityLevel = new string[]{".NET 2.0", ".NET 2.0 Subset"};
+	int mINterNetSelect, WritePerSelect, mACBSelect;
+	bool mTempSetData;
+	ApiCompatibilityLevel mACBLevel;
 
 	private void FTUIAndroidOtherSetting() {
 		EditorGUILayout.LabelField("Other Settings");
@@ -238,9 +256,47 @@ public class TestFile : EditorWindow
 		EditorGUILayout.LabelField("Bundle Version Code :");
 		mAndroidVersionCode = EditorGUILayout.TextField(mAndroidVersionCode);
 		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Internet Access");
+		mINterNetSelect = EditorGUILayout.Popup(mINterNetSelect, mInternetAccess);
+		mTempSetData = mINterNetSelect == 1;// Require = true; Auto = false;
+//		Debug.Log("PlayerSettings.Android.forceInternetPermission = " + mTempSetData);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Write Permission");
+		WritePerSelect = EditorGUILayout.Popup(WritePerSelect, mWritePermission);
+		mTempSetData = mINterNetSelect == 1;// External(SDCard) = true; Internal = false;
+//		Debug.Log("PlayerSettings.Android.forceSDCardPermission = " + mTempSetData);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField("Configuration");
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Api Compatibility Level:");
+		mACBSelect = EditorGUILayout.Popup(mACBSelect, mApiCompatibilityLevel);
+		switch(mACBSelect) {
+		case 0: mACBLevel = ApiCompatibilityLevel.NET_2_0; break;
+		case 1: mACBLevel = ApiCompatibilityLevel.NET_2_0_Subset; break;
+		}
+		EditorGUILayout.EndHorizontal();
 		// End
 		EditorGUI.indentLevel--;
 	}
+	string mKeyStorePath, mKeyStorePassword, mKeyAliasName, mKeyAliasPassword;
+
+	private void FTUIAndroidPublishingSetting() {
+		EditorGUILayout.LabelField("Publishing Settings");
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.HelpBox("KeyStorePath 預設都取Assets底下的路徑", MessageType.Info);
+		mKeyStorePath = EditorGUILayout.TextField("Keystore Path:", mKeyStorePath);
+		mKeyStorePassword = EditorGUILayout.TextField("Keystore Pass:", mKeyStorePassword);
+		mKeyAliasName = EditorGUILayout.TextField("Keyalias Name:", mKeyAliasName);
+		mKeyAliasPassword = EditorGUILayout.TextField("Keyalias Pass:", mKeyAliasPassword);
+		// End
+		EditorGUI.indentLevel--;
+	}
+
 
 	bool mSetAndroidIcon, mOverrideAndroidIcon, mEnableAndroidBanner;
 	int[] mAndroidIconTexts;
@@ -310,9 +366,6 @@ public class TestFile : EditorWindow
 			EditorGUI.indentLevel--;
 		}
 	}
-
-
-
 	#endregion
 
 

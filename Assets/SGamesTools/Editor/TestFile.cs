@@ -57,8 +57,10 @@ public class TestFile : EditorWindow
 	private static void TestDoSetting()
 	{
 //		PlayerSettings.Android.forceInternetPermission = !PlayerSettings.Android.forceInternetPermission;
-		PlayerSettings.Android.forceSDCardPermission = !PlayerSettings.Android.forceSDCardPermission;
-		Debug.Log("PlayerSettings.Android.forceSDCardPermission = " + PlayerSettings.Android.forceSDCardPermission);
+//		PlayerSettings.Android.forceSDCardPermission = !PlayerSettings.Android.forceSDCardPermission;
+//		PlayerSettings.enableCrashReportAPI = !PlayerSettings.enableCrashReportAPI;
+		PlayerSettings.logObjCUncaughtExceptions = !PlayerSettings.logObjCUncaughtExceptions;
+		Debug.Log("PlayerSettings.Android.forceSDCardPermission = " + PlayerSettings.logObjCUncaughtExceptions);
 		AssetDatabase.Refresh();
 	}
 
@@ -66,6 +68,7 @@ public class TestFile : EditorWindow
 	private void OnEnable() {
 		FTUIInit();
 		FTUIAndoridInit();
+		FTUIIOSInit();
 	}
 
 	private void OnGUI() {
@@ -90,6 +93,8 @@ public class TestFile : EditorWindow
 		FTUICommonArea();
 		// 2
 		FTUIAndroidArea();
+		// 3
+		FTUIIOSArea();
 		EditorGUILayout.EndScrollView();
 	}
 #region Test CommonUI Set
@@ -272,7 +277,7 @@ public class TestFile : EditorWindow
 		EditorGUILayout.LabelField("Configuration");
 		EditorGUILayout.Space();
 		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.LabelField("Api Compatibility Level:");
+		EditorGUILayout.LabelField("Api Compatibility Level*");
 		mACBSelect = EditorGUILayout.Popup(mACBSelect, mApiCompatibilityLevel);
 		switch(mACBSelect) {
 		case 0: mACBLevel = ApiCompatibilityLevel.NET_2_0; break;
@@ -367,7 +372,258 @@ public class TestFile : EditorWindow
 		}
 	}
 	#endregion
+	#region IOS Text
+	int[] mIOSIconTexts;
+	Texture2D[] mIOSIcon;
+	string mIOSBID;
 
+	private void FTUIIOSInit() {
+		mIOSIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.iOS);
+		mIOSIcon = new Texture2D[mIOSIconTexts.Length];
+		mIOSBID = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+		mIOSSplashImage = new Texture2D[mIOSLunchImages.Length];
+	}
+
+	bool mShowIOS;
+
+	private void FTUIIOSArea() {
+		mShowIOS = EditorGUILayout.Foldout(mShowIOS, "IOS 設置");
+		if(!mShowIOS)
+			return;
+		EditorGUI.indentLevel++;
+		FTUIIOSResolution();
+		FTUUIIOSDebugging();
+		FTUIIOSOtherSetting();
+		FTUIIOSIcon();
+		FTUIIOSSplashImage();
+		EditorGUI.indentLevel--;
+	}
+
+	bool mIOSRequiresFullscreen, mIOSStatusBarHidden;
+	iOSStatusBarStyle mIOSSBS;
+	iOSShowActivityIndicatorOnLoading mIOSShowOnLoading;
+	private void FTUIIOSResolution() {
+		EditorGUILayout.LabelField("Resolution and Presentation");
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField("Multitasking Support", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Requires Fullscreen");
+		mIOSRequiresFullscreen = EditorGUILayout.Toggle(mIOSRequiresFullscreen);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.LabelField("Status Bar", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Status Bar Hidden");
+		mIOSStatusBarHidden = EditorGUILayout.Toggle(mIOSStatusBarHidden);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Status Bar Style");
+		mIOSSBS = (iOSStatusBarStyle)EditorGUILayout.EnumPopup(mIOSSBS);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Show Loading Indicator");
+		mIOSShowOnLoading = (iOSShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup(mIOSShowOnLoading);
+		EditorGUILayout.EndHorizontal();
+
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	string mIOSVersion, mIOSBuild, mAutoSignTeamID, mTargetMinIOSVer;
+	bool mAutoSign, mPreapareIOSReco, mRequiresWifi;
+	iOSSdkVersion mSDKVersion;
+	ScriptCallOptimizationLevel mScrCallOptimizLV;
+	iOSTargetDevice mIOSTargetDevice;
+	ApiCompatibilityLevel mIACBLevel;
+	int mIACBSelect, mScriptBackSelect;
+	iOSAppInBackgroundBehavior mIOSBackgroundBehavior;
+	string[] mScriptingBackend = new string[]{
+		"Mono2x",
+		"IL2CPP"
+	};
+
+	ScriptingImplementation mIOSBackGround;
+	iPhoneArchitecture mIOSArchite;
+
+	private void FTUIIOSOtherSetting() {
+		EditorGUILayout.LabelField("Other Settings");
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField("Identification", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Bundle Identifier :");
+		mIOSBID = EditorGUILayout.TextField(mIOSBID);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Version*");
+		mIOSVersion = EditorGUILayout.TextField(mIOSVersion);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Build");
+		mIOSBuild = EditorGUILayout.TextField(mIOSBuild);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Automatically Sign");
+		mAutoSign = EditorGUILayout.Toggle(mAutoSign);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Automatic Signing Team ID");
+		mAutoSignTeamID = EditorGUILayout.TextField(mAutoSignTeamID);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField("Configuration", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Scripting Backend");
+		mScriptBackSelect = EditorGUILayout.Popup(mScriptBackSelect, mScriptingBackend);
+		switch(mScriptBackSelect) {
+		case 0: mIOSBackGround = ScriptingImplementation.Mono2x; break;
+		case 1: mIOSBackGround = ScriptingImplementation.IL2CPP; break;
+		}
+		EditorGUILayout.EndHorizontal();
+		if(mIOSBackGround == ScriptingImplementation.IL2CPP) {
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("Architecture");
+			mIOSArchite = (iPhoneArchitecture)EditorGUILayout.EnumPopup(mIOSArchite);
+			EditorGUILayout.EndHorizontal();
+		}
+
+
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Api Compatibility Level*");
+		mIACBSelect = EditorGUILayout.Popup(mIACBSelect, mApiCompatibilityLevel);
+		switch(mIACBSelect) {
+		case 0: mIACBLevel = ApiCompatibilityLevel.NET_2_0; break;
+		case 1: mIACBLevel = ApiCompatibilityLevel.NET_2_0_Subset; break;
+		}
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Target Device");
+		mIOSTargetDevice = (iOSTargetDevice)EditorGUILayout.EnumPopup(mIOSTargetDevice);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Target SDK");
+		mSDKVersion = (iOSSdkVersion)EditorGUILayout.EnumPopup(mSDKVersion);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Target minimum iOS Verstion");
+		mTargetMinIOSVer = EditorGUILayout.TextField(mTargetMinIOSVer);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Prepare iOS for Recording");
+		mPreapareIOSReco = EditorGUILayout.Toggle(mPreapareIOSReco);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Requires Persistent WiFi*");
+		mRequiresWifi = EditorGUILayout.Toggle(mRequiresWifi);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Behavior in Background");
+		mIOSBackgroundBehavior = (iOSAppInBackgroundBehavior)EditorGUILayout.EnumPopup(mIOSBackgroundBehavior);
+		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField("Optimization", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Script Call Optimization");
+		mScrCallOptimizLV = (ScriptCallOptimizationLevel)EditorGUILayout.EnumPopup(mScrCallOptimizLV);
+		EditorGUILayout.EndHorizontal();
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	bool mObjCUncaughtException, mEnableCrashReport;
+
+	private void FTUUIIOSDebugging() {
+		EditorGUILayout.LabelField("Debugging and crash reporting", EditorStyles.boldLabel);
+		EditorGUILayout.HelpBox("Unity5增加的類別，盡量做到設定", MessageType.Info);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField("Crash Reporting");
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Log Obj-C Uncaught Exception");
+		mObjCUncaughtException = EditorGUILayout.Toggle(mObjCUncaughtException);
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField("Enable CrashReport API*");
+		mEnableCrashReport = EditorGUILayout.Toggle(mEnableCrashReport);
+		EditorGUILayout.EndHorizontal();
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+
+
+	bool mSetIOSIcon, mOverrideIOSIcon;
+
+	private void FTUIIOSIcon() {
+		mSetIOSIcon = EditorGUILayout.ToggleLeft("設定Icon圖", mSetIOSIcon);
+		if(!mSetIOSIcon)
+			return;
+
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		mOverrideIOSIcon = EditorGUILayout.ToggleLeft("是否覆寫Icon圖", mOverrideIOSIcon);
+		if(mOverrideIOSIcon) {
+			EditorGUI.indentLevel++;
+			for(int i = 0; i < mIOSIconTexts.Length; i++) {
+				string aPicSize = mIOSIconTexts[i] + "x" + mIOSIconTexts[i];
+
+				mIOSIcon[i] = EditorGUILayout.ObjectField(aPicSize, mIOSIcon[i], typeof(Texture2D), false) as Texture2D;
+
+				EditorGUILayout.BeginHorizontal();
+				EditorGUILayout.Space();
+				EditorGUILayout.Space();
+				EditorGUILayout.PrefixLabel("Path :");
+				EditorGUILayout.LabelField("Tmp/Path");
+				EditorGUILayout.EndHorizontal();
+			}
+			EditorGUI.indentLevel--;
+		}
+		EditorGUI.indentLevel--;
+	}
+
+	string[] mIOSLunchImages = new string[]{
+		"Mobile Splash Screen*",
+		"iPhone 3.5\"/Retina",
+		"iPhone 4\"/Retina",
+		"iPhone 4.7\"/Retina",
+		"iPhone 5.5\"/Retina",
+		"iPhone 5.5\"Landscape/Retina",
+		"iPad Portrait",
+		"iPad Landscape",
+		"iPad Portrait/Retina",
+		"iPad Landscape/Retina"
+	};
+
+	Texture2D[] mIOSSplashImage;
+
+	private void FTUIIOSSplashImage() {
+		mSetAndroidSplash = EditorGUILayout.ToggleLeft("設定Splash圖", mSetAndroidSplash);
+
+		if(!mSetAndroidSplash)
+			return;
+		EditorGUILayout.HelpBox("目前只設定一般的Splash Image\n不設定VR Splash 和 Splash Sreen", MessageType.Info);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		for(int i = 0; i < mIOSLunchImages.Length; i++) {
+			EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField(mIOSLunchImages[i]);
+			mIOSSplashImage[i] = EditorGUILayout.ObjectField(mIOSSplashImage[i], typeof(Texture2D), false) as Texture2D;	
+			EditorGUILayout.EndHorizontal();
+		}
+	}
+	#endregion
 
 	#region UI Text
 //	bool showBtn = true;

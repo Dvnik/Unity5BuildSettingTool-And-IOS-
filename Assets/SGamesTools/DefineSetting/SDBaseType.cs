@@ -9,11 +9,12 @@ using UnityEngine.Rendering;
  * 
  * 修改UnityPlayerSetting的基本型別宣告
  */
-public class SDBaseType{}
+public class SDBaseType {
+	
+}
 
 // 參照PlayerSetting加入
-public class SDefineSet
-{
+public class SDefineSet {
 	public string SettingName;// 設定名稱(檔案名稱)
 	public string CompanyName;// 公司名稱
 	public string ProductName;// 產檔檔名
@@ -44,8 +45,7 @@ public class SDefineSet
 	public SDIOSSet IOSSet;
 }
 // 參照PlayerSetting加入
-public class SDAndroidSet
-{
+public class SDAndroidSet {
 	public AndroidShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	public AndroidSplashScreenScale SplashScreenScale; 
 	public int BundleCode;
@@ -76,8 +76,7 @@ public class SDAndroidSet
 	public GraphicsDeviceType[] GraphicsType;
 }
 // 參照PlayerSetting加入
-public class SDIOSSet
-{
+public class SDIOSSet {
 	public iOSStatusBarStyle StatusBarStyle;
 	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	public iOSTargetDevice TargetDevice;
@@ -111,8 +110,7 @@ public class SDIOSSet
 	public int Architecture;
 }
 // 顯示用的圖像
-public class ShowImageGroup
-{
+public class ShowImageGroup {
 	public Texture2D[] DefaultIcon;
 	public Texture2D[] AndroidIcons;
 	public Texture2D[] IosIcons;
@@ -120,29 +118,25 @@ public class ShowImageGroup
 	public Texture2D AndroidSplashImage;
 }
 //設定檔的設定目標(一次只設定一個平台)
-public enum eSDTarget
-{
+public enum eSDTarget {
 	Android,
 	IOS,
 }
 // EditorUI設定頁面
-public enum eSettingPage
-{
+public enum eSettingPage {
 	common,
 	android,
 	ios,
 }
 // EditorUI 的按鈕介面設定
-public enum eButtonPos
-{
+public enum eButtonPos {
 	none,
 	left,
 	mid,
 	right,
 }
 // SplashImage的種類
-public enum eMobileSplashScreen
-{
+public enum eMobileSplashScreen {
 	iPhoneSplashScreen, // = Mobile Splash Screen(= Android Splash Screen)
 	iPhoneHighResSplashScreen,
 	iPhoneTallHighResSplashScreen,
@@ -155,8 +149,7 @@ public enum eMobileSplashScreen
 	iPadHighResLandscapeSplashScreen,
 }
 // 
-public enum iPhoneArchitecture
-{
+public enum iPhoneArchitecture {
 	ARMv7,
 	ARM64,
 	Universal

@@ -57,7 +57,7 @@ public class SDRevise : SDBaseUI
 		{
 		case eSettingPage.android: UIAndoridShow(); break;
 		case eSettingPage.ios:     UIIOSShow();     break;
-		default:                   UISettingShow(); break;
+		default:                   UICommonArea(); break;
 		}
 		// Button
 	   if(GUILayout.Button("另存存檔", ButtonMyStyle(eButtonPos.mid)))

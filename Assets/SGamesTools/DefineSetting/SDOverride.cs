@@ -72,15 +72,25 @@ public class SDOverride : SDBaseUI
 	/// </summary>
 	private void OverrideSetCommon()
 	{
-		// Screen Rotate
+		// Names
+		PlayerSettings.companyName = mShowSetInfo.CompanyName;
+		PlayerSettings.productName = mShowSetInfo.ProductName;
+		// Orientation
 		PlayerSettings.defaultInterfaceOrientation = mShowSetInfo.UIOrientation;
+		PlayerSettings.useAnimatedAutorotation = mShowSetInfo.UseAnimAutor;
 		PlayerSettings.allowedAutorotateToPortrait = mShowSetInfo.OrienRoatable[0];
 		PlayerSettings.allowedAutorotateToPortraitUpsideDown = mShowSetInfo.OrienRoatable[1];
 		PlayerSettings.allowedAutorotateToLandscapeLeft = mShowSetInfo.OrienRoatable[2];
 		PlayerSettings.allowedAutorotateToLandscapeRight = mShowSetInfo.OrienRoatable[3];
-		// Bundle
-		PlayerSettings.applicationIdentifier = mShowSetInfo.BundleID;
+		// Identification
+		/*
+		 * PlayerSettings.applicationIdentifier 是取得當下Platform的BundleIdentifier
+		 * 要取得特定Platform的Identifier
+		 * 要改用PlayerSettings.GetApplicationIdentifier(取得)和PlayerSettings.SetApplicationIdentifier(設置)
+		*/
+		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Unknown, mShowSetInfo.BundleIDUnknow);
 		PlayerSettings.bundleVersion = mShowSetInfo.BundleVer;
+
 		// Other
 		PlayerSettings.statusBarHidden = mShowSetInfo.StatusBarHidden;
 		PlayerSettings.use32BitDisplayBuffer = mShowSetInfo.Use32BitDisplayBuffer;

@@ -33,22 +33,12 @@ public class SDCreate : SDBaseUI
 	{
 		// Start Scroll View
 		mEditorScrollView = EditorGUILayout.BeginScrollView(mEditorScrollView);
+		// Top
 		UITopSettingShow();
-		EditorGUILayout.BeginHorizontal();
-		if (GUILayout.Button("一般", ButtonMyStyle(eButtonPos.left)))
-			mNowPage = eSettingPage.common;
-		if (GUILayout.Button ("Android", ButtonMyStyle(eButtonPos.mid)))
-			mNowPage = eSettingPage.android;
-		if (GUILayout.Button ("IOS", ButtonMyStyle(eButtonPos.right)))
-			mNowPage = eSettingPage.ios;
-		EditorGUILayout.EndHorizontal();
-		switch(mNowPage)
-		{
-		case eSettingPage.android: UIAndoridShow(); break;
-		case eSettingPage.ios:     UIIOSShow();     break;
-		default:                   UISettingShow(); break;
-		}
-		// Button Horizontal
+		// Common
+		UICommonArea();
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
 		EditorGUILayout.BeginHorizontal();
 		if(GUILayout.Button("存檔", ButtonMyStyle(eButtonPos.left)))
 			DoCreate();
@@ -82,35 +72,30 @@ public class SDCreate : SDBaseUI
 	private void DefaultSetCommon()
 	{
 		mShowSetInfo = new SDefineSet();
+		// Names
 		mShowSetInfo.CompanyName = PlayerSettings.companyName;
 		mShowSetInfo.ProductName = PlayerSettings.productName;
-		// Screen Rotate
+		// Orientation
 		mShowSetInfo.UIOrientation = PlayerSettings.defaultInterfaceOrientation;
+		mShowSetInfo.UseAnimAutor = PlayerSettings.useAnimatedAutorotation;
 		mShowSetInfo.OrienRoatable = new bool[4];
 		mShowSetInfo.OrienRoatable[0] = PlayerSettings.allowedAutorotateToPortrait;
 		mShowSetInfo.OrienRoatable[1] = PlayerSettings.allowedAutorotateToPortraitUpsideDown;
 		mShowSetInfo.OrienRoatable[2] = PlayerSettings.allowedAutorotateToLandscapeLeft;
 		mShowSetInfo.OrienRoatable[3] = PlayerSettings.allowedAutorotateToLandscapeRight;
-		// Bundle
+		// Identification
 		/*
-		 * public static string applicationIdentifier;
-Description
-
-The application identifier for the currently selected build target.
-
-Currently supported by Android, Tizen, Samsung TV, iOS, tvOS and macOS.
-Changing this only sets the identifier for the currently active platform.
-Use PlayerSettings.SetApplicationIdentifier and PlayerSettings.GetApplicationIdentifier to
-set and retrieve it for a specific platform.
-
-EditorUserBuildSettings.SwitchActiveBuildTarget can be used to set the active platform while
-running the editor, but does not work in batch mode.
-
-If running the editor from batch mode you can change the active platform 
-by launching it with this argument: '-buildTarget platform'.
+		 * PlayerSettings.applicationIdentifier 是取得當下Platform的BundleIdentifier
+		 * 要取得特定Platform的Identifier
+		 * 要改用PlayerSettings.GetApplicationIdentifier(取得)和PlayerSettings.SetApplicationIdentifier(設置)
 		*/
-		mShowSetInfo.BundleID = PlayerSettings.applicationIdentifier;
+		mShowSetInfo.BundleIDUnknow = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Unknown);
 		mShowSetInfo.BundleVer = PlayerSettings.bundleVersion;
+		// Icon
+		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
+
+
+
 //		mShowSetInfo.ShortBundleVer = PlayerSettings.shortBundleVersion;
 		// Other
 		mShowSetInfo.StatusBarHidden = PlayerSettings.statusBarHidden;
@@ -123,8 +108,7 @@ by launching it with this argument: '-buildTarget platform'.
 
 
 		mShowSetInfo.StrippingLevel = PlayerSettings.strippingLevel;
-		// Icon
-		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
+
 	}
 	/// <summary>
 	/// 預設Android資料(取現在的PlayerSetting)
@@ -171,6 +155,9 @@ by launching it with this argument: '-buildTarget platform'.
 	private void DefaultSetIOS()
 	{
 		SDIOSSet aTmpSet = new SDIOSSet();
+
+
+
 		aTmpSet.BuildNumber = PlayerSettings.iOS.buildNumber;
 		aTmpSet.StatusBarStyle = PlayerSettings.iOS.statusBarStyle;
 		aTmpSet.ShowActivityIndicatorOnLoading = PlayerSettings.iOS.showActivityIndicatorOnLoading;

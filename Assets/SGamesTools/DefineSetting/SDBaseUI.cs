@@ -12,15 +12,7 @@ public abstract class SDBaseUI : EditorWindow
 {
 	// 取得Define存檔的列表
 	private string[] mFileNameArray;
-	public string[] FileNameArray
-	{
-		get
-		{
-			if(mFileNameArray == null)
-				mFileNameArray = SDDataMove.GetSaveDataNames();
-			return mFileNameArray;
-		}
-	}
+	public string[] FileNameArray { get { return mFileNameArray; } }
 	// 顯示中的設定
 	protected SDefineSet mShowSetInfo;
 	public SDefineSet ShowSetInfo {get{return mShowSetInfo;}}
@@ -30,18 +22,26 @@ public abstract class SDBaseUI : EditorWindow
 	protected eSettingPage mNowPage;
 	// UI相關狀態
 	protected Vector2 mEditorScrollView;
-	protected bool mInitStatus;
+	protected bool mInitStatus,
+	mShowCommon = true,
+	mShowCommonOri = true,
+	mSetDefaultIcon;
+
 	#region Unity Base
 	protected virtual void OnGUI() {
 		ShowUI ();
 	}
 	protected virtual void OnEnable() {
 		SettingInit();
+		if(mFileNameArray == null)
+			mFileNameArray = SDDataMove.GetSaveDataNames();
 	}
-	protected void OnDisable() {
-		mInitStatus = false;	
+	protected virtual void OnDisable() {
+		mInitStatus = false;
+		mFileNameArray = null;
 	}
 	#endregion
+	#region Base Method
 	// 抽象化功能，OnGUI中先初始化再顯示UI
 	protected abstract void SettingInit();
 	protected abstract void ShowUI();
@@ -54,27 +54,6 @@ public abstract class SDBaseUI : EditorWindow
 		mUIUseImages = iImageG;
 	}
 	/// <summary>
-	/// 設置檔名和這個設定是為Android/IOS哪一個平台設定
-	/// </summary>
-	public void UITopSettingShow(bool iSetName = true)
-	{
-		if(iSetName)
-			mShowSetInfo.SettingName = EditorGUILayout.TextField("設置檔名:", mShowSetInfo.SettingName);
-
-		mShowSetInfo.DefineTarget = (eSDTarget)EditorGUILayout.EnumPopup("設置平台:", mShowSetInfo.DefineTarget);
-	}
-	/// <summary>
-	/// 列出已經擁有存檔的名稱
-	/// </summary>
-	public int UITopSaveFileSelect(int iSelectIndex)
-	{
-		int aResult = -1;
-		if(FileNameArray != null)
-			aResult = EditorGUILayout.Popup("存檔列表", iSelectIndex, FileNameArray);
-		
-		return aResult;
-	}
-	/// <summary>
 	/// 設定ICon時使用的UI
 	/// </summary>
 	/// <param name="iTitle">標題</param>
@@ -83,48 +62,122 @@ public abstract class SDBaseUI : EditorWindow
 	private void IconObjectSet(string iTitle, ref Texture2D iImage, ref string iIconName)
 	{
 		iImage = EditorGUILayout.ObjectField(iTitle, iImage, typeof(Texture2D), false) as Texture2D;
-		
+
 		if(iImage != null)
 			iIconName = AssetDatabase.GetAssetPath(iImage);
 		else
 			iIconName = string.Empty;
-		
+
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("");
-		GUILayout.Label("Icon Name : " + iIconName);
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		EditorGUILayout.PrefixLabel(SDBaseType.cUIName004);
+		EditorGUILayout.LabelField(iIconName);
 		GUILayout.EndHorizontal();
 	}
+	#endregion
+	#region Top UI
 	/// <summary>
-	/// 共通設定檔UI
+	/// 設置檔名和這個設定是為Android/IOS哪一個平台設定
 	/// </summary>
-	public void UISettingShow()
-	{
-		GUILayout.Label("基本設置", TitleFrontStyle());
-		mShowSetInfo.CompanyName = EditorGUILayout.TextField("Company Name:", mShowSetInfo.CompanyName);
-		mShowSetInfo.ProductName = EditorGUILayout.TextField("Product Name:", mShowSetInfo.ProductName);
-		mShowSetInfo.ScriptDefine = EditorGUILayout.TextField("Script Define Symbols:", mShowSetInfo.ScriptDefine);
-		GUILayout.Label("螢幕轉向", TitleFrontStyle());
-		mShowSetInfo.UIOrientation = (UIOrientation)EditorGUILayout.EnumPopup("UIOrientation:", mShowSetInfo.UIOrientation);
-		mShowSetInfo.OrienRoatable[0] = EditorGUILayout.Toggle("Portrait:", mShowSetInfo.OrienRoatable[0]);
-		mShowSetInfo.OrienRoatable[1] = EditorGUILayout.Toggle("Portrait Upside Down:", mShowSetInfo.OrienRoatable[1]);
-		mShowSetInfo.OrienRoatable[2] = EditorGUILayout.Toggle("Landscape Right:", mShowSetInfo.OrienRoatable[2]);
-		mShowSetInfo.OrienRoatable[3] = EditorGUILayout.Toggle("Landscape Left:", mShowSetInfo.OrienRoatable[3]);
-		GUILayout.Label("Bundle ID", TitleFrontStyle());
-		mShowSetInfo.BundleID = EditorGUILayout.TextField("Bundle ID:", mShowSetInfo.BundleID);
-		mShowSetInfo.BundleVer = EditorGUILayout.TextField("Bundle Ver:", mShowSetInfo.BundleVer);
-//		mShowSetInfo.ShortBundleVer = EditorGUILayout.TextField("Short Bundle Ver:", mShowSetInfo.ShortBundleVer);
-		GUILayout.Label("Base Optimization", TitleFrontStyle());
-//		mShowSetInfo.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.ApiCompatibilityLevel); // 4.6Ver
-		mShowSetInfo.StrippingLevel = (StrippingLevel)EditorGUILayout.EnumPopup("Stripping Level:", mShowSetInfo.StrippingLevel);
-		GUILayout.Label("額外設置", TitleFrontStyle());
-		mShowSetInfo.StatusBarHidden = EditorGUILayout.Toggle("Status Bar Hidden:", mShowSetInfo.StatusBarHidden);
-		mShowSetInfo.Use32BitDisplayBuffer = EditorGUILayout.Toggle("Use 32Bit Display Buffer:", mShowSetInfo.Use32BitDisplayBuffer);
-		GUILayout.Label("Facebook ID (臉書AppID)", TitleFrontStyle());
-		mShowSetInfo.FacebookID	= EditorGUILayout.TextField("Facebook App ID:", mShowSetInfo.FacebookID);
-		mShowSetInfo.IconSetStatus = EditorGUILayout.Toggle("設定ICon圖:", mShowSetInfo.IconSetStatus);
-		if(mShowSetInfo.IconSetStatus)
-			UIIconCommonShow();
+	public void UITopSettingShow(bool iSetName = true) {
+		if(iSetName)
+			mShowSetInfo.SettingName = EditorGUILayout.TextField(SDBaseType.cUIName001, mShowSetInfo.SettingName);
+		else
+			EditorGUILayout.LabelField(SDBaseType.cUIName001, mShowSetInfo.SettingName);
+		
+		EditorGUILayout.HelpBox(SDBaseType.cUIInfo001, MessageType.Info);
+		mShowSetInfo.DefineTarget = (eSDTarget)EditorGUILayout.EnumPopup(SDBaseType.cUIName002, mShowSetInfo.DefineTarget);
+		EditorGUILayout.Space();
 	}
+	/// <summary>
+	/// 列出已經擁有存檔的名稱
+	/// </summary>
+	public int UITopSaveFileSelect(int iSelectIndex)
+	{
+		int aResult = -1;
+		if(FileNameArray != null) {
+			aResult = EditorGUILayout.Popup(SDBaseType.cUIName003, iSelectIndex, FileNameArray);
+			EditorGUILayout.Space();
+		}
+		return aResult;
+	}
+	#endregion
+	#region Common UI
+
+	public void UICommonArea() {
+		mShowCommon = EditorGUILayout.Foldout(mShowCommon, SDBaseType.cUIName005);
+		if(!mShowCommon)
+			return;
+		EditorGUI.indentLevel++;
+		UICommonNames();
+		EditorGUILayout.Space();
+		UICommonOrientation();
+		EditorGUILayout.Space();
+		UICommonIdentification();
+		EditorGUILayout.Space();
+		UICommonIcon();
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the common names.
+	/// </summary>
+	private void UICommonNames() {
+		mShowSetInfo.CompanyName = EditorGUILayout.TextField(SDBaseType.cUIName006, mShowSetInfo.CompanyName);
+		mShowSetInfo.ProductName = EditorGUILayout.TextField(SDBaseType.cUIName007, mShowSetInfo.ProductName);
+	}
+	/// <summary>
+	/// User interfaces the common orientation.
+	/// </summary>
+	private void UICommonOrientation() {
+		mShowCommonOri = EditorGUILayout.Foldout(mShowCommonOri, SDBaseType.cUIName008);
+		if (mShowCommonOri) {
+			EditorGUI.indentLevel++;
+			// Orientaion Popup
+			mShowSetInfo.UIOrientation = (UIOrientation)EditorGUILayout.EnumPopup(SDBaseType.cUIName009, mShowSetInfo.UIOrientation);
+			if(mShowSetInfo.UIOrientation == UIOrientation.AutoRotation) {// If Auto Rotation, Show AutoRotation Set;
+				if(mShowSetInfo.DefineTarget == eSDTarget.IOS) {// if SetTarget is IOS, Show UseAnimAutor Set
+					mShowSetInfo.UseAnimAutor = EditorGUILayout.Toggle(SDBaseType.cUIName010, mShowSetInfo.UseAnimAutor);
+				}
+				EditorGUILayout.Space();
+				EditorGUILayout.LabelField(SDBaseType.cUIName011);
+				EditorGUI.indentLevel++;
+				for(int i = 0; i < SDBaseType.cAllowAutoRotNames.Length; i++) {// Custom Name Show
+					EditorGUILayout.BeginHorizontal();
+					EditorGUILayout.LabelField(SDBaseType.cAllowAutoRotNames[i]);
+					mShowSetInfo.OrienRoatable[i] = EditorGUILayout.Toggle(mShowSetInfo.OrienRoatable[i]);
+					EditorGUILayout.EndHorizontal();
+				}
+				EditorGUI.indentLevel--;
+			}
+			EditorGUI.indentLevel--;
+		}
+	}
+	/// <summary>
+	/// User interfaces the common identification.
+	/// </summary>
+	private void UICommonIdentification() {
+		EditorGUILayout.PrefixLabel(SDBaseType.cUIName012, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		mShowSetInfo.BundleIDUnknow = EditorGUILayout.TextField(SDBaseType.cUIName013, mShowSetInfo.BundleIDUnknow);
+		mShowSetInfo.BundleVer = EditorGUILayout.TextField(SDBaseType.cUIName014, mShowSetInfo.BundleVer);
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the common icon.
+	/// </summary>
+	private void UICommonIcon() {
+		mSetDefaultIcon = EditorGUILayout.ToggleLeft(SDBaseType.cUIName015, mSetDefaultIcon, TitleFrontStyle());
+		EditorGUILayout.Space();
+		if(!mSetDefaultIcon)
+			return;
+		EditorGUI.indentLevel++;
+		for (int i = 0; i < mUIUseImages.DefaultIcon.Length; i++) 
+			IconObjectSet(SDBaseType.cUIName016, ref mUIUseImages.DefaultIcon[i], ref mShowSetInfo.DefIcons[i]);
+		EditorGUI.indentLevel--;
+	}
+	#endregion
 	/// <summary>
 	/// Android設定檔UI
 	/// </summary>
@@ -224,15 +277,6 @@ public abstract class SDBaseUI : EditorWindow
 		mShowSetInfo.IOSSet.SplashSetStatus = EditorGUILayout.Toggle("設定IOS Splash圖:", mShowSetInfo.IOSSet.SplashSetStatus);
 		if(mShowSetInfo.IOSSet.SplashSetStatus)
 			UISplashIOSShow();
-	}
-	/// <summary>
-	/// 共通的ICON設定
-	/// </summary>
-	private void UIIconCommonShow()
-	{
-		GUILayout.Label("Icon 圖片", TitleFrontStyle());
-		for (int i = 0; i < mUIUseImages.DefaultIcon.Length; i++) 
-			IconObjectSet("Default Icon", ref mUIUseImages.DefaultIcon[i], ref mShowSetInfo.DefIcons[i]);
 	}
 	/// <summary>
 	/// Android的ICON設定

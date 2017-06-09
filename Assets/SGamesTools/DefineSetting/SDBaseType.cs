@@ -10,28 +10,60 @@ using UnityEngine.Rendering;
  * 修改UnityPlayerSetting的基本型別宣告
  */
 public class SDBaseType {
-	
+	public const string cUIName001 = "設置檔名",
+	cUIName002 = "設置平台",
+	cUIName003 = "存檔列表",
+	cUIName004 = "Path :",
+	cUIName005 = "基本設置",
+	cUIName006 = "Company Name",
+	cUIName007 = "Product Name",
+	cUIName008 = "旋轉方向設定",
+	cUIName009 = "預設方向",
+	cUIName010 = "使用動畫旋轉",
+	cUIName011 = "設定自動旋轉允許方向",
+	cUIName012 = "Identification",
+	cUIName013 = "Bundle Identifier",
+	cUIName014 = "Version*",
+	cUIName015 = "設定ICon圖",
+	cUIName016 = "Default Icon"
+	;
+
+	public const string cUIInfo001 = "一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的";
+
+	public static string[] cAllowAutoRotNames = new string[] {
+		"Portrait",
+		"Portrait Upside Down",
+		"Landscape Right",
+		"Landscape Left"
+	};
+
 }
 
 // 參照PlayerSetting加入
 public class SDefineSet {
+	// Data Save
 	public string SettingName;// 設定名稱(檔案名稱)
+	public eSDTarget DefineTarget;// 這個Define是為哪一個版本設置
+	// Names
 	public string CompanyName;// 公司名稱
 	public string ProductName;// 產檔檔名
-	public eSDTarget DefineTarget;// 這個Define是為哪一個版本設置
-	// Define Info
-	public string ScriptDefine;
 	// Orientation
 	public UIOrientation UIOrientation;// 畫面方向
+	public bool UseAnimAutor;// 使用動畫旋轉
 	public bool[] OrienRoatable;// 畫面可轉動的方向(Portrait, PortraitUpSideDown, LandRight, LandLeft)
+	// Bundle Identification
+	public string BundleIDUnknow;
+	public string BundleVer;
+
+
+	// Define Info
+	public string ScriptDefine;
+
 	//系統版本
 	public bool StatusBarHidden;		// 
 	public bool Use32BitDisplayBuffer;	// 
 	// Facebook
 	public string FacebookID;// 臉書appID
-	//Identification
-	public string BundleID;
-	public string BundleVer;
 //	public string ShortBundleVer;
 	//optimization
 //	public ApiCompatibilityLevel ApiCompatibilityLevel;// 4.6Ver
@@ -77,6 +109,10 @@ public class SDAndroidSet {
 }
 // 參照PlayerSetting加入
 public class SDIOSSet {
+	// Orientation
+
+
+
 	public iOSStatusBarStyle StatusBarStyle;
 	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	public iOSTargetDevice TargetDevice;

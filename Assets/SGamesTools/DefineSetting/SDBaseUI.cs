@@ -25,8 +25,11 @@ public abstract class SDBaseUI : EditorWindow
 	protected bool mInitStatus,
 	mShowCommon = true,
 	mShowCommonOri = true,
-	mSetDefaultIcon;
-
+	mSetDefaultIcon,
+	mShowAndroid;
+	private int mAndInternetAccess,
+	mAndWritePermission,
+	mAndApiComLevel;
 	#region Unity Base
 	protected virtual void OnGUI() {
 		ShowUI ();
@@ -75,6 +78,77 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUILayout.LabelField(iIconName);
 		GUILayout.EndHorizontal();
 	}
+	/// <summary>
+	/// Sets the toggle hor.
+	/// </summary>
+	/// <returns><c>true</c>, if toggle hor was set, <c>false</c> otherwise.</returns>
+	/// <param name="iInfo">I info.</param>
+	/// <param name="iValue">If set to <c>true</c> i value.</param>
+	private bool SetToggleHor(string iInfo, bool iValue) {
+		bool aResult = iValue;
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField(iInfo);
+		iValue = EditorGUILayout.Toggle(iValue);
+		EditorGUILayout.EndHorizontal();
+		return aResult;
+	}
+	/// <summary>
+	/// Sets the enum popup hor.
+	/// </summary>
+	/// <returns>The enum popup hor.</returns>
+	/// <param name="iInfo">I info.</param>
+	/// <param name="iValue">I value.</param>
+	private System.Enum SetEnumPopupHor(string iInfo, System.Enum iValue) {
+		System.Enum aResult = iValue;
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField(iInfo);
+		aResult = (System.Enum)EditorGUILayout.EnumPopup(aResult);
+		EditorGUILayout.EndHorizontal();
+		return aResult;
+	}
+	/// <summary>
+	/// Sets the popup hor.
+	/// </summary>
+	/// <returns>The popup hor.</returns>
+	/// <param name="iInfo">I info.</param>
+	/// <param name="iValue">I value.</param>
+	/// <param name="iOption">I option.</param>
+	private int SetPopupHor(string iInfo, int iValue, string[] iOption) {
+		int aResult = iValue;
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField(iInfo);
+		iValue = EditorGUILayout.Popup(iValue, iOption);
+		EditorGUILayout.EndHorizontal();
+		return aResult;
+	}
+	/// <summary>
+	/// Sets the text hor.
+	/// </summary>
+	/// <returns>The text hor.</returns>
+	/// <param name="iInfo">I info.</param>
+	/// <param name="iValue">I value.</param>
+	private string SetTextHor(string iInfo, string iValue) {
+		string aResult = iValue;
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField(iInfo);
+		iValue = EditorGUILayout.TextField(iValue);
+		EditorGUILayout.EndHorizontal();
+		return aResult;
+	}
+	/// <summary>
+	/// Sets the int hor.
+	/// </summary>
+	/// <returns>The int hor.</returns>
+	/// <param name="iInfo">I info.</param>
+	/// <param name="iValue">I value.</param>
+	private int SetIntHor(string iInfo, int iValue) {
+		int aResult = iValue;
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.LabelField(iInfo);
+		iValue = EditorGUILayout.IntField(iValue);
+		EditorGUILayout.EndHorizontal();
+		return aResult;
+	}
 	#endregion
 	#region Top UI
 	/// <summary>
@@ -104,7 +178,9 @@ public abstract class SDBaseUI : EditorWindow
 	}
 	#endregion
 	#region Common UI
-
+	/// <summary>
+	/// User interfaces the common area.
+	/// </summary>
 	public void UICommonArea() {
 		mShowCommon = EditorGUILayout.Foldout(mShowCommon, SDBaseType.cUIName005);
 		if(!mShowCommon)
@@ -175,6 +251,161 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel++;
 		for (int i = 0; i < mUIUseImages.DefaultIcon.Length; i++) 
 			IconObjectSet(SDBaseType.cUIName016, ref mUIUseImages.DefaultIcon[i], ref mShowSetInfo.DefIcons[i]);
+		EditorGUI.indentLevel--;
+	}
+	#endregion
+	#region Android UI
+	/// <summary>
+	/// User interfaces the android area.
+	/// </summary>
+	public void UIAndroidArea() {
+		mShowAndroid = EditorGUILayout.Foldout(mShowAndroid, SDBaseType.cUIName017);
+		if(!mShowAndroid)
+			return;
+		EditorGUI.indentLevel++;
+		UIAndroidResolution();
+		EditorGUILayout.Space();
+		UIAndroidOtherSetting();
+		EditorGUILayout.Space();
+		UIAndroidPublishingSetting();
+		EditorGUILayout.Space();
+		UIAndroidIcon();
+		EditorGUILayout.Space();
+		UIAndroidSplashImage();
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the android resolution.
+	/// </summary>
+	private void UIAndroidResolution() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName018, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		// Start
+		mShowSetInfo.AndroidSet.Use32BitDisplayBuffer = SetToggleHor(SDBaseType.cUIName019, mShowSetInfo.AndroidSet.Use32BitDisplayBuffer);
+		mShowSetInfo.AndroidSet.disableDepthAndStencilBuffers = SetToggleHor(SDBaseType.cUIName020, mShowSetInfo.AndroidSet.disableDepthAndStencilBuffers);
+		mShowSetInfo.AndroidSet.ShowActivityIndicatorOnLoading =
+			(AndroidShowActivityIndicatorOnLoading)SetEnumPopupHor(SDBaseType.cUIName021, mShowSetInfo.AndroidSet.ShowActivityIndicatorOnLoading);
+		// End
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the android other setting.
+	/// </summary>
+	private void UIAndroidOtherSetting() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName022, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		// Start
+		// Identification
+		EditorGUILayout.LabelField(SDBaseType.cUIName012, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		mShowSetInfo.AndroidSet.BundleIDAndroid = SetTextHor(SDBaseType.cUIName013, mShowSetInfo.AndroidSet.BundleIDAndroid);
+		mShowSetInfo.AndroidSet.BundleCode = SetIntHor(SDBaseType.cUIName023, mShowSetInfo.AndroidSet.BundleCode);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel--;
+		// Configuration
+		EditorGUILayout.LabelField(SDBaseType.cUIName024, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		if(mShowSetInfo.AndroidSet.ForceInternet)
+			mAndInternetAccess = 1;
+		if(mShowSetInfo.AndroidSet.ForceSDCard)
+			mAndWritePermission = 1;
+		if(mShowSetInfo.AndroidSet.ApiCompatibilityLevel == ApiCompatibilityLevel.NET_2_0_Subset)
+			mAndApiComLevel = 1;
+
+		mAndApiComLevel = SetPopupHor(SDBaseType.cUIName027, mAndApiComLevel, SDBaseType.ApiCompatibilityLevel);
+		mAndInternetAccess = SetPopupHor(SDBaseType.cUIName025, mAndInternetAccess, SDBaseType.InternetAccess);
+		mAndWritePermission = SetPopupHor(SDBaseType.cUIName026, mAndWritePermission, SDBaseType.WritePermission);
+
+		switch(mAndApiComLevel) {
+		case 0: mShowSetInfo.AndroidSet.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_2_0; break;
+		case 1: mShowSetInfo.AndroidSet.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_2_0_Subset; break;
+		}
+
+		mShowSetInfo.AndroidSet.ForceInternet = mAndInternetAccess == 1;// Require = true; Auto = false;
+		mShowSetInfo.AndroidSet.ForceSDCard = mAndWritePermission == 1;// External(SDCard) = true; Internal = false;
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel--;
+		// End
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the android publishing setting.
+	/// </summary>
+	private void UIAndroidPublishingSetting() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName028, TitleFrontStyle());
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.HelpBox(SDBaseType.cUIName033, MessageType.Info);
+		mShowSetInfo.AndroidSet.KeyStorePath = EditorGUILayout.TextField(SDBaseType.cUIName029, mShowSetInfo.AndroidSet.KeyStorePath);
+		mShowSetInfo.AndroidSet.KeyStorePassword = EditorGUILayout.TextField(SDBaseType.cUIName030, mShowSetInfo.AndroidSet.KeyStorePassword);
+		mShowSetInfo.AndroidSet.KeyAlialsName = EditorGUILayout.TextField(SDBaseType.cUIName031, mShowSetInfo.AndroidSet.KeyAlialsName);
+		mShowSetInfo.AndroidSet.KeyAlialsPassword = EditorGUILayout.TextField(SDBaseType.cUIName032, mShowSetInfo.AndroidSet.KeyAlialsPassword);
+		// End
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the android icon.
+	/// </summary>
+	private void UIAndroidIcon() {
+		mShowSetInfo.AndroidSet.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName034, mShowSetInfo.AndroidSet.IconSetStatus);
+		if(!mShowSetInfo.AndroidSet.IconSetStatus)
+			return;
+
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		mShowSetInfo.AndroidSet.IconOverride = EditorGUILayout.ToggleLeft(SDBaseType.cUIName035, mShowSetInfo.AndroidSet.IconOverride);
+		if(mShowSetInfo.AndroidSet.IconOverride) {
+			EditorGUI.indentLevel++;
+
+			int[] aAndroidIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.Android);
+			for (int i = 0; i < mUIUseImages.AndroidIcons.Length; i++) {
+				string aPicSize = "";
+				if(i < aAndroidIconTexts.Length)
+					aPicSize = aAndroidIconTexts[i] + "x" + aAndroidIconTexts[i];
+				else
+					aPicSize = SDBaseType.cUIName036;
+				if(i < mShowSetInfo.AndroidSet.DefIcons.Length)
+					IconObjectSet(aPicSize, ref mUIUseImages.AndroidIcons[i], ref mShowSetInfo.AndroidSet.DefIcons[i]);
+			}
+			EditorGUI.indentLevel--;
+		}
+//		mEnableAndroidBanner = EditorGUILayout.ToggleLeft("Enable Android Banner", mEnableAndroidBanner);
+//		if(mEnableAndroidBanner) {
+//			EditorGUI.indentLevel++;
+//			mEAndroidBanner = EditorGUILayout.ObjectField("320x180", mEAndroidBanner, typeof(Texture2D), false) as Texture2D;
+//
+//			EditorGUILayout.BeginHorizontal();
+//			EditorGUILayout.Space();
+//			EditorGUILayout.Space();
+//			EditorGUILayout.PrefixLabel("Path :");
+//			EditorGUILayout.LabelField("Tmp/Path");
+//			EditorGUILayout.EndHorizontal();
+//			EditorGUI.indentLevel--;
+//		}
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// User interfaces the android splash image.
+	/// </summary>
+	private void UIAndroidSplashImage() {
+		mShowSetInfo.AndroidSet.SplashSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName037, mShowSetInfo.AndroidSet.SplashSetStatus);
+
+		if(!mShowSetInfo.AndroidSet.SplashSetStatus)
+			return;
+		EditorGUILayout.HelpBox(SDBaseType.cUIName038, MessageType.Info);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		IconObjectSet(SDBaseType.cUIName039, ref mUIUseImages.AndroidSplashImage, ref mShowSetInfo.AndroidSet.SplashImage);
+
+		if(mUIUseImages.AndroidSplashImage != null) {
+			mShowSetInfo.AndroidSet.SplashScreenScale = (AndroidSplashScreenScale)SetEnumPopupHor(SDBaseType.cUIName040, mShowSetInfo.AndroidSet.SplashScreenScale);
+		}
 		EditorGUI.indentLevel--;
 	}
 	#endregion

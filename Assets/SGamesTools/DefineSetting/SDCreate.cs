@@ -37,6 +37,8 @@ public class SDCreate : SDBaseUI
 		UITopSettingShow();
 		// Common
 		UICommonArea();
+		// Android
+		UIAndroidArea();
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		EditorGUILayout.BeginHorizontal();
@@ -94,12 +96,12 @@ public class SDCreate : SDBaseUI
 		// Icon
 		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
 
-
+		// ---------------------------------------------------------------
 
 //		mShowSetInfo.ShortBundleVer = PlayerSettings.shortBundleVersion;
 		// Other
 		mShowSetInfo.StatusBarHidden = PlayerSettings.statusBarHidden;
-		mShowSetInfo.Use32BitDisplayBuffer = PlayerSettings.use32BitDisplayBuffer;
+
 		/*
 		 * PlayerSettings.apiCompatibilityLevel
 		 * Deprecated. Use PlayerSettings.GetApiCompatibilityLevel and PlayerSettings.SetApiCompatibilityLevel instead.
@@ -116,16 +118,18 @@ public class SDCreate : SDBaseUI
 	private void DefaultSetAndroid()
 	{
 		SDAndroidSet aTmpSet = new SDAndroidSet();
+		// Resolution and Presentation
+		aTmpSet.Use32BitDisplayBuffer = PlayerSettings.use32BitDisplayBuffer;
+		aTmpSet.disableDepthAndStencilBuffers = PlayerSettings.Android.disableDepthAndStencilBuffers;
 		aTmpSet.ShowActivityIndicatorOnLoading = PlayerSettings.Android.showActivityIndicatorOnLoading;
-		aTmpSet.SplashScreenScale = PlayerSettings.Android.splashScreenScale;
+		// Identification
+		aTmpSet.BundleIDAndroid = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
 		aTmpSet.BundleCode = PlayerSettings.Android.bundleVersionCode;
-		aTmpSet.SdkVersions = PlayerSettings.Android.minSdkVersion;
-		aTmpSet.TargetDevice = PlayerSettings.Android.targetDevice;
-//		aTmpSet.TargetGraphice = PlayerSettings.targetGlesGraphics;// 4.6Ver
-
-
+		// Configuration
+		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Android);
 		aTmpSet.ForceInternet = PlayerSettings.Android.forceInternetPermission;
 		aTmpSet.ForceSDCard = PlayerSettings.Android.forceSDCardPermission;
+		// Publishing Settings
 		// PlayerSettings 的keystoreName是完整的Keystore路徑
 		// 撰寫工具上我希望盡可能簡單的把檔案都放在Assets裡面
 		// 所以在取路徑的時候檢查拿掉專案Assets之前的路徑
@@ -138,16 +142,21 @@ public class SDCreate : SDBaseUI
 		aTmpSet.KeyStorePassword = PlayerSettings.Android.keystorePass;
 		aTmpSet.KeyAlialsName = PlayerSettings.Android.keyaliasName;
 		aTmpSet.KeyAlialsPassword = PlayerSettings.Android.keyaliasPass;
-		// Unity5 New
-		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
-		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Android);
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.Android, ref mUIUseImages.AndroidIcons, ref aTmpSet.DefIcons);
+		// Splash Images
+		aTmpSet.SplashImage = SDDataMove.GetSplashScreenPath("androidSplashScreen", ref mUIUseImages.AndroidSplashImage);
+		aTmpSet.SplashScreenScale = PlayerSettings.Android.splashScreenScale;
+		//-------------------------------------------------
+
+		aTmpSet.SdkVersions = PlayerSettings.Android.minSdkVersion;
+		aTmpSet.TargetDevice = PlayerSettings.Android.targetDevice;
+//		aTmpSet.TargetGraphice = PlayerSettings.targetGlesGraphics;// 4.6Ver
+		// Unity5 New
+		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
 		// Set Down
 		mShowSetInfo.AndroidSet = aTmpSet;
-		// Splash Images
-		mShowSetInfo.AndroidSet.SplashImage = SDDataMove.GetSplashScreenPath("androidSplashScreen", ref mUIUseImages.AndroidSplashImage);
 	}
 	/// <summary>
 	/// 預設IOS資料(取現在的PlayerSetting)

@@ -25,7 +25,31 @@ public class SDBaseType {
 	cUIName013 = "Bundle Identifier",
 	cUIName014 = "Version*",
 	cUIName015 = "設定ICon圖",
-	cUIName016 = "Default Icon"
+	cUIName016 = "Default Icon",
+	cUIName017 = "Android 設置",
+	cUIName018 = "Resolution and Presentation",
+	cUIName019 = "Use 32Bit Display Buffer*",
+	cUIName020 = "Disable Depth and Stencil*",
+	cUIName021 = "Show Loading Indicator",
+	cUIName022 = "Other Settings",
+	cUIName023 = "Bundle Version Code",
+	cUIName024 = "Configuration",
+	cUIName025 = "Internet Access",
+	cUIName026 = "Write Permission",
+	cUIName027 = "Api Compatibility Level*",
+	cUIName028 = "Publishing Settings",
+	cUIName029 = "Keystore Path",
+	cUIName030 = "Keystore Password",
+	cUIName031 = "KeyAlias Name",
+	cUIName032 = "KeyAlias Password",
+	cUIName033 = "KeyStorePath 預設都取Assets底下的路徑",
+	cUIName034 = "設定Icon圖",
+	cUIName035 = "是否覆寫Icon圖",
+	cUIName036 = "Other",
+	cUIName037 = "設定Splash圖",
+	cUIName038 = "目前只設定一般的Splash Image\n不設定VR Splash 和 Splash Sreen",
+	cUIName039 = "Image",
+	cUIName040 = "Scaling"
 	;
 
 	public const string cUIInfo001 = "一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的";
@@ -36,6 +60,10 @@ public class SDBaseType {
 		"Landscape Right",
 		"Landscape Left"
 	};
+
+	public static string[] InternetAccess = new string[]{"Auto", "Require"};
+	public static string[] WritePermission = new string[]{"Internal", "External(SDCard)"};
+	public static string[] ApiCompatibilityLevel = new string[]{".NET 2.0", ".NET 2.0 Subset"};
 
 }
 
@@ -54,6 +82,20 @@ public class SDefineSet {
 	// Bundle Identification
 	public string BundleIDUnknow;
 	public string BundleVer;
+	// Icon
+	public bool IconSetStatus; // 是否設定icon圖
+	public string[] DefIcons;// 預設圖名
+
+	// AndroidSet
+	public SDAndroidSet AndroidSet;
+	// IOSSet
+	public SDIOSSet IOSSet;
+	// -------------------------------------------------------
+
+
+
+
+
 
 
 	// Define Info
@@ -61,50 +103,55 @@ public class SDefineSet {
 
 	//系統版本
 	public bool StatusBarHidden;		// 
-	public bool Use32BitDisplayBuffer;	// 
+
 	// Facebook
 	public string FacebookID;// 臉書appID
 //	public string ShortBundleVer;
 	//optimization
 //	public ApiCompatibilityLevel ApiCompatibilityLevel;// 4.6Ver
 	public StrippingLevel StrippingLevel;
-	// Icon
-	public bool IconSetStatus; // 是否設定icon圖
-	public string[] DefIcons;// 預設圖名
-	// AndroidSet
-	public SDAndroidSet AndroidSet;
-	// IOSSet
-	public SDIOSSet IOSSet;
 }
 // 參照PlayerSetting加入
 public class SDAndroidSet {
+	// Resolution and Presentation
+	public bool Use32BitDisplayBuffer;	// 
+	public bool disableDepthAndStencilBuffers;
 	public AndroidShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
-	public AndroidSplashScreenScale SplashScreenScale; 
+	// Identification
+	public string BundleIDAndroid;
 	public int BundleCode;
-	public AndroidSdkVersions SdkVersions;
-	public AndroidTargetDevice TargetDevice;
-
+	// Configuration
+	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public bool ForceInternet;
 	public bool ForceSDCard;
-	
+	// Publishing Settings
 	public string KeyStorePath;// 
 	public string KeyStorePassword;
 	public string KeyAlialsName;
 	public string KeyAlialsPassword;
+	// Icon
+	public bool IconSetStatus; // 是否設定icon圖
+	public bool IconOverride; // 是否覆寫Icon圖
+	public string[] DefIcons;// 預設圖名
+	// Splash Image
+	public bool SplashSetStatus; // 是否設定Splash圖
+	public string SplashImage;// 啟動之前的插入圖(Android)
+	public AndroidSplashScreenScale SplashScreenScale; 
+	// -------------------------------------------------------
+
+
+
+	public AndroidSdkVersions SdkVersions;
+	public AndroidTargetDevice TargetDevice;
 	
 	public string ManifestVersionCode;
 	public string ManifestVersionName;
 
-	public bool IconSetStatus; // 是否設定icon圖
-	public bool IconOverride; // 是否覆寫Icon圖
-	public string[] DefIcons;// 預設圖名
-	public bool SplashSetStatus; // 是否設定Splash圖
-	public string SplashImage;// 啟動之前的插入圖(Android)
 	// Unity 4.6(under) Old
 //	public TargetGlesGraphics TargetGraphice; // 4.6Ver
 
 	// Unity 5 New
-	public ApiCompatibilityLevel ApiCompatibilityLevel;
+
 	public GraphicsDeviceType[] GraphicsType;
 }
 // 參照PlayerSetting加入

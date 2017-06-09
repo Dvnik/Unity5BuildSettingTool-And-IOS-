@@ -90,15 +90,16 @@ public class SDOverride : SDBaseUI
 		*/
 		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Unknown, mShowSetInfo.BundleIDUnknow);
 		PlayerSettings.bundleVersion = mShowSetInfo.BundleVer;
-
-		// Other
-		PlayerSettings.statusBarHidden = mShowSetInfo.StatusBarHidden;
-		PlayerSettings.use32BitDisplayBuffer = mShowSetInfo.Use32BitDisplayBuffer;
-//		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;// 4.6Ver
-		PlayerSettings.strippingLevel = mShowSetInfo.StrippingLevel;
 		// Icon
 		if(mShowSetInfo.IconSetStatus)
 			SDDataMove.SetIconsGroup(BuildTargetGroup.Unknown, mShowSetInfo.DefIcons);
+		// ---------------------------------------------------------------
+		// Other
+		PlayerSettings.statusBarHidden = mShowSetInfo.StatusBarHidden;
+
+//		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;// 4.6Ver
+		PlayerSettings.strippingLevel = mShowSetInfo.StrippingLevel;
+
 	}
 	/// <summary>
 	/// Android設定複寫
@@ -106,23 +107,22 @@ public class SDOverride : SDBaseUI
 	private void OverrideSetAndroid()
 	{
 		SDAndroidSet aTmpSet = mShowSetInfo.AndroidSet;
+		// Resolution and Presentation
+		PlayerSettings.use32BitDisplayBuffer = aTmpSet.Use32BitDisplayBuffer;
+		PlayerSettings.Android.disableDepthAndStencilBuffers = aTmpSet.disableDepthAndStencilBuffers;
 		PlayerSettings.Android.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
-		PlayerSettings.Android.splashScreenScale = aTmpSet.SplashScreenScale;
+		// Identification
+		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, aTmpSet.BundleIDAndroid);
 		PlayerSettings.Android.bundleVersionCode = aTmpSet.BundleCode;
-		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
-		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
-//		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice;// 4.6Ver
-		
+		// Configuration
+		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, aTmpSet.ApiCompatibilityLevel);
 		PlayerSettings.Android.forceInternetPermission = aTmpSet.ForceInternet;
 		PlayerSettings.Android.forceSDCardPermission = aTmpSet.ForceSDCard;
-		
+		// Publishing Settings
 		PlayerSettings.Android.keystoreName = string.Format ("{0}/{1}", Application.dataPath, aTmpSet.KeyStorePath);
 		PlayerSettings.Android.keystorePass = aTmpSet.KeyStorePassword;
 		PlayerSettings.Android.keyaliasName = aTmpSet.KeyAlialsName;
 		PlayerSettings.Android.keyaliasPass = aTmpSet.KeyAlialsPassword;
-		// Unity5 New
-		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
-		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, aTmpSet.ApiCompatibilityLevel);
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{
@@ -131,8 +131,20 @@ public class SDOverride : SDBaseUI
 			else
 				SDDataMove.ClearnIconsGroup(BuildTargetGroup.Android);
 		}
-		if(aTmpSet.SplashSetStatus)
+		// Splash Image
+		if(aTmpSet.SplashSetStatus) {
 			SDDataMove.SetSplashScreen("androidSplashScreen", mShowSetInfo.AndroidSet.SplashImage);
+			PlayerSettings.Android.splashScreenScale = aTmpSet.SplashScreenScale;
+		}
+
+
+		//----------------------------------------
+
+		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
+		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
+//		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice;// 4.6Ver
+		// Unity5 New
+		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
 	}
 	/// <summary>
 	/// IOS設定複寫

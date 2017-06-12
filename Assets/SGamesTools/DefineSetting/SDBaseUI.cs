@@ -26,7 +26,8 @@ public abstract class SDBaseUI : EditorWindow
 	mShowCommon = true,
 	mShowCommonOri = true,
 	mSetDefaultIcon,
-	mShowAndroid;
+	mShowAndroid,
+	mShowIOS;
 	private int mAndInternetAccess,
 	mAndWritePermission,
 	mAndApiComLevel;
@@ -35,9 +36,9 @@ public abstract class SDBaseUI : EditorWindow
 		ShowUI ();
 	}
 	protected virtual void OnEnable() {
-		SettingInit();
 		if(mFileNameArray == null)
 			mFileNameArray = SDDataMove.GetSaveDataNames();
+		SettingInit();
 	}
 	protected virtual void OnDisable() {
 		mInitStatus = false;
@@ -337,6 +338,7 @@ public abstract class SDBaseUI : EditorWindow
 	/// </summary>
 	private void UIAndroidPublishingSetting() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName028, TitleFrontStyle());
+		EditorGUILayout.Space();
 		EditorGUI.indentLevel++;
 		// Start
 		EditorGUILayout.HelpBox(SDBaseType.cUIName033, MessageType.Info);
@@ -409,53 +411,53 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	#endregion
-	/// <summary>
-	/// Android設定檔UI
-	/// </summary>
-	public void UIAndoridShow()
-	{
-		GUILayout.Label("Android 設置", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.ShowActivityIndicatorOnLoading =
-			(AndroidShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup("Show Loading Indicator:", mShowSetInfo.AndroidSet.ShowActivityIndicatorOnLoading);
-		GUILayout.Label("Android Bundle Identifier 設置", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.BundleCode = EditorGUILayout.IntField("Bundle Code", mShowSetInfo.AndroidSet.BundleCode);
-		mShowSetInfo.AndroidSet.SdkVersions = (AndroidSdkVersions)EditorGUILayout.EnumPopup("SDK Versions:", mShowSetInfo.AndroidSet.SdkVersions);
-		GUILayout.Label("Android Configuration(其他設置)", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.TargetDevice = (AndroidTargetDevice)EditorGUILayout.EnumPopup("Android Target Device:", mShowSetInfo.AndroidSet.TargetDevice);
-		///
-//		mShowSetInfo.AndroidSet.TargetGraphice = (TargetGlesGraphics)EditorGUILayout.EnumPopup("Android Graphics Level:", mShowSetInfo.AndroidSet.TargetGraphice);// 4.6Ver
-		///
-		mShowSetInfo.AndroidSet.ForceInternet = EditorGUILayout.Toggle("Force Internet Permission:", mShowSetInfo.AndroidSet.ForceInternet);
-		mShowSetInfo.AndroidSet.ForceSDCard = EditorGUILayout.Toggle("Force SDCard Permission:", mShowSetInfo.AndroidSet.ForceSDCard);
-		GUILayout.Label("Android Key Store", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.KeyStorePath = EditorGUILayout.TextField("Android Key Path:", mShowSetInfo.AndroidSet.KeyStorePath);
-		mShowSetInfo.AndroidSet.KeyStorePassword = EditorGUILayout.TextField("Keystore Pass:", mShowSetInfo.AndroidSet.KeyStorePassword);
-		mShowSetInfo.AndroidSet.KeyAlialsName = EditorGUILayout.TextField("Keyalias Name:", mShowSetInfo.AndroidSet.KeyAlialsName);
-		mShowSetInfo.AndroidSet.KeyAlialsPassword = EditorGUILayout.TextField("Keyalias Pass:", mShowSetInfo.AndroidSet.KeyAlialsPassword);
-		GUILayout.Label("Manifest Xml Set", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.ManifestVersionCode = EditorGUILayout.TextField("Version Code:", mShowSetInfo.AndroidSet.ManifestVersionCode);
-		mShowSetInfo.AndroidSet.ManifestVersionName = EditorGUILayout.TextField("Version Name:", mShowSetInfo.AndroidSet.ManifestVersionName);
-		// Unity5 New
-		GUILayout.Label("");
-		/*
-		 * 由於5.6的GraphicsAPI UI還沒想好要怎麼作修改畫面，先註解
-
-		GUILayout.Label("Android Graphics APIs", TitleFrontStyle());
-		for(int i = 0; i < mShowSetInfo.AndroidSet.GraphicesType.Length; i++) {
-			mShowSetInfo.AndroidSet.GraphicsType[i] = (UnityEngine.Rendering.GraphicsDeviceType)EditorGUILayout.EnumPopup( i + " :", mShowSetInfo.AndroidSet.GraphicsType[i]);
-		}
-		*/
-		mShowSetInfo.AndroidSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.AndroidSet.ApiCompatibilityLevel);
-		GUILayout.Label("");
-		// Icon
-		mShowSetInfo.AndroidSet.IconSetStatus = EditorGUILayout.Toggle("設定Android ICon圖:", mShowSetInfo.AndroidSet.IconSetStatus);
-		if(mShowSetInfo.AndroidSet.IconSetStatus)
-			UIIconAndoridShow();
-		// Splash Image
-		mShowSetInfo.AndroidSet.SplashSetStatus = EditorGUILayout.Toggle("設定Android Splash圖:", mShowSetInfo.AndroidSet.SplashSetStatus);
-		if(mShowSetInfo.AndroidSet.SplashSetStatus)
-			UISplashAndroidShow();
+	#region IOS UI
+	public void UIIOSArea() {
+		mShowIOS = EditorGUILayout.Foldout(mShowIOS, SDBaseType.cUIName041);
+		if(!mShowIOS)
+			return;
+		EditorGUI.indentLevel++;
+		UIIOSResolution();
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel--;
 	}
+
+	private void UIIOSResolution() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName018, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField("Multitasking Support", EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+
+//		EditorGUILayout.BeginHorizontal();
+//		EditorGUILayout.LabelField("Requires Fullscreen");
+//		mIOSRequiresFullscreen = EditorGUILayout.Toggle(mIOSRequiresFullscreen);
+//		EditorGUILayout.EndHorizontal();
+//		EditorGUILayout.LabelField("Status Bar", EditorStyles.boldLabel);
+//		EditorGUILayout.Space();
+//		EditorGUILayout.BeginHorizontal();
+//		EditorGUILayout.LabelField("Status Bar Hidden");
+//		mIOSStatusBarHidden = EditorGUILayout.Toggle(mIOSStatusBarHidden);
+//		EditorGUILayout.EndHorizontal();
+//		EditorGUILayout.BeginHorizontal();
+//		EditorGUILayout.LabelField("Status Bar Style");
+//		mIOSSBS = (iOSStatusBarStyle)EditorGUILayout.EnumPopup(mIOSSBS);
+//		EditorGUILayout.EndHorizontal();
+//		EditorGUILayout.Space();
+//		EditorGUILayout.Space();
+//		EditorGUILayout.BeginHorizontal();
+//		EditorGUILayout.LabelField("Show Loading Indicator");
+//		mIOSShowOnLoading = (iOSShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup(mIOSShowOnLoading);
+		EditorGUILayout.EndHorizontal();
+
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	#endregion
+
+
 	/// <summary>
 	/// IOS設定檔UI
 	/// </summary>
@@ -510,28 +512,6 @@ public abstract class SDBaseUI : EditorWindow
 			UISplashIOSShow();
 	}
 	/// <summary>
-	/// Android的ICON設定
-	/// </summary>
-	private void UIIconAndoridShow()
-	{
-		GUILayout.Label("Android Icon 圖片", TitleFrontStyle());
-		mShowSetInfo.AndroidSet.IconOverride = EditorGUILayout.Toggle("是否覆寫Icon圖:", mShowSetInfo.AndroidSet.IconOverride);
-		if(!mShowSetInfo.AndroidSet.IconOverride)
-			return;
-		int[] aAndroidIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.Android);
-		
-		for (int i = 0; i < mUIUseImages.AndroidIcons.Length; i++)
-		{
-			string aPicSize = "";
-			if(i < aAndroidIconTexts.Length)
-				aPicSize = aAndroidIconTexts[i] + "x" + aAndroidIconTexts[i];
-			else
-				aPicSize = "Other";
-
-			IconObjectSet(aPicSize, ref mUIUseImages.AndroidIcons[i], ref mShowSetInfo.AndroidSet.DefIcons[i]);
-		}
-	}
-	/// <summary>
 	/// IOS的ICON設定
 	/// </summary>
 	private void UIIconIOSShow()
@@ -553,19 +533,6 @@ public abstract class SDBaseUI : EditorWindow
 			
 			IconObjectSet(aPicSize, ref mUIUseImages.IosIcons[i], ref mShowSetInfo.IOSSet.DefIcons[i]);
 		}
-	}
-	/// <summary>
-	/// Android Splash Image設定
-	/// </summary>
-	public void UISplashAndroidShow()
-	{
-		GUILayout.Label("Android Splash 圖片", TitleFrontStyle());
-		IconObjectSet(eMobileSplashScreen.iPhoneSplashScreen.ToString(),
-			ref mUIUseImages.AndroidSplashImage,
-			ref mShowSetInfo.AndroidSet.SplashImage);
-		//SplashImage - android only
-		mShowSetInfo.AndroidSet.SplashScreenScale =
-			(AndroidSplashScreenScale)EditorGUILayout.EnumPopup("Splash Screen Scale:", mShowSetInfo.AndroidSet.SplashScreenScale);
 	}
 	/// <summary>
 	/// IOS Splash Image設定

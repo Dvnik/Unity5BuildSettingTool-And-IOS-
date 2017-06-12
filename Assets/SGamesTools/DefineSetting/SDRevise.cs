@@ -19,13 +19,8 @@ public class SDRevise : SDBaseUI
 	/// </summary>
 	protected override void SettingInit()
 	{
-		if(mInitStatus)
-			return;
-		
 		if(FileNameArray != null)
 			SetShowSettingInfo();
-		
-		mInitStatus = true;
 	}
 	/// <summary>
 	/// 修改視窗
@@ -49,16 +44,17 @@ public class SDRevise : SDBaseUI
 	private void NormalPage()
 	{
 		mFileSelectIndex = UITopSaveFileSelect(mFileSelectIndex);
-		mNowPage = (eSettingPage)EditorGUILayout.EnumPopup("修改目標", mNowPage);
-		CheckShowFile();
-		GUILayout.Label("");
+		CheckShowFile();// Check FileSelect Change
+		// Top
 		UITopSettingShow(false);
-		switch(mNowPage)
-		{
-		case eSettingPage.android: UIAndoridShow(); break;
-		case eSettingPage.ios:     UIIOSShow();     break;
-		default:                   UICommonArea(); break;
-		}
+		// Common
+		UICommonArea();
+		// Android
+		UIAndroidArea();
+		// IOS
+		//-----
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
 		// Button
 	   if(GUILayout.Button("另存存檔", ButtonMyStyle(eButtonPos.mid)))
 			OpenSaveOtherPage();

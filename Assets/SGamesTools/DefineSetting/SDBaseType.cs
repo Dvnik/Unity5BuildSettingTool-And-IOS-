@@ -49,7 +49,8 @@ public class SDBaseType {
 	cUIName037 = "設定Splash圖",
 	cUIName038 = "目前只設定一般的Splash Image\n不設定VR Splash 和 Splash Sreen",
 	cUIName039 = "Image",
-	cUIName040 = "Scaling"
+	cUIName040 = "Scaling",
+	cUIName041 = "IOS 設置"
 	;
 
 	public const string cUIInfo001 = "一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的";

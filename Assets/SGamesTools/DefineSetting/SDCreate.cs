@@ -39,6 +39,8 @@ public class SDCreate : SDBaseUI
 		UICommonArea();
 		// Android
 		UIAndroidArea();
+		// IOS
+		//-----
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		EditorGUILayout.BeginHorizontal();

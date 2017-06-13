@@ -88,7 +88,7 @@ public class SDOverride : SDBaseUI
 		PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, mShowSetInfo.ScriptDefineSymblos);
 		// Icon
 		if(mShowSetInfo.IconSetStatus)
-			SDDataMove.SetIconsGroup(BuildTargetGroup.Standalone, mShowSetInfo.DefIcons);
+			SDDataMove.SetIconsGroup(BuildTargetGroup.Unknown, mShowSetInfo.DefIcons);
 		// ---------------------------------------------------------------
 	}
 	/// <summary>

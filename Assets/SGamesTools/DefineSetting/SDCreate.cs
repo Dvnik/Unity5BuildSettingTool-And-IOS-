@@ -106,7 +106,7 @@ public class SDCreate : SDBaseUI
 		// Scripting Define Symbols
 		mShowSetInfo.ScriptDefineSymblos = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
 		// Icon
-		SDDataMove.GetIconsGroup(BuildTargetGroup.Standalone, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
+		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);// Default Icon
 		// ---------------------------------------------------------------
 	}
 	/// <summary>

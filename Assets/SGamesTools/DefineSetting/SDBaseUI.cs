@@ -24,7 +24,6 @@ public abstract class SDBaseUI : EditorWindow
 	protected Vector2 mEditorScrollView;
 	protected bool mShowCommon = true,
 	mShowCommonOri = true,
-	mSetDefaultIcon,
 	mShowAndroid,
 	mShowIOS;
 	private int mAndInternetAccess,
@@ -247,9 +246,9 @@ public abstract class SDBaseUI : EditorWindow
 	/// User interfaces the common icon.
 	/// </summary>
 	private void UICommonIcon() {
-		mSetDefaultIcon = EditorGUILayout.ToggleLeft(SDBaseType.cUIName015, mSetDefaultIcon, TitleFrontStyle());
+		mShowSetInfo.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName015, mShowSetInfo.IconSetStatus, TitleFrontStyle());
 		EditorGUILayout.Space();
-		if(!mSetDefaultIcon)
+		if(!mShowSetInfo.IconSetStatus)
 			return;
 		EditorGUI.indentLevel++;
 		for (int i = 0; i < mUIUseImages.DefaultIcon.Length; i++) 

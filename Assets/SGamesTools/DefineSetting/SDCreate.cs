@@ -93,25 +93,13 @@ public class SDCreate : SDBaseUI
 		 * 要取得特定Platform的Identifier
 		 * 要改用PlayerSettings.GetApplicationIdentifier(取得)和PlayerSettings.SetApplicationIdentifier(設置)
 		*/
-		mShowSetInfo.BundleIDUnknow = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Unknown);
+		mShowSetInfo.BundleIDStandalone = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Standalone);
 		mShowSetInfo.BundleVer = PlayerSettings.bundleVersion;
+		// Scripting Define Symbols
+		mShowSetInfo.ScriptDefineSymblos = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone);
 		// Icon
-		SDDataMove.GetIconsGroup(BuildTargetGroup.Unknown, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
-
+		SDDataMove.GetIconsGroup(BuildTargetGroup.Standalone, ref mUIUseImages.DefaultIcon, ref mShowSetInfo.DefIcons);
 		// ---------------------------------------------------------------
-
-//		mShowSetInfo.ShortBundleVer = PlayerSettings.shortBundleVersion;
-
-
-		/*
-		 * PlayerSettings.apiCompatibilityLevel
-		 * Deprecated. Use PlayerSettings.GetApiCompatibilityLevel and PlayerSettings.SetApiCompatibilityLevel instead.
-		*/
-//		mShowSetInfo.ApiCompatibilityLevel = PlayerSettings.apiCompatibilityLevel;// 4.6Ver
-
-
-		mShowSetInfo.StrippingLevel = PlayerSettings.strippingLevel;
-
 	}
 	/// <summary>
 	/// 預設Android資料(取現在的PlayerSetting)
@@ -126,7 +114,9 @@ public class SDCreate : SDBaseUI
 		// Identification
 		aTmpSet.BundleIDAndroid = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.Android);
 		aTmpSet.BundleCode = PlayerSettings.Android.bundleVersionCode;
+		aTmpSet.SdkVersions = PlayerSettings.Android.minSdkVersion;
 		// Configuration
+		aTmpSet.TargetDevice = PlayerSettings.Android.targetDevice;
 		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.Android);
 		aTmpSet.ForceInternet = PlayerSettings.Android.forceInternetPermission;
 		aTmpSet.ForceSDCard = PlayerSettings.Android.forceSDCardPermission;
@@ -143,6 +133,8 @@ public class SDCreate : SDBaseUI
 		aTmpSet.KeyStorePassword = PlayerSettings.Android.keystorePass;
 		aTmpSet.KeyAlialsName = PlayerSettings.Android.keyaliasName;
 		aTmpSet.KeyAlialsPassword = PlayerSettings.Android.keyaliasPass;
+		// Scripting Define Symbols
+		aTmpSet.ScriptDefineSymblos = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android);
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.Android, ref mUIUseImages.AndroidIcons, ref aTmpSet.DefIcons);
@@ -150,10 +142,6 @@ public class SDCreate : SDBaseUI
 		aTmpSet.SplashImage = SDDataMove.GetSplashScreenPath("androidSplashScreen", ref mUIUseImages.AndroidSplashImage);
 		aTmpSet.SplashScreenScale = PlayerSettings.Android.splashScreenScale;
 		//-------------------------------------------------
-
-		aTmpSet.SdkVersions = PlayerSettings.Android.minSdkVersion;
-		aTmpSet.TargetDevice = PlayerSettings.Android.targetDevice;
-//		aTmpSet.TargetGraphice = PlayerSettings.targetGlesGraphics;// 4.6Ver
 		// Unity5 New
 		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.Android);
 		// Set Down
@@ -194,44 +182,23 @@ public class SDCreate : SDBaseUI
 		aTmpSet.ScriptCallOptimizationLevel = PlayerSettings.iOS.scriptCallOptimization;
 		aTmpSet.StripEngineCode = PlayerSettings.stripEngineCode;
 		aTmpSet.StripLevel = PlayerSettings.strippingLevel;
-		//-------------------------------------------------
-
-
-
-
-
-
-
-//		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
-
-
-		aTmpSet.PrerenderedIcon = PlayerSettings.iOS.prerenderedIcon;
-		// Unity 4.6(under) Old
-//		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;// 4.6Ver
-//		aTmpSet.TargetGraphics = PlayerSettings.targetIOSGraphics;// 4.6Ver
-//		aTmpSet.TargetOSVersion = PlayerSettings.iOS.targetOSVersion;// 4.6Ver
-//		aTmpSet.ExitOnSuspend = PlayerSettings.iOS.exitOnSuspend;// 4.6Ver
-//		aTmpSet.ScriptingBackend = (ScriptingImplementation)PlayerSettings.GetPropertyInt("ScriptingBackend", BuildTargetGroup.iOS);
-//		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP)
-//			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
-		// Unity5 New
-		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
-
-
-
-
-
+		// Scripting Define Symbols
+		aTmpSet.ScriptDefineSymblos = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS);
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);
-		// Set Down
-		mShowSetInfo.IOSSet = aTmpSet;
+		aTmpSet.PrerenderedIcon = PlayerSettings.iOS.prerenderedIcon;
 		// Splash Images
 		int aEmumTotal = Enum.GetNames(typeof(eMobileSplashScreen)).Length;
 		mUIUseImages.IOSSplashImages = new Texture2D[aEmumTotal];
-		mShowSetInfo.IOSSet.SplashImages = new string[aEmumTotal];
+		aTmpSet.SplashImages = new string[aEmumTotal];
 		for(int i = 0; i < aEmumTotal; i++)
-			mShowSetInfo.IOSSet.SplashImages[i] = SDDataMove.GetSplashScreenPath((eMobileSplashScreen)i, ref mUIUseImages.IOSSplashImages[i]);
+			aTmpSet.SplashImages[i] = SDDataMove.GetSplashScreenPath((eMobileSplashScreen)i, ref mUIUseImages.IOSSplashImages[i]);
+		//-------------------------------------------------
+		// Unity5 New
+		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
+		// Set Down
+		mShowSetInfo.IOSSet = aTmpSet;
 	}
 }
 #endif

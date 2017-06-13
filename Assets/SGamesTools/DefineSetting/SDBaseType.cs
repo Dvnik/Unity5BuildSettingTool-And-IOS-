@@ -78,7 +78,11 @@ public class SDBaseType {
 	cUIName066 = "Optimization",
 	cUIName067 = "Strip Engine Code*",
 	cUIName068 = "Strpping Level*",
-	cUIName069 = "Script Call Optimization"
+	cUIName069 = "Script Call Optimization",
+	cUIName070 = "Spotlight icons",
+	cUIName071 = "Settings icons",
+	cUIName072 = "Prerendered Icon",
+	cUIName073 = "Scripting Define Symbols*"
 	;
 
 	public const string cUIInfo001 = "一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的";
@@ -88,6 +92,19 @@ public class SDBaseType {
 		"Portrait Upside Down",
 		"Landscape Right",
 		"Landscape Left"
+	};
+
+	public static string[] IOSLunchImages = new string[]{
+		"Mobile Splash Screen*",
+		"iPhone 3.5\"/Retina",
+		"iPhone 4\"/Retina",
+		"iPhone 4.7\"/Retina",
+		"iPhone 5.5\"/Retina",
+		"iPhone 5.5\"Landscape/Retina",
+		"iPad Portrait",
+		"iPad Landscape",
+		"iPad Portrait/Retina",
+		"iPad Landscape/Retina"
 	};
 
 	public static string[] InternetAccess = new string[]{"Auto", "Require"};
@@ -110,8 +127,10 @@ public class SDefineSet {
 	public bool UseAnimAutor;// 使用動畫旋轉
 	public bool[] OrienRoatable;// 畫面可轉動的方向(Portrait, PortraitUpSideDown, LandRight, LandLeft)
 	// Bundle Identification
-	public string BundleIDUnknow;
+	public string BundleIDStandalone;
 	public string BundleVer;
+	// Define Info
+	public string ScriptDefineSymblos;
 	// Icon
 	public bool IconSetStatus; // 是否設定icon圖
 	public string[] DefIcons;// 預設圖名
@@ -121,25 +140,8 @@ public class SDefineSet {
 	// IOSSet
 	public SDIOSSet IOSSet;
 	// -------------------------------------------------------
-
-
-
-
-
-
-
-	// Define Info
-	public string ScriptDefine;
-
-	//系統版本
-
-
 	// Facebook
 	public string FacebookID;// 臉書appID
-//	public string ShortBundleVer;
-	//optimization
-//	public ApiCompatibilityLevel ApiCompatibilityLevel;// 4.6Ver
-	public StrippingLevel StrippingLevel;
 }
 // 參照PlayerSetting加入
 public class SDAndroidSet {
@@ -150,7 +152,9 @@ public class SDAndroidSet {
 	// Identification
 	public string BundleIDAndroid;
 	public int BundleCode;
+	public AndroidSdkVersions SdkVersions;
 	// Configuration
+	public AndroidTargetDevice TargetDevice;
 	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public bool ForceInternet;
 	public bool ForceSDCard;
@@ -159,6 +163,8 @@ public class SDAndroidSet {
 	public string KeyStorePassword;
 	public string KeyAlialsName;
 	public string KeyAlialsPassword;
+	// Define Info
+	public string ScriptDefineSymblos;
 	// Icon
 	public bool IconSetStatus; // 是否設定icon圖
 	public bool IconOverride; // 是否覆寫Icon圖
@@ -168,20 +174,9 @@ public class SDAndroidSet {
 	public string SplashImage;// 啟動之前的插入圖(Android)
 	public AndroidSplashScreenScale SplashScreenScale; 
 	// -------------------------------------------------------
-
-
-
-	public AndroidSdkVersions SdkVersions;
-	public AndroidTargetDevice TargetDevice;
-	
 	public string ManifestVersionCode;
 	public string ManifestVersionName;
-
-	// Unity 4.6(under) Old
-//	public TargetGlesGraphics TargetGraphice; // 4.6Ver
-
 	// Unity 5 New
-
 	public GraphicsDeviceType[] GraphicsType;
 }
 // 參照PlayerSetting加入
@@ -190,6 +185,7 @@ public class SDIOSSet {
 	public bool RequiresFullScreen;
 	public bool StatusBarHidden;
 	public iOSStatusBarStyle StatusBarStyle;
+	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
 	// Debugging and crash reporting
 	public bool LogObjCUncaughtExceptions;
 	public bool EnableCrashReportAPI;
@@ -212,40 +208,20 @@ public class SDIOSSet {
 	public iOSAppInBackgroundBehavior AppInBackgroundBehavior;
 	// Optimization
 	public ScriptCallOptimizationLevel ScriptCallOptimizationLevel;
-	// -------------------------------------------------------
-
-
-
-	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
-
-
-
-
-
-
-//	public bool OverrideIPodMusic;
-
-
-
-	public bool PrerenderedIcon;
+	public bool StripEngineCode;
+	public StrippingLevel StripLevel;
+	// Define Info
+	public string ScriptDefineSymblos;
+	// Icon
 	public bool IconSetStatus; // 是否設定icon圖
 	public bool IconOverride; // 是否覆寫Icon圖
 	public string[] DefIcons;// 預設圖名
 	public bool SplashSetStatus; // 是否設定Splash圖
 	public string[] SplashImages;// 啟動之前的插入圖
-	// Unity 4.6(under) Old
-//	public iOSTargetResolution TargetResolution;// 4.6Ver
-//	public TargetIOSGraphics TargetGraphics;// 4.6Ver
-//	public bool ExitOnSuspend;// 4.6Ver
-//	public iOSTargetOSVersion TargetOSVersion;// 4.6Ver
+	public bool PrerenderedIcon;
+	// -------------------------------------------------------
 	// Unity5 New
-
 	public GraphicsDeviceType[] GraphicsType;
-
-
-	public bool StripEngineCode;
-	public StrippingLevel StripLevel;
-
 }
 // 顯示用的圖像
 public class ShowImageGroup {

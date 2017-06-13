@@ -88,17 +88,14 @@ public class SDOverride : SDBaseUI
 		 * 要取得特定Platform的Identifier
 		 * 要改用PlayerSettings.GetApplicationIdentifier(取得)和PlayerSettings.SetApplicationIdentifier(設置)
 		*/
-		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Unknown, mShowSetInfo.BundleIDUnknow);
+		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Standalone, mShowSetInfo.BundleIDStandalone);
 		PlayerSettings.bundleVersion = mShowSetInfo.BundleVer;
+		// Scripting Define Symbols
+		PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, mShowSetInfo.ScriptDefineSymblos);
 		// Icon
 		if(mShowSetInfo.IconSetStatus)
-			SDDataMove.SetIconsGroup(BuildTargetGroup.Unknown, mShowSetInfo.DefIcons);
+			SDDataMove.SetIconsGroup(BuildTargetGroup.Standalone, mShowSetInfo.DefIcons);
 		// ---------------------------------------------------------------
-
-
-//		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;// 4.6Ver
-		PlayerSettings.strippingLevel = mShowSetInfo.StrippingLevel;
-
 	}
 	/// <summary>
 	/// Android設定複寫
@@ -113,15 +110,19 @@ public class SDOverride : SDBaseUI
 		// Identification
 		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android, aTmpSet.BundleIDAndroid);
 		PlayerSettings.Android.bundleVersionCode = aTmpSet.BundleCode;
+		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
 		// Configuration
 		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.Android, aTmpSet.ApiCompatibilityLevel);
 		PlayerSettings.Android.forceInternetPermission = aTmpSet.ForceInternet;
 		PlayerSettings.Android.forceSDCardPermission = aTmpSet.ForceSDCard;
+		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
 		// Publishing Settings
 		PlayerSettings.Android.keystoreName = string.Format ("{0}/{1}", Application.dataPath, aTmpSet.KeyStorePath);
 		PlayerSettings.Android.keystorePass = aTmpSet.KeyStorePassword;
 		PlayerSettings.Android.keyaliasName = aTmpSet.KeyAlialsName;
 		PlayerSettings.Android.keyaliasPass = aTmpSet.KeyAlialsPassword;
+		// Scripting Define Symbols
+		PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, aTmpSet.ScriptDefineSymblos);
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{
@@ -135,13 +136,7 @@ public class SDOverride : SDBaseUI
 			SDDataMove.SetSplashScreen("androidSplashScreen", mShowSetInfo.AndroidSet.SplashImage);
 			PlayerSettings.Android.splashScreenScale = aTmpSet.SplashScreenScale;
 		}
-
-
 		//----------------------------------------
-
-		PlayerSettings.Android.minSdkVersion = aTmpSet.SdkVersions;
-		PlayerSettings.Android.targetDevice = aTmpSet.TargetDevice;
-//		PlayerSettings.targetGlesGraphics = aTmpSet.TargetGraphice;// 4.6Ver
 		// Unity5 New
 		PlayerSettings.SetGraphicsAPIs(BuildTarget.Android, aTmpSet.GraphicsType);
 	}
@@ -154,6 +149,8 @@ public class SDOverride : SDBaseUI
 		// Resolution and Presentation
 		PlayerSettings.iOS.requiresFullScreen = aTmpSet.RequiresFullScreen;
 		PlayerSettings.statusBarHidden = aTmpSet.StatusBarHidden;
+		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
+		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
 		// Debugging and crash reporting
 		PlayerSettings.actionOnDotNetUnhandledException = aTmpSet.ActionOnDotNetUnhandledException;
 		PlayerSettings.logObjCUncaughtExceptions = aTmpSet.LogObjCUncaughtExceptions;
@@ -173,69 +170,39 @@ public class SDOverride : SDBaseUI
 		SDDataMove.SetBoolPalyerSetting("Prepare IOS For Recording", aTmpSet.PrepareIOSForRecording);
 		PlayerSettings.iOS.requiresPersistentWiFi = aTmpSet.RequiresPersistentWiFi;
 		PlayerSettings.iOS.appInBackgroundBehavior = aTmpSet.AppInBackgroundBehavior;
-		// Optimization
-		PlayerSettings.iOS.scriptCallOptimization = aTmpSet.ScriptCallOptimizationLevel;
-
-
 		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP &&
 			mShowSetInfo.IOSSet.SDKVersion == iOSSdkVersion.DeviceSDK) {
 			PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, aTmpSet.Architecture);
 		}
-
+		// Optimization
+		PlayerSettings.iOS.scriptCallOptimization = aTmpSet.ScriptCallOptimizationLevel;
 		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
 			PlayerSettings.stripEngineCode = aTmpSet.StripEngineCode;
 		}
 		else if(aTmpSet.ScriptingBackend == ScriptingImplementation.Mono2x) {			
 			PlayerSettings.strippingLevel = aTmpSet.StripLevel;
 		}
-		//----------------------------------------
-		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
-		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
-
-
-
-//		SDDataMove.SetBoolPalyerSetting("Override IPod Music", aTmpSet.OverrideIPodMusic);
-
-
-		PlayerSettings.iOS.prerenderedIcon = aTmpSet.PrerenderedIcon;
-
-		// Unity 4.6(under) Old
-//		PlayerSettings.iOS.targetResolution = aTmpSet.TargetResolution;// 4.6Ver
-//		PlayerSettings.targetIOSGraphics = aTmpSet.TargetGraphics;// 4.6Ver
-//		PlayerSettings.iOS.targetOSVersion = aTmpSet.TargetOSVersion;// 4.6Ver
-//		PlayerSettings.iOS.exitOnSuspend = aTmpSet.ExitOnSuspend;// 4.6Ver
-//		PlayerSettings.SetPropertyInt("ScriptingBackend", (int)aTmpSet.ScriptingBackend, BuildTargetGroup.iOS);
-//		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
-		// Unity5 New
-		PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS, aTmpSet.GraphicsType);
-
-
-
-
+		// Scripting Define Symbols
+		PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, aTmpSet.ScriptDefineSymblos);
 		// Icon
-		if(aTmpSet.IconSetStatus)
-		{
+		if(aTmpSet.IconSetStatus) {
 			if(aTmpSet.IconOverride)
 				SDDataMove.SetIconsGroup(BuildTargetGroup.iOS, aTmpSet.DefIcons);
 			else
 				SDDataMove.ClearnIconsGroup(BuildTargetGroup.iOS);
 		}
+		PlayerSettings.iOS.prerenderedIcon = aTmpSet.PrerenderedIcon;
 		// Splash
-		if(aTmpSet.SplashSetStatus)
-			for(int i = 0; i < mShowSetInfo.IOSSet.SplashImages.Length; i++)
+		if(aTmpSet.SplashSetStatus) {
+			for(int i = 0; i < mShowSetInfo.IOSSet.SplashImages.Length; i++) {
 				SDDataMove.SetSplashScreen((eMobileSplashScreen)i, mShowSetInfo.IOSSet.SplashImages[i]);
-	}
-	/// <summary>
-	/// 更新UnityDefineSetting內容
-	/// </summary>
-	private void UpdatePlayerDefineSet()
-	{
-		switch(mShowSetInfo.DefineTarget)
-		{
-		case eSDTarget.Android: PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Android, mShowSetInfo.ScriptDefine); break;
-		case eSDTarget.IOS: PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.iOS, mShowSetInfo.ScriptDefine); break;
+			}
 		}
+		//----------------------------------------
+		// Unity5 New
+		PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS, aTmpSet.GraphicsType);
 	}
+
 	/// <summary>
 	/// 讀取自設設定檔來複寫PlayerSetting
 	/// </summary>
@@ -249,8 +216,6 @@ public class SDOverride : SDBaseUI
 		}
 		// Common
 		Self.OverrideSetCommon();
-		// SetDefint
-		Self.UpdatePlayerDefineSet();
 		// Other
 		switch(Self.mShowSetInfo.DefineTarget)
 		{

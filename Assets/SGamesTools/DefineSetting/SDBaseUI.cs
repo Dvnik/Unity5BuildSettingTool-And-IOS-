@@ -239,8 +239,10 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUILayout.PrefixLabel(SDBaseType.cUIName012, TitleFrontStyle());
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel++;
-		mShowSetInfo.BundleIDUnknow = EditorGUILayout.TextField(SDBaseType.cUIName013, mShowSetInfo.BundleIDUnknow);
+		mShowSetInfo.BundleIDStandalone = EditorGUILayout.TextField(SDBaseType.cUIName013, mShowSetInfo.BundleIDStandalone);
 		mShowSetInfo.BundleVer = EditorGUILayout.TextField(SDBaseType.cUIName014, mShowSetInfo.BundleVer);
+		// Define Info
+		mShowSetInfo.ScriptDefineSymblos = SetTextHor(SDBaseType.cUIName073, mShowSetInfo.ScriptDefineSymblos);
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
@@ -306,12 +308,14 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel++;
 		mShowSetInfo.AndroidSet.BundleIDAndroid = SetTextHor(SDBaseType.cUIName013, mShowSetInfo.AndroidSet.BundleIDAndroid);
 		mShowSetInfo.AndroidSet.BundleCode = SetIntHor(SDBaseType.cUIName023, mShowSetInfo.AndroidSet.BundleCode);
+		mShowSetInfo.AndroidSet.SdkVersions = (AndroidSdkVersions)SetEnumPopupHor("Minimum API Level", mShowSetInfo.AndroidSet.SdkVersions);
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel--;
 		// Configuration
 		EditorGUILayout.LabelField(SDBaseType.cUIName024, EditorStyles.boldLabel);
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel++;
+		mShowSetInfo.AndroidSet.TargetDevice = (AndroidTargetDevice)SetEnumPopupHor("Device Filter", mShowSetInfo.AndroidSet.TargetDevice);
 		if(mShowSetInfo.AndroidSet.ForceInternet)
 			mAndInternetAccess = 1;
 		if(mShowSetInfo.AndroidSet.ForceSDCard)
@@ -330,6 +334,8 @@ public abstract class SDBaseUI : EditorWindow
 
 		mShowSetInfo.AndroidSet.ForceInternet = mAndInternetAccess == 1;// Require = true; Auto = false;
 		mShowSetInfo.AndroidSet.ForceSDCard = mAndWritePermission == 1;// External(SDCard) = true; Internal = false;
+		// Define Info
+		mShowSetInfo.AndroidSet.ScriptDefineSymblos = SetTextHor(SDBaseType.cUIName073, mShowSetInfo.AndroidSet.ScriptDefineSymblos);
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel--;
 		// End
@@ -427,6 +433,10 @@ public abstract class SDBaseUI : EditorWindow
 		FTUUIIOSDebugging();
 		EditorGUILayout.Space();
 		UIIOSOtherSetting();
+		EditorGUILayout.Space();
+		UIIOSIcon();
+		EditorGUILayout.Space();
+		UIIOSSplashImage();
 		EditorGUI.indentLevel--;
 	}
 
@@ -441,7 +451,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUILayout.Space();
 		EditorGUILayout.LabelField(SDBaseType.cUIName044, EditorStyles.boldLabel);
 		EditorGUILayout.Space();
-		mShowSetInfo.IOSSet.RequiresFullScreen = SetToggleHor(SDBaseType.cUIName045, mShowSetInfo.IOSSet.StatusBarHidden);
+		mShowSetInfo.IOSSet.StatusBarHidden = SetToggleHor(SDBaseType.cUIName045, mShowSetInfo.IOSSet.StatusBarHidden);
 		mShowSetInfo.IOSSet.StatusBarStyle =
 			(iOSStatusBarStyle)SetEnumPopupHor(SDBaseType.cUIName046, mShowSetInfo.IOSSet.StatusBarStyle);
 		EditorGUILayout.Space();
@@ -474,6 +484,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel++;
 		// Start
+		// Identification
 		EditorGUILayout.LabelField(SDBaseType.cUIName012, EditorStyles.boldLabel);
 		EditorGUILayout.Space();
 		mShowSetInfo.IOSSet.BundleIDIOS = SetTextHor(SDBaseType.cUIName013, mShowSetInfo.IOSSet.BundleIDIOS);
@@ -495,7 +506,6 @@ public abstract class SDBaseUI : EditorWindow
 		case 0: mShowSetInfo.IOSSet.ScriptingBackend = ScriptingImplementation.Mono2x; break;
 		case 1: mShowSetInfo.IOSSet.ScriptingBackend = ScriptingImplementation.IL2CPP; break;
 		}
-
 		// API Compatibility Level
 		if(mShowSetInfo.IOSSet.ApiCompatibilityLevel == ApiCompatibilityLevel.NET_2_0_Subset)
 			mIOSApiComLevel = 1;
@@ -531,88 +541,69 @@ public abstract class SDBaseUI : EditorWindow
 		}
 		mShowSetInfo.IOSSet.ScriptCallOptimizationLevel =
 			(ScriptCallOptimizationLevel)SetEnumPopupHor(SDBaseType.cUIName069, mShowSetInfo.IOSSet.ScriptCallOptimizationLevel);
+		// Define Info
+		mShowSetInfo.IOSSet.ScriptDefineSymblos = SetTextHor(SDBaseType.cUIName073, mShowSetInfo.IOSSet.ScriptDefineSymblos);
 		// End
 		EditorGUI.indentLevel--;
-	}
-	#endregion
-
-
-	/// <summary>
-	/// IOS設定檔UI
-	/// </summary>
-	public void UIIOSShow()
-	{
-		GUILayout.Label("IOS 設置", TitleFrontStyle());
-		mShowSetInfo.IOSSet.BuildNumber = EditorGUILayout.TextField("Build Number :", mShowSetInfo.IOSSet.BuildNumber);
-		mShowSetInfo.IOSSet.StatusBarStyle = (iOSStatusBarStyle)EditorGUILayout.EnumPopup("Status Bar Style:", mShowSetInfo.IOSSet.StatusBarStyle);
-		mShowSetInfo.IOSSet.ShowActivityIndicatorOnLoading =
-			(iOSShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup("Show Loading Indicator:", mShowSetInfo.IOSSet.ShowActivityIndicatorOnLoading);
-		GUILayout.Label("IOS SDK Setting", TitleFrontStyle());
-		mShowSetInfo.IOSSet.SDKVersion = (iOSSdkVersion)EditorGUILayout.EnumPopup("SDK Version:", mShowSetInfo.IOSSet.SDKVersion);
-		mShowSetInfo.IOSSet.ScriptCallOptimizationLevel = (ScriptCallOptimizationLevel)EditorGUILayout.EnumPopup("Optimization Level:", mShowSetInfo.IOSSet.ScriptCallOptimizationLevel);
-		GUILayout.Label("IOS Configuration", TitleFrontStyle());
-		mShowSetInfo.IOSSet.TargetDevice = (iOSTargetDevice)EditorGUILayout.EnumPopup("Target Device:", mShowSetInfo.IOSSet.TargetDevice);
-		GUILayout.Label("");
-//		mShowSetInfo.IOSSet.OverrideIPodMusic = EditorGUILayout.Toggle("Override IPod Music:", mShowSetInfo.IOSSet.OverrideIPodMusic);
-		mShowSetInfo.IOSSet.PrepareIOSForRecording = EditorGUILayout.Toggle("IOS For Recording:", mShowSetInfo.IOSSet.PrepareIOSForRecording);
-		mShowSetInfo.IOSSet.RequiresPersistentWiFi = EditorGUILayout.Toggle("Requires Persistent WiFi:", mShowSetInfo.IOSSet.RequiresPersistentWiFi);
-		// Unity 4.6(under) Old
-//		mShowSetInfo.IOSSet.TargetOSVersion = (iOSTargetOSVersion)EditorGUILayout.EnumPopup("Target OS Version:", mShowSetInfo.IOSSet.TargetOSVersion);// 4.6Ver
-//		mShowSetInfo.IOSSet.TargetResolution = (iOSTargetResolution)EditorGUILayout.EnumPopup("iOS Target Resolution:", mShowSetInfo.IOSSet.TargetResolution);// 4.6Ver
-//		mShowSetInfo.IOSSet.TargetGraphics = (TargetIOSGraphics)EditorGUILayout.EnumPopup("iOS Graphics API:", mShowSetInfo.IOSSet.TargetGraphics);// 4.6Ver
-//		mShowSetInfo.IOSSet.ExitOnSuspend = EditorGUILayout.Toggle("Exit On Suspend:", mShowSetInfo.IOSSet.ExitOnSuspend);// 4.6Ver
-		// Unity5 New
-		GUILayout.Label("");
-		/*
-		 * 由於5.6的GraphicsAPI UI還沒想好要怎麼作修改畫面，先註解
-
- 		GUILayout.Label("IOS Graphics APIs", TitleFrontStyle());
-		for(int i = 0; i < mShowSetInfo.IOSSet.GraphicsType.Length; i++) {
-			mShowSetInfo.IOSSet.GraphicsType[i] = (UnityEngine.Rendering.GraphicsDeviceType)EditorGUILayout.EnumPopup( i + " :", mShowSetInfo.IOSSet.GraphicsType[i]);
-		}
-		 */
-		mShowSetInfo.IOSSet.ApiCompatibilityLevel = (ApiCompatibilityLevel)EditorGUILayout.EnumPopup("Api Compatibility Level:", mShowSetInfo.IOSSet.ApiCompatibilityLevel);
-		mShowSetInfo.IOSSet.TargetOSVersionString = EditorGUILayout.TextField("Target minimum iOS Version:", mShowSetInfo.IOSSet.TargetOSVersionString);
-		mShowSetInfo.IOSSet.AppInBackgroundBehavior = (iOSAppInBackgroundBehavior)EditorGUILayout.EnumPopup("Behavior in Background:", mShowSetInfo.IOSSet.AppInBackgroundBehavior);
-		mShowSetInfo.IOSSet.ScriptingBackend = (ScriptingImplementation)EditorGUILayout.EnumPopup("Scripting Backend:", mShowSetInfo.IOSSet.ScriptingBackend);
-		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
-			iPhoneArchitecture aShowEnum = (iPhoneArchitecture)mShowSetInfo.IOSSet.Architecture;
-			aShowEnum = (iPhoneArchitecture)EditorGUILayout.EnumPopup("Architecture:", aShowEnum);
-			mShowSetInfo.IOSSet.Architecture = (int)aShowEnum;
-		}
-		GUILayout.Label("");
-		// Icon
-		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.Toggle("設定IOS ICon圖:", mShowSetInfo.IOSSet.IconSetStatus);
-		if(mShowSetInfo.IOSSet.IconSetStatus)
-			UIIconIOSShow();
-		// Splash Image
-		mShowSetInfo.IOSSet.SplashSetStatus = EditorGUILayout.Toggle("設定IOS Splash圖:", mShowSetInfo.IOSSet.SplashSetStatus);
-		if(mShowSetInfo.IOSSet.SplashSetStatus)
-			UISplashIOSShow();
 	}
 	/// <summary>
 	/// IOS的ICON設定
 	/// </summary>
-	private void UIIconIOSShow()
-	{
-		GUILayout.Label("IOS Icon 圖片", TitleFrontStyle());
-		mShowSetInfo.IOSSet.IconOverride = EditorGUILayout.Toggle("是否覆寫Icon圖:", mShowSetInfo.IOSSet.IconOverride);
-		mShowSetInfo.IOSSet.PrerenderedIcon = EditorGUILayout.Toggle("Prerendered Icon:", mShowSetInfo.IOSSet.PrerenderedIcon);
-		if(!mShowSetInfo.IOSSet.IconOverride)
+	private void UIIOSIcon() {
+		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName034, mShowSetInfo.IOSSet.IconSetStatus);
+		if(!mShowSetInfo.IOSSet.IconSetStatus)
 			return;
 
-		int[] aIosIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.iOS);
-		for (int i = 0; i < mUIUseImages.IosIcons.Length; i++)
-		{
-			string aPicSize = "";
-			if(i < aIosIconTexts.Length)
-				aPicSize = aIosIconTexts[i] + "x" + aIosIconTexts[i];
-			else
-				aPicSize = "Other";
-			
-			IconObjectSet(aPicSize, ref mUIUseImages.IosIcons[i], ref mShowSetInfo.IOSSet.DefIcons[i]);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		mShowSetInfo.IOSSet.IconOverride = EditorGUILayout.ToggleLeft(SDBaseType.cUIName035, mShowSetInfo.IOSSet.IconOverride);
+		if(mShowSetInfo.IOSSet.IconOverride) {
+			EditorGUI.indentLevel++;
+
+			int[] aIosIconTexts = PlayerSettings.GetIconSizesForTargetGroup(BuildTargetGroup.iOS);
+			for (int i = 0; i < mUIUseImages.IosIcons.Length; i++) {
+				string aPicSize = "";
+				if(i < aIosIconTexts.Length)
+					aPicSize = aIosIconTexts[i] + "x" + aIosIconTexts[i];
+				else
+					aPicSize = SDBaseType.cUIName036;
+				if(i == 9) {
+					EditorGUILayout.LabelField(SDBaseType.cUIName070, EditorStyles.boldLabel);
+					EditorGUILayout.Space();
+				}
+				else if (i == 12) {
+					EditorGUILayout.LabelField(SDBaseType.cUIName071, EditorStyles.boldLabel);
+					EditorGUILayout.Space();
+				}
+				if(i < mShowSetInfo.IOSSet.DefIcons.Length)
+					IconObjectSet(aPicSize, ref mUIUseImages.IosIcons[i], ref mShowSetInfo.IOSSet.DefIcons[i]);
+			}
+			EditorGUI.indentLevel--;
+		}
+		mShowSetInfo.IOSSet.PrerenderedIcon = SetToggleHor(SDBaseType.cUIName072, mShowSetInfo.IOSSet.PrerenderedIcon);
+		EditorGUI.indentLevel--;
+	}
+	/// <summary>
+	/// UIIOSs the splash image.
+	/// </summary>
+	private void UIIOSSplashImage() {
+		mShowSetInfo.IOSSet.SplashSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName037, mShowSetInfo.IOSSet.SplashSetStatus);
+
+		if(!mShowSetInfo.IOSSet.SplashSetStatus)
+			return;
+		EditorGUILayout.HelpBox(SDBaseType.cUIName038, MessageType.Info);
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+
+		for(int i = 0; i < mShowSetInfo.IOSSet.SplashImages.Length; i++) {
+			if( i < SDBaseType.IOSLunchImages.Length) {
+				IconObjectSet(SDBaseType.IOSLunchImages[i],
+					ref mUIUseImages.IOSSplashImages[i],
+					ref mShowSetInfo.IOSSet.SplashImages[i]);
+			}
 		}
 	}
+	#endregion
 	/// <summary>
 	/// IOS Splash Image設定
 	/// </summary>

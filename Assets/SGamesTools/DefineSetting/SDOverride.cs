@@ -33,13 +33,7 @@ public class SDOverride : SDBaseUI
 	/// </summary>
 	protected override void SettingInit()
 	{
-		if(mInitStatus)
-			return;
-
-		if(CheckHaveFiles())
-			return;
-		
-		mInitStatus = true;
+		CheckHaveFiles();
 	}
 	/// <summary>
 	/// 複寫視窗

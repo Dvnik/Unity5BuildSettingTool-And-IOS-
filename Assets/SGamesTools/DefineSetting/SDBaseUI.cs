@@ -22,8 +22,7 @@ public abstract class SDBaseUI : EditorWindow
 	protected eSettingPage mNowPage;
 	// UI相關狀態
 	protected Vector2 mEditorScrollView;
-	protected bool mInitStatus,
-	mShowCommon = true,
+	protected bool mShowCommon = true,
 	mShowCommonOri = true,
 	mSetDefaultIcon,
 	mShowAndroid,
@@ -43,7 +42,6 @@ public abstract class SDBaseUI : EditorWindow
 		SettingInit();
 	}
 	protected virtual void OnDisable() {
-		mInitStatus = false;
 		mFileNameArray = null;
 	}
 	#endregion
@@ -701,7 +699,7 @@ public abstract class SDBaseUI : EditorWindow
 	/// <summary>
 	/// 確認是否有重複檔案
 	/// </summary>
-	public bool CheckFileNameRepeat()
+	public bool CheckFileNameRepeat(bool iShowAlert = true)
 	{
 		bool aIsSame = false;
 		if(FileNameArray == null)
@@ -716,7 +714,7 @@ public abstract class SDBaseUI : EditorWindow
 			}
 		}
 		
-		if(aIsSame)
+		if(aIsSame && iShowAlert)
 			EditorUtility.DisplayDialog("警告", "檔案名稱與現有檔案重複", "確定");
 		
 		return aIsSame;

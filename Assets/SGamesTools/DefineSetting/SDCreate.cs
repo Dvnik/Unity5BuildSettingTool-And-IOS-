@@ -12,19 +12,17 @@ using UnityEngine.Rendering;
  */
 public class SDCreate : SDBaseUI
 {
+	private bool mIsEmptyFileName;
+	private string mInfoBoxShow;
 	/// <summary>
 	/// 初始化介面資料設定
 	/// </summary>
 	protected override void SettingInit()
 	{
-		if(mInitStatus)
-			return;
 		// Set Default Info
 		DefaultSetCommon();
 		DefaultSetAndroid();
 		DefaultSetIOS();
-		
-		mInitStatus = true;
 	}
 	/// <summary>
 	/// 顯示GUI內容
@@ -43,6 +41,9 @@ public class SDCreate : SDBaseUI
 		UIIOSArea();
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
+		if(mIsEmptyFileName) {
+			EditorGUILayout.HelpBox(mInfoBoxShow, MessageType.Error);
+		}
 		EditorGUILayout.BeginHorizontal();
 		if(GUILayout.Button("存檔", ButtonMyStyle(eButtonPos.left)))
 			DoCreate();
@@ -59,14 +60,21 @@ public class SDCreate : SDBaseUI
 	{
 		if(string.IsNullOrEmpty(ShowSetInfo.SettingName))
 		{
-			EditorUtility.DisplayDialog("警告", "需要檔案名稱", "確定");
+			mIsEmptyFileName = true;
+			mInfoBoxShow = "需要檔案名稱";
 			return;
 		}
 
-		if(CheckFileNameRepeat())// 確認有沒有重複名稱
+		if(CheckFileNameRepeat(false)) {// 確認有沒有重複名稱
+			mIsEmptyFileName = true;
+			mInfoBoxShow = "檔案名稱與現有檔案重複";
 			return;
+		}
 
 		SDDataMove.SaveData(ShowSetInfo);// 存檔
+		// Reset Status
+		if(mIsEmptyFileName)
+			mIsEmptyFileName = false;
 
 		Close();
 	}

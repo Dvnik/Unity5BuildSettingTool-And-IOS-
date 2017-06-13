@@ -50,7 +50,35 @@ public class SDBaseType {
 	cUIName038 = "目前只設定一般的Splash Image\n不設定VR Splash 和 Splash Sreen",
 	cUIName039 = "Image",
 	cUIName040 = "Scaling",
-	cUIName041 = "IOS 設置"
+	cUIName041 = "IOS 設置",
+	cUIName042 = "Multitasking Support",
+	cUIName043 = "Requires Fullscreen",
+	cUIName044 = "Status Bar",
+	cUIName045 = "Status Bar Hidden",
+	cUIName046 = "Status Bar Style",
+	cUIName047 = "Show Loading Indicator",
+	cUIName048 = "Debugging and crash reporting",
+	cUIName049 = "Unity5增加的類別，盡量做到設定",
+	cUIName050 = "Crash Reporting",
+	cUIName051 = "Log Obj-C Uncaught Exception",
+	cUIName052 = "Enable CrashReport API*",
+	cUIName053 = "On .Net UnhandleException",
+	cUIName054 = "Build",
+	cUIName055 = "Automatically Sign",
+	cUIName056 = "Automatic Signing Team ID",
+	cUIName057 = "iOS Provisioning Profile",
+	cUIName058 = "Scripting Backend",
+	cUIName059 = "Architecture",
+	cUIName060 = "Target Device",
+	cUIName061 = "Target SDK",
+	cUIName062 = "Target minimum iOS Verstion",
+	cUIName063 = "Prepare iOS for Recording",
+	cUIName064 = "Requires Persistent WiFi*",
+	cUIName065 = "Behavior in Background",
+	cUIName066 = "Optimization",
+	cUIName067 = "Strip Engine Code*",
+	cUIName068 = "Strpping Level*",
+	cUIName069 = "Script Call Optimization"
 	;
 
 	public const string cUIInfo001 = "一個設定檔只會部屬一個平台的設定\n這是為了自動產檔時能夠快速設定用的";
@@ -65,6 +93,7 @@ public class SDBaseType {
 	public static string[] InternetAccess = new string[]{"Auto", "Require"};
 	public static string[] WritePermission = new string[]{"Internal", "External(SDCard)"};
 	public static string[] ApiCompatibilityLevel = new string[]{".NET 2.0", ".NET 2.0 Subset"};
+	public static string[] ScriptingBackend = new string[]{"Mono2x", "IL2CPP"};
 
 }
 
@@ -103,7 +132,7 @@ public class SDefineSet {
 	public string ScriptDefine;
 
 	//系統版本
-	public bool StatusBarHidden;		// 
+
 
 	// Facebook
 	public string FacebookID;// 臉書appID
@@ -157,21 +186,46 @@ public class SDAndroidSet {
 }
 // 參照PlayerSetting加入
 public class SDIOSSet {
-	// Orientation
-
-
-
+	// Resolution and Presentation
+	public bool RequiresFullScreen;
+	public bool StatusBarHidden;
 	public iOSStatusBarStyle StatusBarStyle;
-	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
+	// Debugging and crash reporting
+	public bool LogObjCUncaughtExceptions;
+	public bool EnableCrashReportAPI;
+	public ActionOnDotNetUnhandledException ActionOnDotNetUnhandledException;
+	// Identification
+	public string BundleIDIOS;
+	public string BuildNumber;
+	public bool AppleEnableAutomaticSigning;
+	public string AppleDeveloperTeamID;
+	public string ProvisioningProfileID;
+	// Configuration
+	public ScriptingImplementation ScriptingBackend;
+	public int Architecture;
+	public ApiCompatibilityLevel ApiCompatibilityLevel;
 	public iOSTargetDevice TargetDevice;
 	public iOSSdkVersion SDKVersion;
-	public ScriptCallOptimizationLevel ScriptCallOptimizationLevel;
-	public ScriptingImplementation ScriptingBackend;
-
-	public string BuildNumber;
-//	public bool OverrideIPodMusic;
+	public string TargetOSVersionString;
 	public bool PrepareIOSForRecording;
 	public bool RequiresPersistentWiFi;
+	public iOSAppInBackgroundBehavior AppInBackgroundBehavior;
+	// Optimization
+	public ScriptCallOptimizationLevel ScriptCallOptimizationLevel;
+	// -------------------------------------------------------
+
+
+
+	public iOSShowActivityIndicatorOnLoading ShowActivityIndicatorOnLoading;
+
+
+
+
+
+
+//	public bool OverrideIPodMusic;
+
+
 
 	public bool PrerenderedIcon;
 	public bool IconSetStatus; // 是否設定icon圖
@@ -185,13 +239,13 @@ public class SDIOSSet {
 //	public bool ExitOnSuspend;// 4.6Ver
 //	public iOSTargetOSVersion TargetOSVersion;// 4.6Ver
 	// Unity5 New
-	public ApiCompatibilityLevel ApiCompatibilityLevel;
+
 	public GraphicsDeviceType[] GraphicsType;
-	public string TargetOSVersionString;
-	public iOSAppInBackgroundBehavior AppInBackgroundBehavior;
+
+
 	public bool StripEngineCode;
 	public StrippingLevel StripLevel;
-	public int Architecture;
+
 }
 // 顯示用的圖像
 public class ShowImageGroup {

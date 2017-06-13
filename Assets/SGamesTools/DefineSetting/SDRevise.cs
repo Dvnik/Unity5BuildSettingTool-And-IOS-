@@ -52,7 +52,7 @@ public class SDRevise : SDBaseUI
 		// Android
 		UIAndroidArea();
 		// IOS
-		//-----
+		UIIOSArea();
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		// Button

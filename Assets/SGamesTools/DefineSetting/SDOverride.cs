@@ -94,8 +94,7 @@ public class SDOverride : SDBaseUI
 		if(mShowSetInfo.IconSetStatus)
 			SDDataMove.SetIconsGroup(BuildTargetGroup.Unknown, mShowSetInfo.DefIcons);
 		// ---------------------------------------------------------------
-		// Other
-		PlayerSettings.statusBarHidden = mShowSetInfo.StatusBarHidden;
+
 
 //		PlayerSettings.apiCompatibilityLevel = mShowSetInfo.ApiCompatibilityLevel;// 4.6Ver
 		PlayerSettings.strippingLevel = mShowSetInfo.StrippingLevel;
@@ -152,14 +151,52 @@ public class SDOverride : SDBaseUI
 	private void OverrideSetIOS()
 	{
 		SDIOSSet aTmpSet = mShowSetInfo.IOSSet;
-		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
-		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
+		// Resolution and Presentation
+		PlayerSettings.iOS.requiresFullScreen = aTmpSet.RequiresFullScreen;
+		PlayerSettings.statusBarHidden = aTmpSet.StatusBarHidden;
+		// Debugging and crash reporting
+		PlayerSettings.actionOnDotNetUnhandledException = aTmpSet.ActionOnDotNetUnhandledException;
+		PlayerSettings.logObjCUncaughtExceptions = aTmpSet.LogObjCUncaughtExceptions;
+		PlayerSettings.enableCrashReportAPI = aTmpSet.EnableCrashReportAPI;
+		// Identification
+		PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.iOS, aTmpSet.BundleIDIOS);
+		PlayerSettings.iOS.buildNumber = aTmpSet.BuildNumber;
+		PlayerSettings.iOS.appleEnableAutomaticSigning = aTmpSet.AppleEnableAutomaticSigning;
+		PlayerSettings.iOS.appleDeveloperTeamID = aTmpSet.AppleDeveloperTeamID;
+		PlayerSettings.iOS.iOSManualProvisioningProfileID = aTmpSet.ProvisioningProfileID;
+		// Configuration
+		PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, aTmpSet.ScriptingBackend);
+		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.iOS, aTmpSet.ApiCompatibilityLevel);
 		PlayerSettings.iOS.targetDevice = aTmpSet.TargetDevice;
 		PlayerSettings.iOS.sdkVersion = aTmpSet.SDKVersion;
-		PlayerSettings.iOS.scriptCallOptimization = aTmpSet.ScriptCallOptimizationLevel;
-//		SDDataMove.SetBoolPalyerSetting("Override IPod Music", aTmpSet.OverrideIPodMusic);
+		PlayerSettings.iOS.targetOSVersionString = aTmpSet.TargetOSVersionString;
 		SDDataMove.SetBoolPalyerSetting("Prepare IOS For Recording", aTmpSet.PrepareIOSForRecording);
 		PlayerSettings.iOS.requiresPersistentWiFi = aTmpSet.RequiresPersistentWiFi;
+		PlayerSettings.iOS.appInBackgroundBehavior = aTmpSet.AppInBackgroundBehavior;
+		// Optimization
+		PlayerSettings.iOS.scriptCallOptimization = aTmpSet.ScriptCallOptimizationLevel;
+
+
+		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP &&
+			mShowSetInfo.IOSSet.SDKVersion == iOSSdkVersion.DeviceSDK) {
+			PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, aTmpSet.Architecture);
+		}
+
+		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
+			PlayerSettings.stripEngineCode = aTmpSet.StripEngineCode;
+		}
+		else if(aTmpSet.ScriptingBackend == ScriptingImplementation.Mono2x) {			
+			PlayerSettings.strippingLevel = aTmpSet.StripLevel;
+		}
+		//----------------------------------------
+		PlayerSettings.iOS.statusBarStyle = aTmpSet.StatusBarStyle;
+		PlayerSettings.iOS.showActivityIndicatorOnLoading = aTmpSet.ShowActivityIndicatorOnLoading;
+
+
+
+//		SDDataMove.SetBoolPalyerSetting("Override IPod Music", aTmpSet.OverrideIPodMusic);
+
+
 		PlayerSettings.iOS.prerenderedIcon = aTmpSet.PrerenderedIcon;
 
 		// Unity 4.6(under) Old
@@ -171,11 +208,10 @@ public class SDOverride : SDBaseUI
 //		PlayerSettings.SetPropertyInt("Architecture", (int)aTmpSet.Architecture, BuildTargetGroup.iOS);
 		// Unity5 New
 		PlayerSettings.SetGraphicsAPIs(BuildTarget.iOS, aTmpSet.GraphicsType);
-		PlayerSettings.SetApiCompatibilityLevel(BuildTargetGroup.iOS, aTmpSet.ApiCompatibilityLevel);
-		PlayerSettings.iOS.targetOSVersionString = aTmpSet.TargetOSVersionString;
-		PlayerSettings.iOS.appInBackgroundBehavior = aTmpSet.AppInBackgroundBehavior;
-		PlayerSettings.SetScriptingBackend(BuildTargetGroup.iOS, aTmpSet.ScriptingBackend);
-		PlayerSettings.SetArchitecture(BuildTargetGroup.iOS, aTmpSet.Architecture);
+
+
+
+
 		// Icon
 		if(aTmpSet.IconSetStatus)
 		{

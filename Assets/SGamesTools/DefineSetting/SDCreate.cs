@@ -40,7 +40,7 @@ public class SDCreate : SDBaseUI
 		// Android
 		UIAndroidArea();
 		// IOS
-		//-----
+		UIIOSArea();
 		EditorGUILayout.Space();
 		EditorGUILayout.Space();
 		EditorGUILayout.BeginHorizontal();
@@ -101,8 +101,7 @@ public class SDCreate : SDBaseUI
 		// ---------------------------------------------------------------
 
 //		mShowSetInfo.ShortBundleVer = PlayerSettings.shortBundleVersion;
-		// Other
-		mShowSetInfo.StatusBarHidden = PlayerSettings.statusBarHidden;
+
 
 		/*
 		 * PlayerSettings.apiCompatibilityLevel
@@ -166,18 +165,46 @@ public class SDCreate : SDBaseUI
 	private void DefaultSetIOS()
 	{
 		SDIOSSet aTmpSet = new SDIOSSet();
-
-
-
-		aTmpSet.BuildNumber = PlayerSettings.iOS.buildNumber;
+		// Resolution and Presentation
+		aTmpSet.RequiresFullScreen = PlayerSettings.iOS.requiresFullScreen;
+		aTmpSet.StatusBarHidden = PlayerSettings.statusBarHidden;
 		aTmpSet.StatusBarStyle = PlayerSettings.iOS.statusBarStyle;
 		aTmpSet.ShowActivityIndicatorOnLoading = PlayerSettings.iOS.showActivityIndicatorOnLoading;
+		// Debugging and crash reporting
+		aTmpSet.ActionOnDotNetUnhandledException = PlayerSettings.actionOnDotNetUnhandledException;
+		aTmpSet.LogObjCUncaughtExceptions = PlayerSettings.logObjCUncaughtExceptions;
+		aTmpSet.EnableCrashReportAPI = PlayerSettings.enableCrashReportAPI;
+		// Identification
+		aTmpSet.BundleIDIOS = PlayerSettings.GetApplicationIdentifier(BuildTargetGroup.iOS);
+		aTmpSet.BuildNumber = PlayerSettings.iOS.buildNumber;
+		aTmpSet.AppleEnableAutomaticSigning = PlayerSettings.iOS.appleEnableAutomaticSigning;
+		aTmpSet.AppleDeveloperTeamID = PlayerSettings.iOS.appleDeveloperTeamID;
+		aTmpSet.ProvisioningProfileID = PlayerSettings.iOS.iOSManualProvisioningProfileID;
+		// Configuration
+		aTmpSet.ScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.iOS);
+		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
 		aTmpSet.TargetDevice = PlayerSettings.iOS.targetDevice;
 		aTmpSet.SDKVersion = PlayerSettings.iOS.sdkVersion;
-		aTmpSet.ScriptCallOptimizationLevel = PlayerSettings.iOS.scriptCallOptimization;
-//		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
+		aTmpSet.TargetOSVersionString = PlayerSettings.iOS.targetOSVersionString;
 		aTmpSet.PrepareIOSForRecording = SDDataMove.GetBoolPlayerSetting("Prepare IOS For Recording");
 		aTmpSet.RequiresPersistentWiFi = PlayerSettings.iOS.requiresPersistentWiFi;
+		aTmpSet.AppInBackgroundBehavior = PlayerSettings.iOS.appInBackgroundBehavior;
+		aTmpSet.Architecture = PlayerSettings.GetArchitecture(BuildTargetGroup.iOS);
+		// Optimization
+		aTmpSet.ScriptCallOptimizationLevel = PlayerSettings.iOS.scriptCallOptimization;
+		aTmpSet.StripEngineCode = PlayerSettings.stripEngineCode;
+		aTmpSet.StripLevel = PlayerSettings.strippingLevel;
+		//-------------------------------------------------
+
+
+
+
+
+
+
+//		aTmpSet.OverrideIPodMusic = SDDataMove.GetBoolPlayerSetting("Override IPod Music");
+
+
 		aTmpSet.PrerenderedIcon = PlayerSettings.iOS.prerenderedIcon;
 		// Unity 4.6(under) Old
 //		aTmpSet.TargetResolution = PlayerSettings.iOS.targetResolution;// 4.6Ver
@@ -189,17 +216,11 @@ public class SDCreate : SDBaseUI
 //			aTmpSet.Architecture = (iPhoneArchitecture)PlayerSettings.GetPropertyInt("Architecture", BuildTargetGroup.iOS);
 		// Unity5 New
 		aTmpSet.GraphicsType = PlayerSettings.GetGraphicsAPIs(BuildTarget.iOS);
-		aTmpSet.ApiCompatibilityLevel = PlayerSettings.GetApiCompatibilityLevel(BuildTargetGroup.iOS);
-		aTmpSet.TargetOSVersionString = PlayerSettings.iOS.targetOSVersionString;
-		aTmpSet.AppInBackgroundBehavior = PlayerSettings.iOS.appInBackgroundBehavior;
-		aTmpSet.ScriptingBackend = PlayerSettings.GetScriptingBackend(BuildTargetGroup.iOS);
-		if(aTmpSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
-			aTmpSet.StripEngineCode = PlayerSettings.stripEngineCode;
-			aTmpSet.Architecture = PlayerSettings.GetArchitecture(BuildTargetGroup.iOS);
-		}
-		else if(aTmpSet.ScriptingBackend == ScriptingImplementation.Mono2x) {			
-			aTmpSet.StripLevel = PlayerSettings.strippingLevel;
-		}
+
+
+
+
+
 		// Icon
 		aTmpSet.IconOverride = true;
 		SDDataMove.GetIconsGroup(BuildTargetGroup.iOS, ref mUIUseImages.IosIcons, ref aTmpSet.DefIcons);

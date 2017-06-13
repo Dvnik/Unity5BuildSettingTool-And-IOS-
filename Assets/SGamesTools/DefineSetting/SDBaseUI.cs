@@ -30,7 +30,9 @@ public abstract class SDBaseUI : EditorWindow
 	mShowIOS;
 	private int mAndInternetAccess,
 	mAndWritePermission,
-	mAndApiComLevel;
+	mAndApiComLevel,
+	mScriptBackIndex,
+	mIOSApiComLevel;
 	#region Unity Base
 	protected virtual void OnGUI() {
 		ShowUI ();
@@ -89,7 +91,7 @@ public abstract class SDBaseUI : EditorWindow
 		bool aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.LabelField(iInfo);
-		iValue = EditorGUILayout.Toggle(iValue);
+		aResult = EditorGUILayout.Toggle(aResult);
 		EditorGUILayout.EndHorizontal();
 		return aResult;
 	}
@@ -118,7 +120,7 @@ public abstract class SDBaseUI : EditorWindow
 		int aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.LabelField(iInfo);
-		iValue = EditorGUILayout.Popup(iValue, iOption);
+		aResult = EditorGUILayout.Popup(aResult, iOption);
 		EditorGUILayout.EndHorizontal();
 		return aResult;
 	}
@@ -132,7 +134,7 @@ public abstract class SDBaseUI : EditorWindow
 		string aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.LabelField(iInfo);
-		iValue = EditorGUILayout.TextField(iValue);
+		aResult = EditorGUILayout.TextField(aResult);
 		EditorGUILayout.EndHorizontal();
 		return aResult;
 	}
@@ -146,7 +148,7 @@ public abstract class SDBaseUI : EditorWindow
 		int aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.LabelField(iInfo);
-		iValue = EditorGUILayout.IntField(iValue);
+		aResult = EditorGUILayout.IntField(aResult);
 		EditorGUILayout.EndHorizontal();
 		return aResult;
 	}
@@ -412,6 +414,9 @@ public abstract class SDBaseUI : EditorWindow
 	}
 	#endregion
 	#region IOS UI
+	/// <summary>
+	/// UIIOSs the area.
+	/// </summary>
 	public void UIIOSArea() {
 		mShowIOS = EditorGUILayout.Foldout(mShowIOS, SDBaseType.cUIName041);
 		if(!mShowIOS)
@@ -419,6 +424,9 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel++;
 		UIIOSResolution();
 		EditorGUILayout.Space();
+		FTUUIIOSDebugging();
+		EditorGUILayout.Space();
+		UIIOSOtherSetting();
 		EditorGUI.indentLevel--;
 	}
 
@@ -427,34 +435,105 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUILayout.Space();
 		EditorGUI.indentLevel++;
 		// Start
-		EditorGUILayout.LabelField("Multitasking Support", EditorStyles.boldLabel);
+		EditorGUILayout.LabelField(SDBaseType.cUIName042, EditorStyles.boldLabel);
 		EditorGUILayout.Space();
-
-//		EditorGUILayout.BeginHorizontal();
-//		EditorGUILayout.LabelField("Requires Fullscreen");
-//		mIOSRequiresFullscreen = EditorGUILayout.Toggle(mIOSRequiresFullscreen);
-//		EditorGUILayout.EndHorizontal();
-//		EditorGUILayout.LabelField("Status Bar", EditorStyles.boldLabel);
-//		EditorGUILayout.Space();
-//		EditorGUILayout.BeginHorizontal();
-//		EditorGUILayout.LabelField("Status Bar Hidden");
-//		mIOSStatusBarHidden = EditorGUILayout.Toggle(mIOSStatusBarHidden);
-//		EditorGUILayout.EndHorizontal();
-//		EditorGUILayout.BeginHorizontal();
-//		EditorGUILayout.LabelField("Status Bar Style");
-//		mIOSSBS = (iOSStatusBarStyle)EditorGUILayout.EnumPopup(mIOSSBS);
-//		EditorGUILayout.EndHorizontal();
-//		EditorGUILayout.Space();
-//		EditorGUILayout.Space();
-//		EditorGUILayout.BeginHorizontal();
-//		EditorGUILayout.LabelField("Show Loading Indicator");
-//		mIOSShowOnLoading = (iOSShowActivityIndicatorOnLoading)EditorGUILayout.EnumPopup(mIOSShowOnLoading);
-		EditorGUILayout.EndHorizontal();
-
+		mShowSetInfo.IOSSet.RequiresFullScreen = SetToggleHor(SDBaseType.cUIName043, mShowSetInfo.IOSSet.RequiresFullScreen);
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField(SDBaseType.cUIName044, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		mShowSetInfo.IOSSet.RequiresFullScreen = SetToggleHor(SDBaseType.cUIName045, mShowSetInfo.IOSSet.StatusBarHidden);
+		mShowSetInfo.IOSSet.StatusBarStyle =
+			(iOSStatusBarStyle)SetEnumPopupHor(SDBaseType.cUIName046, mShowSetInfo.IOSSet.StatusBarStyle);
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		mShowSetInfo.IOSSet.ShowActivityIndicatorOnLoading =
+			(iOSShowActivityIndicatorOnLoading)SetEnumPopupHor(SDBaseType.cUIName047, mShowSetInfo.IOSSet.ShowActivityIndicatorOnLoading);
 		// End
 		EditorGUI.indentLevel--;
 	}
 
+	private void FTUUIIOSDebugging() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName048, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUILayout.HelpBox(SDBaseType.cUIName049, MessageType.Info);
+		EditorGUILayout.Space();
+
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField(SDBaseType.cUIName050, EditorStyles.boldLabel);
+		mShowSetInfo.IOSSet.ActionOnDotNetUnhandledException =
+			(ActionOnDotNetUnhandledException)SetEnumPopupHor(SDBaseType.cUIName053, mShowSetInfo.IOSSet.ActionOnDotNetUnhandledException);
+		mShowSetInfo.IOSSet.LogObjCUncaughtExceptions = SetToggleHor(SDBaseType.cUIName051, mShowSetInfo.IOSSet.LogObjCUncaughtExceptions);
+		mShowSetInfo.IOSSet.EnableCrashReportAPI = SetToggleHor(SDBaseType.cUIName052, mShowSetInfo.IOSSet.EnableCrashReportAPI);
+		// End
+		EditorGUI.indentLevel--;
+	}
+
+	private void UIIOSOtherSetting() {
+		EditorGUILayout.LabelField(SDBaseType.cUIName022, TitleFrontStyle());
+		EditorGUILayout.Space();
+		EditorGUI.indentLevel++;
+		// Start
+		EditorGUILayout.LabelField(SDBaseType.cUIName012, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		mShowSetInfo.IOSSet.BundleIDIOS = SetTextHor(SDBaseType.cUIName013, mShowSetInfo.IOSSet.BundleIDIOS);
+		mShowSetInfo.IOSSet.BuildNumber = SetTextHor(SDBaseType.cUIName054, mShowSetInfo.IOSSet.BuildNumber);
+		mShowSetInfo.IOSSet.AppleEnableAutomaticSigning = SetToggleHor(SDBaseType.cUIName055, mShowSetInfo.IOSSet.AppleEnableAutomaticSigning);
+
+		if(mShowSetInfo.IOSSet.AppleEnableAutomaticSigning) {
+			mShowSetInfo.IOSSet.AppleDeveloperTeamID = SetTextHor(SDBaseType.cUIName056, mShowSetInfo.IOSSet.AppleDeveloperTeamID);
+		}
+		else {
+			mShowSetInfo.IOSSet.ProvisioningProfileID = SetTextHor(SDBaseType.cUIName057, mShowSetInfo.IOSSet.ProvisioningProfileID);
+		}
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField(SDBaseType.cUIName024, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		mScriptBackIndex = (int)mShowSetInfo.IOSSet.ScriptingBackend;
+		mScriptBackIndex = SetPopupHor(SDBaseType.cUIName058, mScriptBackIndex, SDBaseType.ScriptingBackend);
+		switch(mScriptBackIndex) {
+		case 0: mShowSetInfo.IOSSet.ScriptingBackend = ScriptingImplementation.Mono2x; break;
+		case 1: mShowSetInfo.IOSSet.ScriptingBackend = ScriptingImplementation.IL2CPP; break;
+		}
+
+		// API Compatibility Level
+		if(mShowSetInfo.IOSSet.ApiCompatibilityLevel == ApiCompatibilityLevel.NET_2_0_Subset)
+			mIOSApiComLevel = 1;
+		mIOSApiComLevel = SetPopupHor(SDBaseType.cUIName027, mIOSApiComLevel, SDBaseType.ApiCompatibilityLevel);
+		switch(mIOSApiComLevel) {
+		case 0: mShowSetInfo.IOSSet.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_2_0; break;
+		case 1: mShowSetInfo.IOSSet.ApiCompatibilityLevel = ApiCompatibilityLevel.NET_2_0_Subset; break;
+		}
+		mShowSetInfo.IOSSet.TargetDevice = (iOSTargetDevice)SetEnumPopupHor(SDBaseType.cUIName060, mShowSetInfo.IOSSet.TargetDevice);
+		mShowSetInfo.IOSSet.SDKVersion = (iOSSdkVersion)SetEnumPopupHor(SDBaseType.cUIName061, mShowSetInfo.IOSSet.SDKVersion);
+		// Architecture
+		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP &&
+			mShowSetInfo.IOSSet.SDKVersion == iOSSdkVersion.DeviceSDK) {
+			iPhoneArchitecture aTmpArch = (iPhoneArchitecture)mShowSetInfo.IOSSet.Architecture;
+			aTmpArch = (iPhoneArchitecture)SetEnumPopupHor(SDBaseType.cUIName059, aTmpArch);
+			mShowSetInfo.IOSSet.Architecture = (int)aTmpArch;
+		}
+		mShowSetInfo.IOSSet.TargetOSVersionString = SetTextHor(SDBaseType.cUIName062, mShowSetInfo.IOSSet.TargetOSVersionString);
+		mShowSetInfo.IOSSet.PrepareIOSForRecording = SetToggleHor(SDBaseType.cUIName063, mShowSetInfo.IOSSet.PrepareIOSForRecording);
+		mShowSetInfo.IOSSet.RequiresPersistentWiFi = SetToggleHor(SDBaseType.cUIName064, mShowSetInfo.IOSSet.RequiresPersistentWiFi);
+		mShowSetInfo.IOSSet.AppInBackgroundBehavior =
+			(iOSAppInBackgroundBehavior)SetEnumPopupHor(SDBaseType.cUIName065, mShowSetInfo.IOSSet.AppInBackgroundBehavior);
+		EditorGUILayout.Space();
+		EditorGUILayout.LabelField(SDBaseType.cUIName066, EditorStyles.boldLabel);
+		EditorGUILayout.Space();
+		if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.IL2CPP) {
+			mShowSetInfo.IOSSet.StripEngineCode =
+				SetToggleHor(SDBaseType.cUIName067, mShowSetInfo.IOSSet.StripEngineCode);
+		}
+		else if(mShowSetInfo.IOSSet.ScriptingBackend == ScriptingImplementation.Mono2x) {			
+			mShowSetInfo.IOSSet.StripLevel =
+				(StrippingLevel)SetEnumPopupHor(SDBaseType.cUIName068, mShowSetInfo.IOSSet.StripLevel);
+		}
+		mShowSetInfo.IOSSet.ScriptCallOptimizationLevel =
+			(ScriptCallOptimizationLevel)SetEnumPopupHor(SDBaseType.cUIName069, mShowSetInfo.IOSSet.ScriptCallOptimizationLevel);
+		// End
+		EditorGUI.indentLevel--;
+	}
 	#endregion
 
 

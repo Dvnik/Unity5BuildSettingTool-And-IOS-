@@ -4,12 +4,13 @@ using UnityEditor;
 using System.Collections;
 using UnityEngine.Rendering;
 /**
- * 2017/04 Merge By SuperGame
+ * 2017/06 Merge By SuperGame
  * programmer : dvnik147
  * 
  * 修改UnityPlayerSetting的基本型別宣告
  */
 public class SDBaseType {
+	// BaseType原本只是記錄著其他的結構或列舉用的，現在則拿來做UI顯示文字庫
 	public const string cUIName001 = "設置檔名",
 	cUIName002 = "設置平台",
 	cUIName003 = "存檔列表",
@@ -111,7 +112,6 @@ public class SDBaseType {
 	public static string[] WritePermission = new string[]{"Internal", "External(SDCard)"};
 	public static string[] ApiCompatibilityLevel = new string[]{".NET 2.0", ".NET 2.0 Subset"};
 	public static string[] ScriptingBackend = new string[]{"Mono2x", "IL2CPP"};
-
 }
 
 // 參照PlayerSetting加入

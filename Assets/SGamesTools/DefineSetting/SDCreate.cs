@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine.Rendering;
 /**
- * 2017/04 Merge By SuperGame
+ * 2017/06 Merge By SuperGame
  * programmer : dvnik147
  * 
  * 新建一個Setting檔
@@ -80,6 +80,10 @@ public class SDCreate : SDBaseUI
 	}
 	/// <summary>
 	/// 預設共通資料(取現在的PlayerSetting)
+	/// PC版的BuildTargetGroup是Standalone
+	/// Unknown是PlayerSetting上面那區
+	/// 因為Icon設定沒有打算設定PC版
+	/// 所以只弄預設區塊
 	/// </summary>
 	private void DefaultSetCommon()
 	{

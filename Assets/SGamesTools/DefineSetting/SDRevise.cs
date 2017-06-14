@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 /**
- * 2017/04 Merge By SuperGame
+ * 2017/06 Merge By SuperGame
  * programmer : dvnik147
  * 
  * 修改自設設定檔的內容

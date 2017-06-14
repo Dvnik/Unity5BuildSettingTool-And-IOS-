@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 /**
- * 2017/04 Merge By SuperGame
+ * 2017/06 Merge By SuperGame
  * programmer : dvnik147
  * 
  * 將自設儲存的設定檔複寫到PlayerSetting上
@@ -213,11 +213,28 @@ public class SDOverride : SDBaseUI
 		// Other
 		switch(Self.mShowSetInfo.DefineTarget)
 		{
-		case eSDTarget.Android: Self.OverrideSetAndroid(); break;
-		case eSDTarget.IOS: Self.OverrideSetIOS(); break;
+		case eSDTarget.Android:
+			Self.CheckDefineSymbols(Self.mShowSetInfo.ScriptDefineSymblos, ref Self.mShowSetInfo.AndroidSet.ScriptDefineSymblos);
+			Self.OverrideSetAndroid();
+			break;
+		case eSDTarget.IOS:
+			Self.CheckDefineSymbols(Self.mShowSetInfo.ScriptDefineSymblos, ref Self.mShowSetInfo.IOSSet.ScriptDefineSymblos);
+			Self.OverrideSetIOS();
+			break;
 		}
 		Debug.Log("資料設定完畢");
 		AssetDatabase.Refresh();
+	}
+	/// <summary>
+	/// 檢查ScriptDefineSymblos是否有填入
+	/// 因為每個平台的ScriptDefineSymblos都可以獨立設定
+	/// 但是這個快寫內容只會針對一個平台所寫入
+	/// 所以只是做個保險
+	/// </summary>
+	private void CheckDefineSymbols(string iOverStr, ref string iCheckStr) {
+		if(!string.IsNullOrEmpty(iOverStr) && string.IsNullOrEmpty(iCheckStr)) {
+			iCheckStr = iOverStr;
+		}
 	}
 }
 #endif

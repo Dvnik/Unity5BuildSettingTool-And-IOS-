@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 /**
- * 2017/04 Merge By SuperGame
+ * 2017/06 Merge By SuperGame
  * programmer : dvnik147
  * 
  * 共通會顯示的UI資料
@@ -12,7 +12,13 @@ public abstract class SDBaseUI : EditorWindow
 {
 	// 取得Define存檔的列表
 	private string[] mFileNameArray;
-	public string[] FileNameArray { get { return mFileNameArray; } }
+	public string[] FileNameArray {
+		get {
+			if(mFileNameArray == null)
+				mFileNameArray = SDDataMove.GetSaveDataNames();
+			return mFileNameArray;
+		}
+	}
 	// 顯示中的設定
 	protected SDefineSet mShowSetInfo;
 	public SDefineSet ShowSetInfo {get{return mShowSetInfo;}}
@@ -22,22 +28,25 @@ public abstract class SDBaseUI : EditorWindow
 	protected eSettingPage mNowPage;
 	// UI相關狀態
 	protected Vector2 mEditorScrollView;
-	protected bool mShowCommon = true,
-	mShowCommonOri = true,
-	mShowAndroid,
-	mShowIOS;
-	private int mAndInternetAccess,
-	mAndWritePermission,
-	mAndApiComLevel,
-	mScriptBackIndex,
-	mIOSApiComLevel;
+	protected bool mShowCommon = true,// 共通設定頁
+	mShowCommonOri = true,// 設定選轉方向的畫面顯示
+	mShowAndroid,// Android設定頁
+	mShowIOS;// IOS設定頁
+	private int mAndInternetAccess,// Internet Access設定(用數字辨別)
+	mAndWritePermission,// Write Permission設定(用數字辨別)
+	mAndApiComLevel,// Androdi Api Compatibility Level設定(用數字辨別)
+	mScriptBackIndex,// Scripting Backend設定(用數字辨別)
+	mIOSApiComLevel;// IOS Api Compatibility Level設定(用數字辨別)
 	#region Unity Base
+	/// <summary>
+	/// OnGUI>顯示介面
+	/// OnEnable >啟動時預先處理的內容
+	/// OnDisable >介面關閉後處理的內容
+	/// </summary>
 	protected virtual void OnGUI() {
 		ShowUI ();
 	}
 	protected virtual void OnEnable() {
-		if(mFileNameArray == null)
-			mFileNameArray = SDDataMove.GetSaveDataNames();
 		SettingInit();
 	}
 	protected virtual void OnDisable() {
@@ -79,11 +88,8 @@ public abstract class SDBaseUI : EditorWindow
 		GUILayout.EndHorizontal();
 	}
 	/// <summary>
-	/// Sets the toggle hor.
+	/// 設定鉤鉤介面(標題文字平均分佈)
 	/// </summary>
-	/// <returns><c>true</c>, if toggle hor was set, <c>false</c> otherwise.</returns>
-	/// <param name="iInfo">I info.</param>
-	/// <param name="iValue">If set to <c>true</c> i value.</param>
 	private bool SetToggleHor(string iInfo, bool iValue) {
 		bool aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
@@ -93,11 +99,8 @@ public abstract class SDBaseUI : EditorWindow
 		return aResult;
 	}
 	/// <summary>
-	/// Sets the enum popup hor.
+	/// 設定Enum屬性的選單(標題文字平均分佈)
 	/// </summary>
-	/// <returns>The enum popup hor.</returns>
-	/// <param name="iInfo">I info.</param>
-	/// <param name="iValue">I value.</param>
 	private System.Enum SetEnumPopupHor(string iInfo, System.Enum iValue) {
 		System.Enum aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
@@ -107,12 +110,8 @@ public abstract class SDBaseUI : EditorWindow
 		return aResult;
 	}
 	/// <summary>
-	/// Sets the popup hor.
+	/// 設定依照文字陣列顯示的選單(標題文字平均分佈)
 	/// </summary>
-	/// <returns>The popup hor.</returns>
-	/// <param name="iInfo">I info.</param>
-	/// <param name="iValue">I value.</param>
-	/// <param name="iOption">I option.</param>
 	private int SetPopupHor(string iInfo, int iValue, string[] iOption) {
 		int aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
@@ -122,11 +121,8 @@ public abstract class SDBaseUI : EditorWindow
 		return aResult;
 	}
 	/// <summary>
-	/// Sets the text hor.
+	/// 文字輸入介面(標題文字平均分佈)
 	/// </summary>
-	/// <returns>The text hor.</returns>
-	/// <param name="iInfo">I info.</param>
-	/// <param name="iValue">I value.</param>
 	private string SetTextHor(string iInfo, string iValue) {
 		string aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
@@ -136,11 +132,8 @@ public abstract class SDBaseUI : EditorWindow
 		return aResult;
 	}
 	/// <summary>
-	/// Sets the int hor.
+	/// 設定整數輸入介面(標題文字平均分佈)
 	/// </summary>
-	/// <returns>The int hor.</returns>
-	/// <param name="iInfo">I info.</param>
-	/// <param name="iValue">I value.</param>
 	private int SetIntHor(string iInfo, int iValue) {
 		int aResult = iValue;
 		EditorGUILayout.BeginHorizontal();
@@ -179,7 +172,7 @@ public abstract class SDBaseUI : EditorWindow
 	#endregion
 	#region Common UI
 	/// <summary>
-	/// User interfaces the common area.
+	/// 共通介面區域
 	/// </summary>
 	public void UICommonArea() {
 		mShowCommon = EditorGUILayout.Foldout(mShowCommon, SDBaseType.cUIName005);
@@ -196,14 +189,14 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the common names.
+	/// App名稱
 	/// </summary>
 	private void UICommonNames() {
 		mShowSetInfo.CompanyName = EditorGUILayout.TextField(SDBaseType.cUIName006, mShowSetInfo.CompanyName);
 		mShowSetInfo.ProductName = EditorGUILayout.TextField(SDBaseType.cUIName007, mShowSetInfo.ProductName);
 	}
 	/// <summary>
-	/// User interfaces the common orientation.
+	/// 螢幕轉向
 	/// </summary>
 	private void UICommonOrientation() {
 		mShowCommonOri = EditorGUILayout.Foldout(mShowCommonOri, SDBaseType.cUIName008);
@@ -230,7 +223,7 @@ public abstract class SDBaseUI : EditorWindow
 		}
 	}
 	/// <summary>
-	/// User interfaces the common identification.
+	/// BundleID與Define設定
 	/// </summary>
 	private void UICommonIdentification() {
 		EditorGUILayout.PrefixLabel(SDBaseType.cUIName012, TitleFrontStyle());
@@ -243,7 +236,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the common icon.
+	/// 預設Icon
 	/// </summary>
 	private void UICommonIcon() {
 		mShowSetInfo.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName015, mShowSetInfo.IconSetStatus, TitleFrontStyle());
@@ -258,7 +251,7 @@ public abstract class SDBaseUI : EditorWindow
 	#endregion
 	#region Android UI
 	/// <summary>
-	/// User interfaces the android area.
+	/// Android介面區域
 	/// </summary>
 	public void UIAndroidArea() {
 		mShowAndroid = EditorGUILayout.Foldout(mShowAndroid, SDBaseType.cUIName017);
@@ -277,7 +270,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the android resolution.
+	/// 畫面設定
 	/// </summary>
 	private void UIAndroidResolution() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName018, TitleFrontStyle());
@@ -292,7 +285,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the android other setting.
+	/// 其他設定
 	/// </summary>
 	private void UIAndroidOtherSetting() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName022, TitleFrontStyle());
@@ -339,7 +332,8 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the android publishing setting.
+	/// Keystore設定
+	/// KeyStore檔案的路徑為至預設在Unity專案底下，方便快速設定用
 	/// </summary>
 	private void UIAndroidPublishingSetting() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName028, TitleFrontStyle());
@@ -355,7 +349,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the android icon.
+	/// Icon設定
 	/// </summary>
 	private void UIAndroidIcon() {
 		mShowSetInfo.AndroidSet.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName034, mShowSetInfo.AndroidSet.IconSetStatus);
@@ -381,6 +375,7 @@ public abstract class SDBaseUI : EditorWindow
 			}
 			EditorGUI.indentLevel--;
 		}
+		// Icon設定中有個Enable Android Banner區域，暫時不做處理
 //		mEnableAndroidBanner = EditorGUILayout.ToggleLeft("Enable Android Banner", mEnableAndroidBanner);
 //		if(mEnableAndroidBanner) {
 //			EditorGUI.indentLevel++;
@@ -397,7 +392,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// User interfaces the android splash image.
+	/// SplashImage設定
 	/// </summary>
 	private void UIAndroidSplashImage() {
 		mShowSetInfo.AndroidSet.SplashSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName037, mShowSetInfo.AndroidSet.SplashSetStatus);
@@ -418,7 +413,7 @@ public abstract class SDBaseUI : EditorWindow
 	#endregion
 	#region IOS UI
 	/// <summary>
-	/// UIIOSs the area.
+	/// IOS介面區域
 	/// </summary>
 	public void UIIOSArea() {
 		mShowIOS = EditorGUILayout.Foldout(mShowIOS, SDBaseType.cUIName041);
@@ -436,7 +431,9 @@ public abstract class SDBaseUI : EditorWindow
 		UIIOSSplashImage();
 		EditorGUI.indentLevel--;
 	}
-
+	/// <summary>
+	/// 畫面設定
+	/// </summary>
 	private void UIIOSResolution() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName018, TitleFrontStyle());
 		EditorGUILayout.Space();
@@ -458,7 +455,9 @@ public abstract class SDBaseUI : EditorWindow
 		// End
 		EditorGUI.indentLevel--;
 	}
-
+	/// <summary>
+	/// IOS的Debug偵錯設定
+	/// </summary>
 	private void FTUUIIOSDebugging() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName048, TitleFrontStyle());
 		EditorGUILayout.Space();
@@ -475,7 +474,9 @@ public abstract class SDBaseUI : EditorWindow
 		// End
 		EditorGUI.indentLevel--;
 	}
-
+	/// <summary>
+	/// 其他設定
+	/// </summary>
 	private void UIIOSOtherSetting() {
 		EditorGUILayout.LabelField(SDBaseType.cUIName022, TitleFrontStyle());
 		EditorGUILayout.Space();
@@ -544,7 +545,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// IOS的ICON設定
+	/// ICON設定
 	/// </summary>
 	private void UIIOSIcon() {
 		mShowSetInfo.IOSSet.IconSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName034, mShowSetInfo.IOSSet.IconSetStatus);
@@ -581,7 +582,7 @@ public abstract class SDBaseUI : EditorWindow
 		EditorGUI.indentLevel--;
 	}
 	/// <summary>
-	/// UIIOSs the splash image.
+	/// SplashImage設定
 	/// </summary>
 	private void UIIOSSplashImage() {
 		mShowSetInfo.IOSSet.SplashSetStatus = EditorGUILayout.ToggleLeft(SDBaseType.cUIName037, mShowSetInfo.IOSSet.SplashSetStatus);
